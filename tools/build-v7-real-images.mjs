@@ -105,7 +105,7 @@ addGroup(VISUAL_TITLE, 'European perch', ['egg-ribbon','perch-spines']);
 addGroup(VISUAL_TITLE, 'European bitterling', ['bitterling-mussel']);
 addGroup(VISUAL_TITLE, 'Three-spined stickleback', ['stickleback']);
 addGroup(VISUAL_TITLE, 'Common carp', ['cyprinid','pharyngeal-teeth','plant-spawn']);
-addGroup(VISUAL_TITLE, 'Barbel (anatomy)', ['barbels']);
+addGroup(VISUAL_TITLE, 'Common barbel', ['barbels']);
 addGroup(VISUAL_TITLE, 'Dropsy (fish disease)', ['disease']);
 addGroup(VISUAL_TITLE, 'Argulus foliaceus', ['carp-louse']);
 addGroup(VISUAL_TITLE, 'Fish disease and parasites', ['parasite']);
@@ -168,7 +168,7 @@ const SPECIES_TITLE = {
 };
 
 const PRACTICE_TITLE = {
-  A1:'Float fishing', A2:'Feeder fishing', A3:'Carp fishing', A4:'European eel', A5:'Northern pike', A6:'Spin fishing', A7:'Fly fishing', A8:'Fly fishing', A9:'Jigging', A10:'Surf fishing'
+  A1:'Float fishing', A2:'Feeder fishing', A3:'Carp fishing', A4:'Bottom fishing', A5:'Spin fishing', A6:'Spin fishing', A7:'Fly fishing', A8:'Fly fishing', A9:'Jigging', A10:'Surf fishing'
 };
 
 const COMPONENT_TITLE = {
@@ -191,7 +191,7 @@ const tasks = [];
 for (const key of allVisualKeys) tasks.push({ kind:'visual', key, label:key, titles:[VISUAL_TITLE[key], ...visualFallback(key)] });
 for (const item of SPECIES) {
   const [name, latin] = item;
-  tasks.push({ kind:'species', key:name, label:name, titles:[SPECIES_TITLE[name], latin, 'Freshwater fish', 'Fish'].filter(Boolean) });
+  tasks.push({ kind:'species', key:name, label:name, titles:[latin, SPECIES_TITLE[name], 'Freshwater fish', 'Fish'].filter(Boolean) });
 }
 for (const item of PRACTICE) tasks.push({ kind:'practice', key:item.id, label:item.name, titles:[PRACTICE_TITLE[item.id], 'Fishing rod', 'Fishing'].filter(Boolean) });
 for (const item of COMPONENTS) tasks.push({ kind:'component', key:item[0], label:item[0], titles:[COMPONENT_TITLE[item[1]], 'Fishing tackle', 'Fishing'].filter(Boolean) });
@@ -277,20 +277,23 @@ for (const entry of chosen) {
   const ext = info?.extmetadata || {};
   const filePage = info?.descriptionurl || entry.wiki.wikiPage;
   const imageUrl = info?.thumburl || entry.wiki.thumbnail;
-  const image = {
-    downloadUrl:imageUrl,
-    source:filePage,
-    title:String(metadata?.page?.title || entry.wiki.imageName).replace(/^File:/i,''),
-    author:short(ext.Artist?.value || ext.Credit?.value || 'Urheber siehe Quelldatei'),
-    license:short(ext.LicenseShortName?.value || ext.UsageTerms?.value || 'Lizenz siehe Quelldatei', 90),
-    licenseUrl:ext.LicenseUrl?.value || filePage,
-    description:short(ext.ImageDescription?.value || ext.ObjectName?.value || entry.wiki.resolvedTitle, 180),
-    wikiPage:entry.wiki.wikiPage,
-    fallback:entry.wiki.fallback,
-    selectedTitle:entry.wiki.selectedTitle
-  };
+  let image = selectedByUrl.get(imageUrl);
+  if (!image) {
+    image = {
+      downloadUrl:imageUrl,
+      source:filePage,
+      title:String(metadata?.page?.title || entry.wiki.imageName).replace(/^File:/i,''),
+      author:short(ext.Artist?.value || ext.Credit?.value || 'Urheber siehe Quelldatei'),
+      license:short(ext.LicenseShortName?.value || ext.UsageTerms?.value || 'Lizenz siehe Quelldatei', 90),
+      licenseUrl:ext.LicenseUrl?.value || filePage,
+      description:short(ext.ImageDescription?.value || ext.ObjectName?.value || entry.wiki.resolvedTitle, 180),
+      wikiPage:entry.wiki.wikiPage,
+      fallback:entry.wiki.fallback,
+      selectedTitle:entry.wiki.selectedTitle
+    };
+    selectedByUrl.set(image.downloadUrl, image);
+  }
   entry.image = image;
-  selectedByUrl.set(image.downloadUrl, image);
 }
 
 async function mapLimit(items, limit, worker) {
@@ -323,6 +326,11 @@ await mapLimit(uniqueImages, 2, async (image, index) => {
   await sleep(260);
 });
 
+const missingAssignmentFiles = chosen.filter(entry => !entry.image?.file);
+if (missingAssignmentFiles.length) {
+  throw new Error('Foto-Dateireferenz fehlt bei: ' + missingAssignmentFiles.map(entry => entry.task.kind + '/' + entry.task.key).join(', '));
+}
+
 const byKind = { visual:{}, species:{}, practice:{}, component:{} };
 for (const entry of chosen) {
   const photo = {
@@ -345,7 +353,7 @@ for (const item of PRACTICE) {
 }
 const componentMap = {};
 for (const item of COMPONENTS) componentMap[normalize(item[0])] = byKind.component[normalize(item[0])];
-const allFiles = [...new Set(uniqueImages.map(image => image.file))];
+const allFiles = [...new Set(uniqueImages.map(image => image.file).filter(Boolean))];
 const data = { version:'7.1.0', questions:questionMap, species:speciesMap, practice:practiceMap, components:componentMap, allFiles };
 
 const css = `
@@ -371,7 +379,7 @@ const runtime = `
   const norm=value=>String(value||'').normalize('NFKC').replace(/\\s+/g,' ').trim().toLocaleLowerCase('de-DE');
   function findByContainedText(map,text){const n=norm(text);if(map[n])return map[n];const key=Object.keys(map).sort((a,b)=>b.length-a.length).find(k=>n.includes(k)||k.includes(n));return key?map[key]:null;}
   function figure(meta,label,compact=false){
-    if(!meta)return null;
+    if(!meta||!meta.file)return null;
     const fig=document.createElement('figure');fig.className='real-photo-card'+(compact?' compact':'');fig.dataset.realPhoto='1';
     const badge=document.createElement('div');badge.className='real-photo-badge';badge.textContent='📷 Echtes Lernfoto';
     const img=document.createElement('img');img.loading='lazy';img.decoding='async';img.alt='Echtes Foto: '+String(label||'Lernbeispiel');img.src=new URL(meta.file,BASE).href;img.addEventListener('error',()=>fig.remove(),{once:true});
@@ -386,7 +394,7 @@ const runtime = `
   function enhanceHome(){const pill=document.querySelector('#homeView .pill');if(pill&&!pill.dataset.realUpdated){pill.textContent='Offline · Version 7.1 · 180 Fragen · echte Fotos';pill.dataset.realUpdated='1';}const note=document.querySelector('#homeView .source-note');if(note&&!note.dataset.realUpdated){note.insertAdjacentText('beforeend',' Echte Fotos stammen aus Wikimedia Commons beziehungsweise Wikipedia; Urheber und Lizenz sind direkt am jeweiligen Foto verlinkt.');note.dataset.realUpdated='1';}}
   let pending=false;function enhance(){pending=false;enhanceHome();enhanceQuestion();enhanceSpecies();enhancePractice();enhanceComponents();}function schedule(){if(pending)return;pending=true;requestAnimationFrame(enhance);}new MutationObserver(schedule).observe(document.documentElement,{childList:true,subtree:true});window.addEventListener('DOMContentLoaded',schedule,{once:true});schedule();
   function cacheBadge(){let badge=document.querySelector('.photo-cache-status');if(!badge){badge=document.createElement('div');badge.className='photo-cache-status';badge.hidden=true;document.body.append(badge);}return badge;}
-  async function startOfflineCache(){if(!('serviceWorker' in navigator))return;try{const registration=await navigator.serviceWorker.ready;const worker=registration.active||registration.waiting||registration.installing;if(!worker)return;const badge=cacheBadge();const channel=new MessageChannel();channel.port1.onmessage=event=>{const msg=event.data||{};if(msg.type==='REAL_IMAGE_PROGRESS'){badge.hidden=false;badge.textContent='Echte Fotos offline speichern: '+msg.done+' / '+msg.total;}if(msg.type==='REAL_IMAGE_DONE'){badge.textContent='Alle echten Lernfotos sind offline gespeichert ✓';setTimeout(()=>{badge.hidden=true;},3500);const status=document.querySelector('#offlineStatus');if(status)status.textContent='App und echte Lernfotos sind auf diesem Gerät offline verfügbar.';}};worker.postMessage({type:'CACHE_REAL_IMAGES',files:DATA.allFiles},[channel.port2]);}catch(error){console.warn('Foto-Offlinecache:',error);}}
+  async function startOfflineCache(){if(!('serviceWorker' in navigator))return;try{const registration=await navigator.serviceWorker.ready;const worker=registration.active||registration.waiting||registration.installing;if(!worker)return;const badge=cacheBadge();const channel=new MessageChannel();channel.port1.onmessage=event=>{const msg=event.data||{};if(msg.type==='REAL_IMAGE_PROGRESS'){badge.hidden=false;badge.textContent='Echte Fotos offline speichern: '+msg.done+' / '+msg.total;}if(msg.type==='REAL_IMAGE_DONE'){badge.textContent='Alle echten Lernfotos sind offline gespeichert ✓';setTimeout(()=>{badge.hidden=true;},3500);const status=document.querySelector('#offlineStatus');if(status)status.textContent='App und echte Lernfotos sind auf diesem Gerät offline verfügbar.';}};worker.postMessage({type:'CACHE_REAL_IMAGES',files:DATA.allFiles.filter(Boolean)},[channel.port2]);}catch(error){console.warn('Foto-Offlinecache:',error);}}
   window.addEventListener('load',()=>setTimeout(startOfflineCache,1600),{once:true});
 })();
 `;
@@ -411,7 +419,7 @@ const CORE_FILES=['./','./index.html','./real-images.css','./real-images.js','./
 self.addEventListener('install',event=>event.waitUntil(caches.open(CORE).then(cache=>cache.addAll(CORE_FILES)).then(()=>self.skipWaiting())));
 self.addEventListener('activate',event=>event.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k.startsWith('petricoach-v7-')&&![CORE,PHOTOS].includes(k)).map(k=>caches.delete(k)))).then(()=>self.clients.claim())));
 self.addEventListener('fetch',event=>{if(event.request.method!=='GET')return;const url=new URL(event.request.url);if(url.origin!==location.origin)return;if(url.pathname.includes('/v7/real/')){event.respondWith(caches.open(PHOTOS).then(async cache=>(await cache.match(event.request))||fetch(event.request).then(response=>{if(response.ok)cache.put(event.request,response.clone());return response;})));return;}if(event.request.mode==='navigate'){event.respondWith(fetch(event.request).then(response=>{const copy=response.clone();caches.open(CORE).then(cache=>cache.put('./index.html',copy));return response;}).catch(()=>caches.match('./index.html')));return;}event.respondWith(caches.match(event.request).then(cached=>cached||fetch(event.request).then(response=>{if(response.ok)caches.open(CORE).then(cache=>cache.put(event.request,response.clone()));return response;})));});
-self.addEventListener('message',event=>{const msg=event.data||{};if(msg.type!=='CACHE_REAL_IMAGES'||!Array.isArray(msg.files))return;const port=event.ports&&event.ports[0];event.waitUntil((async()=>{const cache=await caches.open(PHOTOS);let done=0;const total=msg.files.length;for(const file of msg.files){const request=new Request(new URL(file,self.registration.scope).href,{cache:'reload'});if(!(await cache.match(request))){try{const response=await fetch(request);if(response.ok)await cache.put(request,response);}catch(error){console.warn('Foto nicht gecacht',file,error);}}done++;if(port&&(done===total||done%4===0))port.postMessage({type:'REAL_IMAGE_PROGRESS',done,total});}if(port)port.postMessage({type:'REAL_IMAGE_DONE',done,total});})());});
+self.addEventListener('message',event=>{const msg=event.data||{};if(msg.type!=='CACHE_REAL_IMAGES'||!Array.isArray(msg.files))return;const port=event.ports&&event.ports[0];event.waitUntil((async()=>{const cache=await caches.open(PHOTOS);let done=0;const total=msg.files.length;for(const file of msg.files.filter(Boolean)){const request=new Request(new URL(file,self.registration.scope).href,{cache:'reload'});if(!(await cache.match(request))){try{const response=await fetch(request);if(response.ok)await cache.put(request,response);}catch(error){console.warn('Foto nicht gecacht',file,error);}}done++;if(port&&(done===total||done%4===0))port.postMessage({type:'REAL_IMAGE_PROGRESS',done,total});}if(port)port.postMessage({type:'REAL_IMAGE_DONE',done,total});})());});
 `;
 fs.writeFileSync(path.join(OUT, 'sw.js'), sw.trim() + '\n');
 
@@ -427,6 +435,7 @@ fs.writeFileSync(path.join(OUT, 'build-report.json'), JSON.stringify(report, nul
 if (QUESTIONS.length !== 180 || SPECIES.length !== 49 || PRACTICE.length !== 10 || COMPONENTS.length !== 12) throw new Error('Lerndaten unvollständig');
 if (Object.keys(questionMap).length !== QUESTIONS.length) throw new Error('Nicht jede Frage hat eine Fotozuordnung');
 if (Object.keys(speciesMap).length !== SPECIES.length) throw new Error('Nicht jede Art hat eine Fotozuordnung');
+if ([...Object.values(questionMap), ...Object.values(speciesMap), ...Object.values(practiceMap), ...Object.values(componentMap)].some(photo => !photo?.file)) throw new Error('Mindestens eine sichtbare Fotozuordnung besitzt keine Datei');
 if (allFiles.length < 65) throw new Error(`Zu wenige unterschiedliche Fotos: ${allFiles.length}`);
 if (/DecompressionStream|Failed to Decode Data/.test(indexHtml)) throw new Error('Alte Dekomprimierung oder Fehlermeldung in V7 gefunden');
 console.log(JSON.stringify({status:report.status,version:report.version,questions:report.questions,species:report.species,practice:report.practice,components:report.components,assignments:report.logicalPhotoAssignments,uniquePhotos:report.uniquePhotoFiles,photoMB:(report.totalPhotoBytes/1024/1024).toFixed(1),fallbacks:report.fallbackAssignments.length},null,2));
