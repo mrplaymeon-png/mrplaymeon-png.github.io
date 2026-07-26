@@ -1,0 +1,126 @@
+name: PetriCoach V8 öffentlich testen
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'petricoach-v8/index.html'
+      - 'petricoach-v8/data.js'
+      - '.github/workflows/verify-petricoach-v8.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Auf GitHub Pages warten
+        shell: bash
+        run: |
+          set -euo pipefail
+          URL="https://mrplaymeon-png.github.io/petricoach-v8/?verify=${GITHUB_RUN_ID}"
+          for attempt in $(seq 1 36); do
+            CODE=$(curl -L -sS -o /tmp/public.html -w '%{http_code}' "$URL" || true)
+            if [ "$CODE" = "200" ] && grep -q 'V8 · Direkt im Browser' /tmp/public.html; then
+              echo "Öffentliche Seite ist bereit."
+              exit 0
+            fi
+            echo "Versuch $attempt: HTTP $CODE – warte 5 Sekunden"
+            sleep 5
+          done
+          echo "Die öffentliche Seite wurde nicht rechtzeitig bereit."
+          exit 1
+
+      - name: Browser-Test vorbereiten
+        shell: bash
+        run: |
+          npm init -y >/dev/null 2>&1
+          npm install playwright@1.55.0 >/dev/null 2>&1
+          npx playwright install --with-deps chromium >/dev/null 2>&1
+
+      - name: Echte Website durchklicken
+        shell: bash
+        run: |
+          cat > /tmp/test-petricoach.cjs <<'NODE'
+          const { chromium } = require('playwright');
+          const fs = require('fs');
+
+          (async () => {
+            const errors = [];
+            const browser = await chromium.launch({ headless: true });
+            const page = await browser.newPage({ viewport: { width: 390, height: 844 } });
+            page.on('pageerror', error => errors.push(String(error)));
+            page.on('console', message => {
+              if (message.type() === 'error') errors.push('console: ' + message.text());
+            });
+
+            const url = 'https://mrplaymeon-png.github.io/petricoach-v8/?browser=' + Date.now();
+            await page.goto(url, { waitUntil: 'networkidle', timeout: 120000 });
+            await page.locator('[data-start="guided"]').click();
+            await page.locator('#quiz.on').waitFor();
+
+            for (let i = 0; i < 3; i++) {
+              const button = page.locator('.answer').nth(i);
+              if (await button.isDisabled()) continue;
+              await button.click();
+              if ((await page.locator('#feedback').innerText()).includes('Richtig')) break;
+            }
+            await page.locator('.visual').waitFor();
+            const visualCount = await page.locator('.visual svg').count();
+
+            await page.locator('#quit').click();
+            await page.locator('[data-nav="species"]').first().click();
+            const speciesCount = await page.locator('.sp').count();
+
+            await page.locator('[data-nav="practice"]').first().click();
+            const rigCount = await page.locator('.rig').count();
+            await page.locator('.rig button').first().click();
+            const rigImageCount = await page.locator('.rig .detail svg').count();
+
+            await page.locator('[data-nav="home"]').first().click();
+            await page.locator('[data-start="exam"]').click();
+            const examCounter = (await page.locator('#counter').innerText()).trim();
+
+            const ok = speciesCount === 49 && rigCount === 10 && visualCount >= 1 && rigImageCount >= 1 && /1\s*\/\s*60/.test(examCounter) && errors.length === 0;
+            const report = [
+              'tested_at=' + new Date().toISOString(),
+              'url=' + url,
+              'http_and_load=ok',
+              'guided_quiz=ok',
+              'learning_visuals=' + visualCount,
+              'species=' + speciesCount,
+              'practice_tasks=' + rigCount,
+              'practice_images=' + rigImageCount,
+              'exam_counter=' + examCounter,
+              'javascript_errors=' + errors.length,
+              'result=' + (ok ? 'PASS' : 'FAIL'),
+              ...errors.map(e => 'error=' + e)
+            ].join('\n') + '\n';
+
+            fs.writeFileSync('petricoach-v8/public-test.txt', report, 'utf8');
+            console.log(report);
+            await browser.close();
+            if (!ok) process.exit(1);
+          })();
+          NODE
+          node /tmp/test-petricoach.cjs
+
+      - name: Prüfergebnis speichern
+        if: always()
+        shell: bash
+        run: |
+          if [ ! -f petricoach-v8/public-test.txt ]; then
+            printf 'tested_at=%s\nresult=FAIL\nreason=browser-test-did-not-complete\n' "$(date -u +%Y-%m-%dT%H:%M:%SZ)" > petricoach-v8/public-test.txt
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add petricoach-v8/public-test.txt
+          if git diff --cached --quiet; then
+            exit 0
+          fi
+          git commit -m 'PetriCoach V8 öffentlichen Browser-Test speichern'
+          git push
