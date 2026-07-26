@@ -1,0 +1,48 @@
+name: PetriCoach V8 veröffentlichen
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'build-v8-trigger.txt'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Transparente Quelldateien zusammensetzen
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p petricoach-v8
+          cat source-v8/index-*.txt > petricoach-v8/index.html
+          cat source-v8/data-*.txt > petricoach-v8/data.js
+
+          HTML_SHA=$(sha256sum petricoach-v8/index.html | cut -d' ' -f1)
+          DATA_SHA=$(sha256sum petricoach-v8/data.js | cut -d' ' -f1)
+
+          test "$HTML_SHA" = "4e4023cdd0fa4430734a1361c2245036d6de063afdf74ed842bf847f1c8b249a"
+          test "$DATA_SHA" = "9cd799e28f9d78746a3dcbedca4e9947b9559d222b9dbe1e137893ff3b0a22fa"
+
+          grep -q 'V8 · Direkt im Browser' petricoach-v8/index.html
+          grep -q 'window.PETRI_DATA=' petricoach-v8/data.js
+
+          printf 'published_at=%s\nhtml_sha256=%s\ndata_sha256=%s\n' "$(date -u +%Y-%m-%dT%H:%M:%SZ)" "$HTML_SHA" "$DATA_SHA" > petricoach-v8/status.txt
+
+      - name: Fertige App speichern
+        shell: bash
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add petricoach-v8/index.html petricoach-v8/data.js petricoach-v8/status.txt
+          if git diff --cached --quiet; then
+            exit 0
+          fi
+          git commit -m 'PetriCoach V8 funktionierend veröffentlichen'
+          git push
