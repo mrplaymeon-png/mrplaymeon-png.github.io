@@ -122,3 +122,4 @@ console.log(JSON.stringify(report, null, 2));
 // Startet nach der finalen Fotozuordnungs-Reparatur den vollständigen V7-Build.
 // Neuaufbau nach der Reparatur der Fotoebene über der unteren Navigation.
 // Neuaufbau nach vollständig klickdurchlässigen Fotokarten.
+// Neuaufbau mit der unteren Navigation direkt auf der obersten body-Ebene.
