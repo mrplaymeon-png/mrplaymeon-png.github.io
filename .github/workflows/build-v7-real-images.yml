@@ -91,9 +91,29 @@ jobs:
 
       - name: V7 veröffentlichen
         id: publish
+        shell: bash
         run: |
+          set -e
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+
+          # Der Builder erzeugt den App-Ordner neu. Diagnose- und Statusdateien
+          # werden aus dem aktuellen Hauptzweig zurückgeholt, damit parallele
+          # Statusläufe weder gelöscht werden noch Rebase-Konflikte erzeugen.
+          git fetch origin main
+          for FILE in \
+            v7/workflow-runs.json \
+            v7/build-action-status.txt \
+            v7/meta.txt \
+            v7/data-summary.json \
+            v7/data-extract-status.txt \
+            v7/function-snippets.txt; do
+            if git cat-file -e "origin/main:${FILE}" 2>/dev/null; then
+              mkdir -p "$(dirname "${FILE}")"
+              git show "origin/main:${FILE}" > "${FILE}"
+            fi
+          done
+
           git add -A v7
           git commit -m 'PetriCoach V7 mit echten Lernfotos veröffentlichen'
           BUILD_SHA=$(git rev-parse HEAD)
