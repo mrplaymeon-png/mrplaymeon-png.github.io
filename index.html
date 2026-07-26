@@ -23,15 +23,19 @@
     <p id="status">Der Intensivtrainer wird geladen …</p>
     <button id="retry" class="retry" type="button">Noch einmal versuchen</button>
   </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/pako@2.1.0/dist/pako_inflate.min.js"></script>
   <script>
   (() => {
+    const VERSION = '3.2.1';
     const PARTS = ['gz-00.txt','gz-01.txt','gz-02.txt','gz-03.txt'];
     const status = document.getElementById('status');
     const spinner = document.getElementById('spinner');
     const retry = document.getElementById('retry');
 
     if ('serviceWorker' in navigator && location.protocol === 'https:') {
-      navigator.serviceWorker.register('./sw.js').catch(error => console.warn('Offline-Cache konnte nicht gestartet werden:', error));
+      navigator.serviceWorker.register('./sw.js?v=' + VERSION, {updateViaCache:'none'})
+        .catch(error => console.warn('Offline-Cache konnte nicht gestartet werden:', error));
     }
 
     function decodeBase64(value) {
@@ -41,12 +45,11 @@
       return bytes;
     }
 
-    async function gunzip(bytes) {
-      if (!('DecompressionStream' in window)) {
-        throw new Error('Dieser Browser ist zu alt. Bitte mit einer aktuellen Safari-, Chrome- oder Edge-Version öffnen.');
+    function gunzip(bytes) {
+      if (!window.pako || typeof window.pako.inflate !== 'function') {
+        throw new Error('Das Entpackmodul konnte nicht geladen werden. Bitte die Seite mit Internetverbindung neu öffnen.');
       }
-      const stream = new Blob([bytes]).stream().pipeThrough(new DecompressionStream('gzip'));
-      return await new Response(stream).text();
+      return window.pako.inflate(bytes, {to:'string'});
     }
 
     async function loadApp() {
@@ -55,11 +58,14 @@
       status.className = '';
       status.textContent = 'Der Intensivtrainer wird geladen …';
       try {
-        const responses = await Promise.all(PARTS.map(name => fetch(name)));
+        const responses = await Promise.all(PARTS.map(name => fetch(name + '?v=' + VERSION, {cache:'no-store'})));
         const failed = responses.find(response => !response.ok);
         if (failed) throw new Error('Eine App-Datei konnte nicht geladen werden.');
         const encoded = (await Promise.all(responses.map(response => response.text()))).join('');
-        const html = await gunzip(decodeBase64(encoded));
+        const html = gunzip(decodeBase64(encoded));
+        if (!html.includes('PetriCoach NRW') || !html.includes('180 Fragen')) {
+          throw new Error('Die App-Daten sind unvollständig. Bitte noch einmal versuchen.');
+        }
         document.open();
         document.write(html);
         document.close();
