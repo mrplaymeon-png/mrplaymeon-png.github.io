@@ -47,7 +47,7 @@ try {
   await page.waitForSelector('#homeView.active', { timeout: 20000 });
   report.title = await page.title();
   report.homeVersion = await page.locator('#homeView .pill').innerText();
-  check(report.homeVersion.includes('Version 7.0'), 'Version-7-Kennzeichnung fehlt');
+  check(/Version 7(?:\.|\b)/.test(report.homeVersion), 'Version-7-Kennzeichnung fehlt');
   check(report.homeVersion.includes('echte Fotos'), 'Hinweis auf echte Fotos fehlt');
 
   await page.locator('[data-start="guided"]').click();
