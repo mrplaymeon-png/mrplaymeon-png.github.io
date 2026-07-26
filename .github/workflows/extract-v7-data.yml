@@ -1,0 +1,54 @@
+name: PetriCoach V7 Lerndaten extrahieren
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/extract-v7-data.yml'
+      - 'v6/index.html'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  extract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Arrays extrahieren
+        run: |
+          mkdir -p v7
+          node <<'NODE'
+          const fs=require('fs'), vm=require('vm');
+          const html=fs.readFileSync('v6/index.html','utf8');
+          function get(name,next){
+            const start=html.indexOf(`const ${name}=`);
+            if(start<0) throw new Error(name+' fehlt');
+            const eq=html.indexOf('=',start)+1;
+            const end=next ? html.indexOf(`const ${next}=`,eq) : html.indexOf('\nconst ',eq);
+            let expr=html.slice(eq,end>eq?end:undefined).trim();
+            expr=expr.replace(/;\s*$/,'');
+            return vm.runInNewContext('('+expr+')');
+          }
+          const questions=get('QUESTIONS','SPECIES');
+          const species=get('SPECIES','PRACTICE');
+          const practice=get('PRACTICE','COMPONENTS');
+          const components=get('COMPONENTS','DEFAULT_STATS');
+          const out={
+            questionCount:questions.length,
+            visualKeys:[...new Set(questions.map(q=>q.visual))].sort(),
+            species:species.map(x=>({name:x.name,latin:x.latin||'',feature:x.feature||'',group:x.group||''})),
+            practice:practice.map(x=>({id:x.id,title:x.title,subtitle:x.subtitle||'',components:x.components||[]})),
+            components:components.map(x=>({name:x.name,title:x.title||'',description:x.description||x.text||''}))
+          };
+          fs.writeFileSync('v7/data-summary.json',JSON.stringify(out,null,2));
+          NODE
+      - name: Speichern
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add v7/data-summary.json
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m 'V7 Lerndaten extrahieren'
+          git push
