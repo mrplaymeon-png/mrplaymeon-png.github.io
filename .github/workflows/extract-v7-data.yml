@@ -49,7 +49,7 @@ jobs:
             const expr=html.slice(i,end);
             const value=vm.runInNewContext(`(${expr})`,Object.create(null),{timeout:2000});
             status.push(`${name}=${Array.isArray(value)?value.length:'object'}`);
-            return value;
+            return JSON.parse(JSON.stringify(value));
           }
           try{
             const questions=extract('QUESTIONS');
@@ -60,12 +60,16 @@ jobs:
               questionCount:questions.length,
               questions:questions.map(q=>({id:q.id||'',question:q.question,answer:q.answers?.[q.correct]||'',visual:q.visual||'',category:q.category||''})),
               visualKeys:[...new Set(questions.map(q=>q.visual).filter(Boolean))].sort(),
-              species:species.map(x=>({name:x.name,latin:x.latin||'',feature:x.feature||'',group:x.group||'',profile:x.profile||''})),
-              practice:practice.map(x=>({id:x.id,title:x.title,subtitle:x.subtitle||'',components:x.components||[]})),
-              components:components.map(x=>({name:x.name||'',title:x.title||'',description:x.description||x.text||''}))
+              species,
+              practice,
+              components,
+              objectKeys:{species:Object.keys(species[0]||{}),practice:Object.keys(practice[0]||{}),components:Object.keys(components[0]||{})}
             };
             fs.writeFileSync('v7/data-summary.json',JSON.stringify(out,null,2));
             status.unshift('status=ok');
+            status.push(`species_keys=${out.objectKeys.species.join(',')}`);
+            status.push(`practice_keys=${out.objectKeys.practice.join(',')}`);
+            status.push(`component_keys=${out.objectKeys.components.join(',')}`);
           }catch(error){
             status.unshift('status=failed');
             status.push(`error=${error.stack||error}`);
