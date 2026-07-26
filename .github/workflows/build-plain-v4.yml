@@ -1,0 +1,73 @@
+name: PetriCoach V4 als normale HTML-Datei bauen
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'gz-00.txt'
+      - 'gz-01.txt'
+      - 'gz-02.txt'
+      - 'gz-03.txt'
+      - 'build-v4-trigger.txt'
+      - '.github/workflows/build-plain-v4.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Repository laden
+        uses: actions/checkout@v4
+
+      - name: App ohne Browser-Dekomprimierung bauen
+        shell: bash
+        run: |
+          set +e
+          rm -f app-v4.html app-v4.gz build-v4-status.txt
+          printf 'started=%s\n' "$(date -u +%Y-%m-%dT%H:%M:%SZ)" > build-v4-status.txt
+
+          cat gz-00.txt gz-01.txt gz-02.txt gz-03.txt | tr -d '\r\n\t ' | base64 --decode > app-v4.gz 2>> build-v4-status.txt
+          BASE64_CODE=$?
+          printf 'base64_exit=%s\n' "$BASE64_CODE" >> build-v4-status.txt
+
+          if [ "$BASE64_CODE" -eq 0 ]; then
+            gzip -dc app-v4.gz > app-v4.html 2>> build-v4-status.txt
+            GZIP_CODE=$?
+          else
+            GZIP_CODE=99
+          fi
+          printf 'gzip_exit=%s\n' "$GZIP_CODE" >> build-v4-status.txt
+
+          if [ -f app-v4.html ]; then
+            printf 'html_bytes=%s\n' "$(wc -c < app-v4.html)" >> build-v4-status.txt
+            if grep -q 'PetriCoach NRW' app-v4.html && grep -q '180 Fragen' app-v4.html; then
+              printf 'validation=ok\n' >> build-v4-status.txt
+            else
+              printf 'validation=failed\n' >> build-v4-status.txt
+              rm -f app-v4.html
+            fi
+          else
+            printf 'validation=no-html\n' >> build-v4-status.txt
+          fi
+
+          rm -f app-v4.gz
+          cat build-v4-status.txt
+
+      - name: Ergebnis in das Repository schreiben
+        shell: bash
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add build-v4-status.txt
+          if [ -f app-v4.html ]; then
+            git add app-v4.html
+          fi
+          if git diff --cached --quiet; then
+            echo 'Keine Aenderung.'
+            exit 0
+          fi
+          git commit -m 'PetriCoach V4 ohne Browser-Entpacken bauen'
+          git push
