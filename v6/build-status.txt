@@ -1,0 +1,8 @@
+status=ok
+source_sha256=bbc1b5016dfeb7b827a5e38c23db13c0560fb615c29923517156dba7f52b9e5a
+output_sha256=cc230b5862125c49768b885ddd6123a91eae6beebb72950e939adcd6c2db28a2
+output_bytes=159346
+questions=180
+browser_decompression=no
+utf8=ok
+pwa_scope=/v6/
