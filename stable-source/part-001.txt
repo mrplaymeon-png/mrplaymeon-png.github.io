@@ -1,0 +1,59 @@
+ class="stat"><span>Erstversuche</span><strong id="answeredStat">0</strong></div><div class="stat"><span>Trefferquote</span><strong id="accuracyStat">–</strong></div><div class="stat"><span>Fehler offen</span><strong id="mistakesStat">0</strong></div></div>
+  <section class="section"><h3>Schnell starten</h3><div class="actions">
+    <button class="action primary" data-start="guided"><span>🧭</span><b>Geführt lernen</b><small>Für Anfänger: erst 12 leichte, dann 6 mittlere Fragen – mit Korrektur, Erklärung und Lernbild</small></button>
+    <button class="action" data-start="smart"><span>🎯</span><b>Smart-Training</b><small>18 Fragen, schwache und anspruchsvolle Themen zuerst; falsche Antworten dürfen korrigiert werden</small></button>
+    <button class="action" data-start="exam"><span>⏱️</span><b>Prüfungssimulation</b><small>60 Fragen · je 10 pro Gebiet · 60 Minuten</small></button>
+    <button class="action" data-start="mistakes"><span>🔁</span><b>Fehlertraining</b><small>Nur Fragen, die im Erstversuch falsch waren</small></button>
+    <button class="action" data-nav="species"><span>🐟</span><b>Arten lernen</b><small>49 amtlich geforderte Arten mit Lernskizzen und Merkmalen</small></button>
+    <button class="action" data-nav="practice"><span>🎣</span><b>Ruten & Bauteile</b><small>10 Geräteaufgaben und 12 Bauteile als beschriftete Lernbilder</small></button>
+  </div></section>
+  <section class="section card compact"><div class="row between"><div><h3>NRW-Prüfungsziel</h3><p class="muted tiny">Alle Bedingungen müssen erfüllt sein.</p></div><span class="badge">Stand 03.07.2026</span></div><div class="requirements"><div><b>45 / 60</b><span>Theorie gesamt</span></div><div><b>6 / 10</b><span>je Fachgebiet</span></div><div><b>25 / 28</b><span>Gerätebau</span></div></div></section>
+  <p class="source-note section">Die 180 Fragen dieser Version bilden einfache Grundlagen und anspruchsvolle Fachfragen des aktuellen amtlichen NRW-Katalogs als bebilderte Lernbasis ab. Es ist eine umfangreiche Auswahl, nicht die vollständige amtliche Fragenbank. Die seit Juli 2026 gestrichenen Rechtsfragen F4, F13, F44, F47 und F52 werden nicht verwendet. Lernskizzen sind nicht mit den amtlichen naturgetreuen Bildtafeln identisch.</p>
+</section>
+
+<section id="quizView" class="view">
+  <div class="row between quiz-head"><button id="quitQuiz" class="icon-btn" aria-label="Training beenden">✕</button><div><b id="quizMode">Training</b><small id="quizCounter">1 / 18</small></div><div id="timer" class="timer">00:00</div></div>
+  <div class="progress"><i id="quizProgress"></i></div>
+  <div class="question-meta"><span id="quizCategory" class="category"></span><span id="difficulty" class="difficulty"></span></div>
+  <h2 id="questionText"></h2><div id="answers" class="answers"></div>
+  <div id="feedback" class="feedback hidden" aria-live="polite"></div>
+  <div class="quiz-actions"><button id="hintBtn" class="ghost">Merksatz</button><button id="nextBtn" class="primary-btn hidden">Weiter</button></div>
+</section>
+
+<section id="resultView" class="view">
+  <div class="result-hero card"><div class="result-icon" id="resultIcon">🎣</div><h2 id="resultTitle">Auswertung</h2><p id="resultSummary"></p></div>
+  <div id="categoryResults" class="category-results"></div>
+  <div id="mistakeReview" class="mistake-review"></div>
+  <button id="retryBtn" class="primary-btn full">Noch einmal</button><button id="homeBtn" class="ghost full">Zur Übersicht</button>
+</section>
+
+<section id="speciesView" class="view">
+  <div class="row between"><div><div class="eyebrow">Artenkenntnis</div><h2>49 Prüfungsarten</h2></div><button class="icon-btn" data-nav="home">✕</button></div>
+  <p class="muted">Die Zeichnungen zeigen Körperform und wichtige Merkmale vereinfacht. Für die Prüfung musst du zusätzlich naturgetreue Farbfotos/Bildtafeln üben.</p>
+  <div class="search"><input id="speciesSearch" type="search" placeholder="Art oder Merkmal suchen …"></div><div id="speciesGrid" class="species-grid"></div>
+</section>
+
+<section id="practiceView" class="view">
+  <div class="row between"><div><div class="eyebrow">Praktischer Teil</div><h2>10 Geräteaufgaben</h2></div><button class="icon-btn" data-nav="home">✕</button></div>
+  <p class="muted">Tippe auf „Aufbau als Bild“. Du siehst dann die jeweilige Rutenart, den Schnurweg, die Montage und darunter alle Bauteile in Prüfungsreihenfolge.</p>
+  <div class="tabs"><button class="mini-btn active" data-practice-tab="tasks">Geräte A1–A10</button><button class="mini-btn" data-practice-tab="components">Bauteile-Lexikon</button></div>
+  <div id="practiceList" class="practice-list"></div><div id="componentList" class="component-list hidden"></div>
+</section>
+
+<section id="learnView" class="view">
+  <div class="row between"><div><div class="eyebrow">Themen</div><h2>Lernstand</h2></div><button class="icon-btn" data-nav="home">✕</button></div><div id="topicList" class="topic-list"></div>
+</section>
+
+<section id="settingsView" class="view">
+  <div class="row between"><div><div class="eyebrow">Einstellungen</div><h2>PetriCoach</h2></div><button class="icon-btn" data-nav="home">✕</button></div>
+  <div class="card compact"><div class="toggle-row"><div><h3>Lernbilder anzeigen</h3><p class="muted tiny">Nach jeder richtig gelösten Frage automatisch einblenden – auch Ruten, Rollen, Montagen und Bauteile.</p></div><label class="switch"><input id="visualToggle" type="checkbox" checked><span class="slider"></span></label></div></div>
+  <div class="card compact section"><h3>Offline-Status</h3><p id="offlineStatus" class="muted">Wird geprüft …</p></div>
+  <div class="card compact section"><h3>Daten</h3><p class="muted">Der Lernstand bleibt lokal auf diesem Gerät, soweit die Vorschau lokalen Speicher erlaubt.</p><button id="resetData" class="danger">Lernstand löschen</button></div>
+  <div class="card compact section"><h3>Wichtiger Hinweis</h3><p class="source-note">Eigenständiger Lerntrainer, keine amtliche Prüfungssoftware. Bei Rechtsfragen gilt immer der aktuelle amtliche Stand und die konkrete Gewässerordnung.</p></div>
+</section>
+</main>
+<nav class="bottom"><button data-nav="home" class="active"><span>⌂</span><small>Start</small></button><button data-nav="learn"><span>▦</span><small>Themen</small></button><button data-nav="species"><span>🐟</span><small>Arten</small></button><button data-nav="practice"><span>🎣</span><small>Praxis</small></button><button data-nav="settings"><span>⚙︎</span><small>Mehr</small></button></nav>
+</div><div id="toast" class="toast"></div>
+<script>
+'use strict';
+const QUESTIONS=[{"id":"A-01","sourceNo":1,"category":"Allgemeine Fischkunde","question":"Welche Aufgaben erfüllen Rücken- und Afterflossen heimischer Fische?","answers":["Sie dienen der Fortbewegung","Sie dienen der Steuerung","Sie dienen als Stabilisatoren"],"correct":2,"explanation":"Rücken- und Afterflosse verhindern vor allem, dass der Fisch seitlich kippt. Die Schwanzflosse liefert den Hauptvortrieb.","memory":"Rücken + After = Stabilität.","visual":"fins","difficulty":"leicht","officialStyle":true},{"id":"A-02","sourceNo":2,"category":"Allgemeine Fischkunde","question":"An welchen Teilen des Fischkörpers kann man das ungefähre Alter feststellen?","answers":["An Hautstärke und Flossenstrahlen","An Anzahl und Länge der Kiemendorne","An Schuppen und Kiemendeckeln"],"correct":2,"explanation":"Wachstumsringe auf Schuppen und Kiemendeckeln können ähnlich wie Jahresringe Hinweise auf das Alter geben.","memory":"Jahresringe: Schuppen und Kiemendeckel.","visual":"scale-age","difficulty":"mittel","officialStyle":true},{"id":"A-03","sourceNo":3,"category":"Allgemeine Fischkunde","question":"Womit nimmt ein Fisch den im Wasser gelösten Sauerstoff auf?","answers":["Mit dem Schlund","Mit den Kiemen","Mit der Seitenlinie"],"correct":1,"explanation":"Beim Vorbeiströmen des Wassers findet an den stark durchbluteten Kiemen der Gasaustausch statt.","memory":"Kiemen = Gasaustausch.","visual":"gills","difficulty":"leicht","officialStyle":true},{"id":"A-04","sourceNo":4,"category":"Allgemeine Fischkunde","question":"Welche Aufgabe hat die Niere des erwachsenen Fisches?","answers":["Ausscheidung flüssiger Abfallstoffe","Regelung des Hormonhaushalts","Bildung von Verdauungsstoffen"],"correct":0,"explanation":"Die Niere filtert Stoffwechselprodukte aus dem Blut und ist an der Regulation des Wasser- und Salzhaushalts beteiligt.","memory":"Niere = filtern und ausscheiden.","visual":"organs","difficulty":"mittel","officialStyle":true},{"id":"A-05","sourceNo":5,"category":"Allgemeine Fischkunde","question":"Wo befindet sich die Seitenlinie des Fisches?","answers":["An den Körperflanken","Längs der Bauchkante","Zwischen den paarigen Flossen"],"correct":0,"explanation":"Die Seitenlinie verläuft gut erkennbar längs beider Körperflanken.","memory":"Seitenlinie = Linie an der Flanke.","visual":"lateral-line","difficulty":"leicht","officialStyle":true},{"id":"A-06","sourceNo":6,"category":"Allgemeine Fischkunde","question":"Warum können Makrelen nicht im Süßwasser leben?","answers":["Sie sind an den Salzgehalt des Meeres angepasst","Süßwasser ist für sie immer zu warm","Süßwasser enthält grundsätzlich zu wenig Sauerstoff"],"correct":0,"explanation":"Meeresfische sind in ihrem Wasser- und Salzhaushalt an salzhaltiges Wasser angepasst.","memory":"Salzhaushalt bestimmt den Lebensraum.","visual":"osmoregulation","difficulty":"mittel","officialStyle":true},{"id":"A-07","sourceNo":7,"category":"Allgemeine Fischkunde","question":"Welche Farbe hat die Leber eines gesunden Süßwasserfisches überwiegend?","answers":["Weißlich bis gelblich","Hellrot","Dunkelrot"],"correct":2,"explanation":"Eine gesunde Leber ist im Normalfall dunkelrot. Auffällige Aufhellungen oder Flecken können krankheitsverdächtig sein.","memory":"Gesunde Leber: dunkelrot.","visual":"organs","difficulty":"mittel","officialStyle":true},{"id":"A-08","sourceNo":8,"category":"Allgemeine Fischkunde","question":"Welche Aufgabe hat die Schleimhaut des Fisches?","answ
