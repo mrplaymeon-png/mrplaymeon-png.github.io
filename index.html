@@ -4,83 +4,20 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="theme-color" content="#073b46">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="PetriCoach NRW">
-  <link rel="manifest" href="manifest.webmanifest">
-  <link rel="icon" href="icon.svg" type="image/svg+xml">
-  <link rel="apple-touch-icon" href="icon.svg">
-  <title>PetriCoach NRW</title>
+  <meta http-equiv="refresh" content="0;url=/v6/?from=root-v6">
+  <link rel="canonical" href="https://mrplaymeon-png.github.io/v6/">
+  <title>PetriCoach NRW wird geöffnet</title>
   <style>
-    :root{color-scheme:dark}*{box-sizing:border-box}body{margin:0;min-height:100vh;display:grid;place-items:center;background:#06191e;color:#f6fbfc;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;padding:24px}.box{max-width:520px;text-align:center;background:#0c262d;border:1px solid #21464f;border-radius:22px;padding:28px;box-shadow:0 18px 60px #0008}.fish{font-size:54px}.spinner{width:42px;height:42px;border:4px solid #21464f;border-top-color:#28c2d2;border-radius:50%;margin:20px auto;animation:spin .8s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}h1{margin:8px 0;font-size:26px}p{color:#b7ccd1;line-height:1.45}.error{color:#ffb2b2}.retry{display:none;margin:16px auto 0;border:0;border-radius:12px;padding:12px 18px;background:#28c2d2;color:#05262c;font-weight:700;font-size:16px}
+    *{box-sizing:border-box}body{margin:0;min-height:100vh;display:grid;place-items:center;background:#06191e;color:#f6fbfc;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;padding:24px}.box{max-width:520px;text-align:center;background:#0c262d;border:1px solid #21464f;border-radius:22px;padding:28px}.fish{font-size:54px}h1{margin:10px 0}p{color:#b7ccd1;line-height:1.5}a{display:inline-block;margin-top:12px;border-radius:13px;padding:12px 18px;background:#28c2d2;color:#03242a;text-decoration:none;font-weight:800}
   </style>
+  <script>location.replace('/v6/?from=root-v6');</script>
 </head>
 <body>
   <main class="box">
     <div class="fish">🎣</div>
     <h1>PetriCoach NRW</h1>
-    <div id="spinner" class="spinner"></div>
-    <p id="status">Der Intensivtrainer wird geladen …</p>
-    <button id="retry" class="retry" type="button">Noch einmal versuchen</button>
+    <p>Die geprüfte App-Version wird geöffnet.</p>
+    <a href="/v6/?from=root-v6">PetriCoach öffnen</a>
   </main>
-
-  <script src="https://cdn.jsdelivr.net/npm/pako@2.1.0/dist/pako_inflate.min.js"></script>
-  <script>
-  (() => {
-    const VERSION = '3.2.1';
-    const PARTS = ['gz-00.txt','gz-01.txt','gz-02.txt','gz-03.txt'];
-    const status = document.getElementById('status');
-    const spinner = document.getElementById('spinner');
-    const retry = document.getElementById('retry');
-
-    if ('serviceWorker' in navigator && location.protocol === 'https:') {
-      navigator.serviceWorker.register('./sw.js?v=' + VERSION, {updateViaCache:'none'})
-        .catch(error => console.warn('Offline-Cache konnte nicht gestartet werden:', error));
-    }
-
-    function decodeBase64(value) {
-      const binary = atob(value.replace(/\s/g, ''));
-      const bytes = new Uint8Array(binary.length);
-      for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
-      return bytes;
-    }
-
-    function gunzip(bytes) {
-      if (!window.pako || typeof window.pako.inflate !== 'function') {
-        throw new Error('Das Entpackmodul konnte nicht geladen werden. Bitte die Seite mit Internetverbindung neu öffnen.');
-      }
-      return window.pako.inflate(bytes, {to:'string'});
-    }
-
-    async function loadApp() {
-      retry.style.display = 'none';
-      spinner.style.display = 'block';
-      status.className = '';
-      status.textContent = 'Der Intensivtrainer wird geladen …';
-      try {
-        const responses = await Promise.all(PARTS.map(name => fetch(name + '?v=' + VERSION, {cache:'no-store'})));
-        const failed = responses.find(response => !response.ok);
-        if (failed) throw new Error('Eine App-Datei konnte nicht geladen werden.');
-        const encoded = (await Promise.all(responses.map(response => response.text()))).join('');
-        const html = gunzip(decodeBase64(encoded));
-        if (!html.includes('PetriCoach NRW') || !html.includes('180 Fragen')) {
-          throw new Error('Die App-Daten sind unvollständig. Bitte noch einmal versuchen.');
-        }
-        document.open();
-        document.write(html);
-        document.close();
-      } catch (error) {
-        console.error(error);
-        spinner.style.display = 'none';
-        status.className = 'error';
-        status.textContent = error && error.message ? error.message : 'Die App konnte nicht geladen werden.';
-        retry.style.display = 'block';
-      }
-    }
-
-    retry.addEventListener('click', loadApp);
-    loadApp();
-  })();
-  </script>
 </body>
 </html>
