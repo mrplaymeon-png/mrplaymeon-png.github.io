@@ -3,15 +3,15 @@
   "short_name": "PetriCoach",
   "description": "Bebilderter Intensivtrainer für die Fischerprüfung in Nordrhein-Westfalen.",
   "lang": "de-DE",
-  "start_url": "./",
-  "scope": "./",
+  "start_url": "/v6/",
+  "scope": "/v6/",
   "display": "standalone",
   "orientation": "portrait-primary",
   "background_color": "#06191e",
   "theme_color": "#073b46",
   "icons": [
     {
-      "src": "icon.svg",
+      "src": "/v6/icon.svg",
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any maskable"
