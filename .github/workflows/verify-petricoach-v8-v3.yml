@@ -1,0 +1,127 @@
+name: PetriCoach V8 finaler Klicktest
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/verify-petricoach-v8-v3.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  clicktest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Öffentliche App erreichbar
+        shell: bash
+        run: |
+          set -euo pipefail
+          BASE="https://mrplaymeon-png.github.io/petricoach-v8"
+          for attempt in $(seq 1 24); do
+            H=$(curl -L -sS -o /tmp/index.html -w '%{http_code}' "$BASE/?run=${GITHUB_RUN_ID}" || true)
+            D=$(curl -L -sS -o /tmp/data.js -w '%{http_code}' "$BASE/data.js?run=${GITHUB_RUN_ID}" || true)
+            if [ "$H" = "200" ] && [ "$D" = "200" ] && grep -q 'V8 · Direkt im Browser' /tmp/index.html && grep -q 'window.PETRI_DATA=' /tmp/data.js; then
+              exit 0
+            fi
+            sleep 5
+          done
+          exit 1
+
+      - name: Chromium vorbereiten
+        run: |
+          npm init -y >/dev/null 2>&1
+          npm install playwright@1.55.0 >/dev/null 2>&1
+          npx playwright install --with-deps chromium >/dev/null 2>&1
+
+      - name: App wie auf dem iPhone durchklicken
+        shell: bash
+        run: |
+          rm -f petricoach-v8/public-test.txt
+          cat > test-petricoach-final.cjs <<'NODE'
+          const { chromium } = require('playwright');
+          const fs = require('fs');
+
+          (async () => {
+            const errors = [];
+            let browser;
+            try {
+              browser = await chromium.launch({ headless: true });
+              const page = await browser.newPage({ viewport: { width: 390, height: 844 }, isMobile: true });
+              page.on('pageerror', error => errors.push(String(error)));
+              page.on('console', message => { if (message.type() === 'error') errors.push('console: ' + message.text()); });
+              const url = 'https://mrplaymeon-png.github.io/petricoach-v8/?final=' + Date.now();
+              await page.goto(url, { waitUntil: 'networkidle', timeout: 120000 });
+
+              await page.locator('[data-start="guided"]').click();
+              await page.locator('#quiz.on').waitFor();
+              for (let i = 0; i < 3; i++) {
+                const b = page.locator('.answer').nth(i);
+                if (await b.isDisabled()) continue;
+                await b.click();
+                if ((await page.locator('#feedback').innerText()).includes('Richtig')) break;
+              }
+              await page.locator('.visual').waitFor();
+              const visuals = await page.locator('.visual svg').count();
+
+              await page.locator('#quit').click();
+              await page.locator('.nav [data-nav="species"]').click();
+              const species = await page.locator('.sp').count();
+
+              await page.locator('.nav [data-nav="practice"]').click();
+              const rigs = await page.locator('.rig').count();
+              await page.locator('.rig button').first().click();
+              const rigImages = await page.locator('.rig .detail svg').count();
+
+              await page.locator('#compTab').click();
+              const components = await page.locator('.comp').count();
+
+              await page.locator('.nav [data-nav="home"]').click();
+              await page.locator('[data-start="exam"]').click();
+              const examCounter = (await page.locator('#counter').innerText()).trim();
+
+              const pass = visuals >= 1 && species === 49 && rigs === 10 && rigImages >= 1 && components === 12 && /1\s*\/\s*60/.test(examCounter) && errors.length === 0;
+              const report = [
+                'tested_at=' + new Date().toISOString(),
+                'public_http=PASS',
+                'guided_quiz=PASS',
+                'answer_buttons=PASS',
+                'learning_visuals=' + visuals,
+                'species=' + species,
+                'practice_tasks=' + rigs,
+                'practice_images=' + rigImages,
+                'components=' + components,
+                'exam_counter=' + examCounter,
+                'javascript_errors=' + errors.length,
+                'result=' + (pass ? 'PASS' : 'FAIL'),
+                ...errors.map(e => 'error=' + e)
+              ].join('\n') + '\n';
+              fs.writeFileSync('petricoach-v8/public-test.txt', report, 'utf8');
+              console.log(report);
+              if (!pass) process.exitCode = 1;
+            } catch (error) {
+              fs.writeFileSync('petricoach-v8/public-test.txt', 'tested_at=' + new Date().toISOString() + '\nresult=FAIL\nerror=' + String(error).replace(/\n/g, ' ') + '\n', 'utf8');
+              process.exitCode = 1;
+            } finally {
+              if (browser) await browser.close();
+            }
+          })();
+          NODE
+          node test-petricoach-final.cjs
+
+      - name: Testergebnis speichern
+        if: always()
+        shell: bash
+        run: |
+          if [ ! -f petricoach-v8/public-test.txt ]; then
+            printf 'tested_at=%s\nresult=FAIL\nreason=final-test-did-not-complete\n' "$(date -u +%Y-%m-%dT%H:%M:%SZ)" > petricoach-v8/public-test.txt
+          fi
+          cat petricoach-v8/public-test.txt
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add petricoach-v8/public-test.txt
+          git commit -m 'PetriCoach V8 finalen Klicktest speichern' || exit 0
+          git push
