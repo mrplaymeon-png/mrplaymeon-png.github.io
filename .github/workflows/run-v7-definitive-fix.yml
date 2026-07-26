@@ -1,0 +1,43 @@
+name: PetriCoach V7 Reparatur ausfuehren
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'v7-repair-trigger.txt'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  repair:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Repository laden
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Quellfehler korrigieren
+        run: node tools/fix-v7-definitive.mjs
+
+      - name: Alte konkurrierende Automationen entfernen
+        run: |
+          find .github/workflows -maxdepth 1 -type f \
+            ! -name 'publish-v7-final.yml' \
+            ! -name 'run-v7-definitive-fix.yml' \
+            -delete
+
+      - name: Korrekturen veroeffentlichen
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git commit -m 'PetriCoach V7 Navigation, Tests und Veröffentlichung endgültig reparieren'
+          for attempt in 1 2 3 4 5; do
+            git pull --rebase origin main
+            if git push origin main; then exit 0; fi
+            if [ "$attempt" = "5" ]; then exit 1; fi
+            sleep $((attempt * 3))
+          done
