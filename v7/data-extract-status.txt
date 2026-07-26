@@ -1,8 +1,0 @@
-status=ok
-QUESTIONS=180
-SPECIES=49
-PRACTICE=10
-COMPONENTS=12
-species_keys=0,1,2,3
-practice_keys=id,name,type,parts,tip
-component_keys=0,1,2
