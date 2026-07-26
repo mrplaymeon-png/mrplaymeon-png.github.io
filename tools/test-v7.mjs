@@ -118,3 +118,5 @@ try {
 fs.writeFileSync(output, JSON.stringify(report, null, 2));
 await browser.close();
 console.log(JSON.stringify(report, null, 2));
+
+// Startet nach der finalen Fotozuordnungs-Reparatur den vollständigen V7-Build.
