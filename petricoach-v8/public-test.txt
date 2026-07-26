@@ -1,7 +1,12 @@
-tested_at=2026-07-26T21:29:42Z
-http_test=PASS
-html_http=200
-data_http=200
-browser_test=FAIL
-result=FAIL
-error=TimeoutError: locator.click: Timeout 30000ms exceeded. Call log:   - waiting for locator('[data-nav="practice"]').first()     - locator resolved to <button class="action" data-nav="practice">…</button>   - attempting click action     2 × waiting for element to be visible, enabled and stable       - element is not visible     - retrying click action     - waiting 20ms     2 × waiting for element to be visible, enabled and stable       - element is not visible     - retrying click action       - waiting 100ms     58 × waiting for element to be visible, enabled and stable        - element is not visible      - retrying click action        - waiting 500ms 
+tested_at=2026-07-26T21:32:33.892Z
+public_http=PASS
+guided_quiz=PASS
+answer_buttons=PASS
+learning_visuals=1
+species=49
+practice_tasks=10
+practice_images=1
+components=12
+exam_counter=1 / 60
+javascript_errors=0
+result=PASS
