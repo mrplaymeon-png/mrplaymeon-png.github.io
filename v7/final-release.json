@@ -1,0 +1,58 @@
+{
+  "status": "passed",
+  "version": "7.1.1",
+  "questions": 180,
+  "species": 49,
+  "practice": 10,
+  "components": 12,
+  "photos": 114,
+  "assignments": 196,
+  "liveTest": {
+    "status": "passed",
+    "url": "https://mrplaymeon-png.github.io/v7/?live=711",
+    "viewport": "390x844",
+    "title": "PetriCoach NRW – Bebilderter Intensivtrainer",
+    "homeVersion": "Offline · Version 7.1 · 180 Fragen · echte Fotos",
+    "question": "Wie kann der Krötenbestand sinnvoll gefördert werden?",
+    "questionPhoto": {
+      "src": "https://mrplaymeon-png.github.io/v7/real/dd80a9f76fff536903.jpg",
+      "width": 960,
+      "height": 600,
+      "alt": "Echtes Foto: Echtes Beispiel zur richtigen Lösung"
+    },
+    "realPhotoVisible": true,
+    "speciesCards": 49,
+    "speciesPhotos": 49,
+    "firstSpeciesPhoto": {
+      "src": "https://mrplaymeon-png.github.io/v7/real/de95981764027bd277.jpg",
+      "width": 856,
+      "height": 336,
+      "alt": "Echtes Foto: Bachforelle"
+    },
+    "navigationHitTest": true,
+    "practiceTouchPoint": {
+      "x": 329,
+      "y": 999
+    },
+    "practiceCards": 10,
+    "practicePhotos": 10,
+    "firstPracticePhoto": {
+      "src": "https://mrplaymeon-png.github.io/v7/real/c78fc4ffb07386d040.jpg",
+      "width": 960,
+      "height": 600,
+      "alt": "Echtes Foto: A1 · Beringte leichte Rute – Rotauge, Rotfeder, Brasse"
+    },
+    "componentCards": 12,
+    "componentPhotos": 12,
+    "firstComponentPhoto": {
+      "src": "https://mrplaymeon-png.github.io/v7/real/fb14c3e894c6047cb4.jpg",
+      "width": 960,
+      "height": 1496,
+      "alt": "Echtes Foto: Rute"
+    },
+    "dialogs": [],
+    "pageErrors": [],
+    "failedRequests": [],
+    "httpErrors": []
+  }
+}
