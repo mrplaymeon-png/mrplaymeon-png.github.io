@@ -1,133 +1,145 @@
 status=failure
-run_id=30206851554
+run_id=30208880515
 attempt=1
-head_sha=9235ffb8cb124cb3df3023555675b675aa49c603
-build_exit=1
-timestamp=2026-07-26T14:51:37Z
+head_sha=f25574196daa214951250360e8204dba7647837f
+build_exit=0
+timestamp=2026-07-26T15:48:43Z
 --- build_log_tail ---
-20/196 visual: ectotherm -> FMIB 38921 Water Front of Fulton Fish Market The Wholesale Fresh-Fish Center of New York City.jpeg [Fallback]
-25/196 visual: escape-distance -> FMIB 38921 Water Front of Fulton Fish Market The Wholesale Fresh-Fish Center of New York City.jpeg [Fallback]
-21/196 visual: eel -> FMIB 38921 Water Front of Fulton Fish Market The Wholesale Fresh-Fish Center of New York City.jpeg [Fallback]
-23/196 visual: egg-temperature -> FMIB 38921 Water Front of Fulton Fish Market The Wholesale Fresh-Fish Center of New York City.jpeg [Fallback]
-27/196 visual: exam-doc -> FMIB 38921 Water Front of Fulton Fish Market The Wholesale Fresh-Fish Center of New York City.jpeg [Fallback]
-29/196 visual: fish-drill -> FMIB 38921 Water Front of Fulton Fish Market The Wholesale Fresh-Fish Center of New York City.jpeg [Fallback]
-24/196 visual: electric-fishing -> FMIB 38921 Water Front of Fulton Fish Market The Wholesale Fresh-Fish Center of New York City.jpeg [Fallback]
-26/196 visual: eutrophic -> FMIB 38921 Water Front of Fulton Fish Market The Wholesale Fresh-Fish Center of New York City.jpeg [Fallback]
-28/196 visual: fins -> FMIB 38921 Water Front of Fulton Fish Market The Wholesale Fresh-Fish Center of New York City.jpeg [Fallback]
-30/196 visual: fish-family -> FMIB 38921 Water Front of Fulton Fish Market The Wholesale Fresh-Fish Center of New York City.jpeg [Fallback]
-31/196 visual: fish-vision -> FMIB 38921 Water Front of Fulton Fish Market The Wholesale Fresh-Fish Center of New York City.jpeg [Fallback]
-35/196 visual: fly-hook -> FMIB 38921 Water Front of Fulton Fish Market The Wholesale Fresh-Fish Center of New York City.jpeg [Fallback]
-32/196 visual: fisheries-coop -> FMIB 38921 Water Front of Fulton Fish Market The Wholesale Fresh-Fish Center of New York City.jpeg [Fallback]
-37/196 visual: fly-wet -> Favorite fish and fishing (1908) (14595821040).jpg
-33/196 visual: fisheries-fund -> FMIB 38921 Water Front of Fulton Fish Market The Wholesale Fresh-Fish Center of New York City.jpeg [Fallback]
-38/196 visual: food-chain -> FMIB 38921 Water Front of Fulton Fish Market The Wholesale Fresh-Fish Center of New York City.jpeg [Fallback]
-34/196 visual: flooded-land -> FMIB 38921 Water Front of Fulton Fish Market The Wholesale Fresh-Fish Center of New York City.jpeg [Fallback]
-36/196 visual: fly-reel -> FMIB 38921 Water Front of Fulton Fish Market The Wholesale Fresh-Fish Center of New York City.jpeg [Fallback]
-39/196 visual: gag-tool -> FMIB 38921 Water Front of Fulton Fish Market The Wholesale Fresh-Fish Center of New York City.jpeg [Fallback]
-40/196 visual: gills -> FMIB 38921 Water Front of Fulton Fish Market The Wholesale Fresh-Fish Center of New York City.jpeg [Fallback]
-41/196 visual: gravel-pit -> FMIB 38921 Water Front of Fulton Fish Market The Wholesale Fresh-Fish Center of New York City.jpeg [Fallback]
-42/196 visual: gravel-spawn -> FMIB 38921 Water Front of Fulton Fish Market The Wholesale Fresh-Fish Center of New York City.jpeg [Fallback]
-43/196 visual: growth -> FMIB 38921 Water Front of Fulton Fish Market The Wholesale Fresh-Fish Center of New York City.jpeg [Fallback]
-44/196 visual: hearing -> FMIB 38921 Water Front of Fulton Fish Market The Wholesale Fresh-Fish Center of New York City.jpeg [Fallback]
-45/196 visual: heart -> FMIB 38921 Water Front of Fulton Fish Market The Wholesale Fresh-Fish Center of New York City.jpeg [Fallback]
-48/196 visual: humane-sequence -> FMIB 38921 Water Front of Fulton Fish Market The Wholesale Fresh-Fish Center of New York City.jpeg [Fallback]
-49/196 visual: humane-tools -> FMIB 38921 Water Front of Fulton Fish Market The Wholesale Fresh-Fish Center of New York City.jpeg [Fallback]
-46/196 visual: hege -> FMIB 38921 Water Front of Fulton Fish Market The Wholesale Fresh-Fish Center of New York City.jpeg [Fallback]
-50/196 visual: ice-oxygen -> Hole-into-lake-ice saw-down FI-EU 2007-Feb-21 by-RAM.jpg
-47/196 visual: hooks -> FMIB 38921 Water Front of Fulton Fish Market The Wholesale Fresh-Fish Center of New York City.jpeg [Fallback]
-53/196 visual: lake-layers -> FMIB 38921 Water Front of Fulton Fish Market The Wholesale Fresh-Fish Center of New York City.jpeg [Fallback]
-51/196 visual: kingfisher -> FMIB 38921 Water Front of Fulton Fish Market The Wholesale Fresh-Fish Center of New York City.jpeg [Fallback]
-52/196 visual: knot-strength -> FMIB 38921 Water Front of Fulton Fish Market The Wholesale Fresh-Fish Center of New York City.jpeg [Fallback]
-54/196 visual: lamprey -> FMIB 38921 Water Front of Fulton Fish Market The Wholesale Fresh-Fish Center of New York City.jpeg [Fallback]
-55/196 visual: lateral-line -> FMIB 38921 Water Front of Fulton Fish Market The Wholesale Fresh-Fish Center of New York City.jpeg [Fallback]
-56/196 visual: lift-net -> FMIB 38921 Water Front of Fulton Fish Market The Wholesale Fresh-Fish Center of New York City.jpeg [Fallback]
-57/196 visual: light-depth -> FMIB 38921 Water Front of Fulton Fish Market The Wholesale Fresh-Fish Center of New York City.jpeg [Fallback]
-58/196 visual: line-check -> FMIB 38921 Water Front of Fulton Fish Market The Wholesale Fresh-Fish Center of New York City.jpeg [Fallback]
-59/196 visual: line-strength -> FMIB 38921 Water Front of Fulton Fish Market The Wholesale Fresh-Fish Center of New York City.jpeg [Fallback]
-60/196 visual: line-twist -> FMIB 38921 Water Front of Fulton Fish Market The Wholesale Fresh-Fish Center of New York City.jpeg [Fallback]
-61/196 visual: live-bait -> FMIB 38921 Water Front of Fulton Fish Market The Wholesale Fresh-Fish Center of New York City.jpeg [Fallback]
-65/196 visual: measure-fish -> FMIB 38921 Water Front of Fulton Fish Market The Wholesale Fresh-Fish Center of New York City.jpeg [Fallback]
-62/196 visual: loaches -> FMIB 38921 Water Front of Fulton Fish Market The Wholesale Fresh-Fish Center of New York City.jpeg [Fallback]
-67/196 visual: mucus -> FMIB 38921 Water Front of Fulton Fish Market The Wholesale Fresh-Fish Center of New York City.jpeg [Fallback]
-63/196 visual: map-nrw -> FMIB 38921 Water Front of Fulton Fish Market The Wholesale Fresh-Fish Center of New York City.jpeg [Fallback]
-64/196 visual: mauser -> FMIB 38921 Water Front of Fulton Fish Market The Wholesale Fresh-Fish Center of New York City.jpeg [Fallback]
-68/196 visual: multiplier-reel -> FMIB 38921 Water Front of Fulton Fish Market The Wholesale Fresh-Fish Center of New York City.jpeg [Fallback]
-66/196 visual: mouth-positions -> FMIB 38921 Water Front of Fulton Fish Market The Wholesale Fresh-Fish Center of New York City.jpeg [Fallback]
-69/196 visual: night-oxygen -> FMIB 38921 Water Front of Fulton Fish Market The Wholesale Fresh-Fish Center of New York City.jpeg [Fallback]
-72/196 visual: organs -> Students in Africa dissecting a fish.jpg
-70/196 visual: nutrients -> FMIB 38921 Water Front of Fulton Fish Market The Wholesale Fresh-Fish Center of New York City.jpeg [Fallback]
-71/196 visual: officer -> FMIB 38921 Water Front of Fulton Fish Market The Wholesale Fresh-Fish Center of New York City.jpeg [Fallback]
-73/196 visual: osmoregulation -> Goldfish breeds and other aquarium fishes, their care and propagation - a guide to freshwater and marine aquaria, their fauna, flora and management. With 280 explanatory illustrations, printed with (14764011604).jpg
-74/196 visual: overstocking -> FMIB 38921 Water Front of Fulton Fish Market The Wholesale Fresh-Fish Center of New York City.jpeg [Fallback]
-75/196 visual: oxygen-distress -> FMIB 38921 Water Front of Fulton Fish Market The Wholesale Fresh-Fish Center of New York City.jpeg [Fallback]
-77/196 visual: packed-gear -> FMIB 38921 Water Front of Fulton Fish Market The Wholesale Fresh-Fish Center of New York City.jpeg [Fallback]
-76/196 visual: oxygen-needs -> FMIB 38921 Water Front of Fulton Fish Market The Wholesale Fresh-Fish Center of New York City.jpeg [Fallback]
-78/196 visual: parasite -> FMIB 38921 Water Front of Fulton Fish Market The Wholesale Fresh-Fish Center of New York City.jpeg [Fallback]
-80/196 visual: perch-spines -> FMIB 38921 Water Front of Fulton Fish Market The Wholesale Fresh-Fish Center of New York City.jpeg [Fallback]
-79/196 visual: perch-rod -> FMIB 38921 Water Front of Fulton Fish Market The Wholesale Fresh-Fish Center of New York City.jpeg [Fallback]
-81/196 visual: permit -> FMIB 38921 Water Front of Fulton Fish Market The Wholesale Fresh-Fish Center of New York City.jpeg [Fallback]
-82/196 visual: pharyngeal-teeth -> FMIB 38921 Water Front of Fulton Fish Market The Wholesale Fresh-Fish Center of New York City.jpeg [Fallback]
-83/196 visual: photosynthesis -> FMIB 38921 Water Front of Fulton Fish Market The Wholesale Fresh-Fish Center of New York City.jpeg [Fallback]
-84/196 visual: pilker -> FMIB 38921 Water Front of Fulton Fish Market The Wholesale Fresh-Fish Center of New York City.jpeg [Fallback]
-85/196 visual: plant-spawn -> FMIB 38921 Water Front of Fulton Fish Market The Wholesale Fresh-Fish Center of New York City.jpeg [Fallback]
-86/196 visual: plant-zones -> FMIB 38921 Water Front of Fulton Fish Market The Wholesale Fresh-Fish Center of New York City.jpeg [Fallback]
-87/196 visual: pollution -> FMIB 38921 Water Front of Fulton Fish Market The Wholesale Fresh-Fish Center of New York City.jpeg [Fallback]
-88/196 visual: prohibited-methods -> FMIB 38921 Water Front of Fulton Fish Market The Wholesale Fresh-Fish Center of New York City.jpeg [Fallback]
-89/196 visual: protected-insect -> FMIB 38921 Water Front of Fulton Fish Market The Wholesale Fresh-Fish Center of New York City.jpeg [Fallback]
-92/196 visual: reel-types -> FMIB 38921 Water Front of Fulton Fish Market The Wholesale Fresh-Fish Center of New York City.jpeg [Fallback]
-90/196 visual: red-list -> FMIB 38921 Water Front of Fulton Fish Market The Wholesale Fresh-Fish Center of New York City.jpeg [Fallback]
-93/196 visual: reptile -> The Grass Snake - Natrix natrix.jpg
-91/196 visual: reed-zone -> FMIB 38921 Water Front of Fulton Fish Market The Wholesale Fresh-Fish Center of New York City.jpeg [Fallback]
-94/196 visual: reservoir-level -> Low water levels in Beacons Reservoir (geograph 7279403).jpg
-98/196 visual: rod-rings -> FMIB 38921 Water Front of Fulton Fish Market The Wholesale Fresh-Fish Center of New York City.jpeg [Fallback]
-96/196 visual: rod-grips -> FMIB 38921 Water Front of Fulton Fish Market The Wholesale Fresh-Fish Center of New York City.jpeg [Fallback]
-97/196 visual: rod-parts -> FMIB 38921 Water Front of Fulton Fish Market The Wholesale Fresh-Fish Center of New York City.jpeg [Fallback]
-95/196 visual: river-zones -> FMIB 38921 Water Front of Fulton Fish Market The Wholesale Fresh-Fish Center of New York City.jpeg [Fallback]
-100/196 visual: running-lead -> FMIB 38921 Water Front of Fulton Fish Market The Wholesale Fresh-Fish Center of New York City.jpeg [Fallback]
-102/196 visual: shallow-zone -> Aquatic plants of Illinois; an illustrated manual including species submersed, floating, and some of shallow water and muddy shores (1966) (19560864269).jpg
-101/196 visual: scale-age -> FMIB 38921 Water Front of Fulton Fish Market The Wholesale Fresh-Fish Center of New York City.jpeg [Fallback]
-99/196 visual: rules-layer -> FMIB 38921 Water Front of Fulton Fish Market The Wholesale Fresh-Fish Center of New York City.jpeg [Fallback]
-103/196 visual: small-waters -> FMIB 38921 Water Front of Fulton Fish Market The Wholesale Fresh-Fish Center of New York City.jpeg [Fallback]
-105/196 visual: spawn-eggs -> FMIB 38921 Water Front of Fulton Fish Market The Wholesale Fresh-Fish Center of New York City.jpeg [Fallback]
-104/196 visual: spawn-calendar -> FMIB 38921 Water Front of Fulton Fish Market The Wholesale Fresh-Fish Center of New York City.jpeg [Fallback]
-106/196 visual: spinner -> FMIB 38921 Water Front of Fulton Fish Market The Wholesale Fresh-Fish Center of New York City.jpeg [Fallback]
-110/196 visual: stickleback -> Gasterosteus aculeatus (brood care) 01.jpg
-107/196 visual: spinner-spoon -> FMIB 38921 Water Front of Fulton Fish Market The Wholesale Fresh-Fish Center of New York City.jpeg [Fallback]
-109/196 visual: steel-leader -> FMIB 38921 Water Front of Fulton Fish Market The Wholesale Fresh-Fish Center of New York City.jpeg [Fallback]
-108/196 visual: stationary-reel -> FMIB 38921 Water Front of Fulton Fish Market The Wholesale Fresh-Fish Center of New York City.jpeg [Fallback]
-111/196 visual: stocking -> FMIB 38921 Water Front of Fulton Fish Market The Wholesale Fresh-Fish Center of New York City.jpeg [Fallback]
-115/196 visual: temperature-oxygen -> FMIB 38921 Water Front of Fulton Fish Market The Wholesale Fresh-Fish Center of New York City.jpeg [Fallback]
-112/196 visual: stream-bed -> FMIB 38921 Water Front of Fulton Fish Market The Wholesale Fresh-Fish Center of New York City.jpeg [Fallback]
-113/196 visual: swim-bladder -> FMIB 38921 Water Front of Fulton Fish Market The Wholesale Fresh-Fish Center of New York City.jpeg [Fallback]
-114/196 visual: swivel -> FMIB 38921 Water Front of Fulton Fish Market The Wholesale Fresh-Fish Center of New York City.jpeg [Fallback]
-116/196 visual: tench -> Tinca tinca.jpg
-117/196 visual: trout-eggs -> FMIB 38921 Water Front of Fulton Fish Market The Wholesale Fresh-Fish Center of New York City.jpeg [Fallback]
-119/196 visual: water-oxygen -> FMIB 38921 Water Front of Fulton Fish Market The Wholesale Fresh-Fish Center of New York City.jpeg [Fallback]
-118/196 visual: water-lily -> FMIB 38921 Water Front of Fulton Fish Market The Wholesale Fresh-Fish Center of New York City.jpeg [Fallback]
-120/196 visual: wels -> FMIB 38921 Water Front of Fulton Fish Market The Wholesale Fresh-Fish Center of New York City.jpeg [Fallback]
-121/196 visual: wet-hands -> FMIB 38921 Water Front of Fulton Fish Market The Wholesale Fresh-Fish Center of New York City.jpeg [Fallback]
-123/196 visual: wobbler -> FMIB 38921 Water Front of Fulton Fish Market The Wholesale Fresh-Fish Center of New York City.jpeg [Fallback]
-122/196 visual: winter-spawn -> FMIB 38921 Water Front of Fulton Fish Market The Wholesale Fresh-Fish Center of New York City.jpeg [Fallback]
-125/196 visual: zander-spawn -> FMIB 38921 Water Front of Fulton Fish Market The Wholesale Fresh-Fish Center of New York City.jpeg [Fallback]
-128/196 species: Lachs -> Salmo salar.jpg
-124/196 visual: yolk-sac -> FMIB 38921 Water Front of Fulton Fish Market The Wholesale Fresh-Fish Center of New York City.jpeg [Fallback]
-127/196 species: Meerforelle -> Wst meerforelle stoer 001.jpg [Fallback]
-file:///home/runner/work/mrplaymeon-png.github.io/mrplaymeon-png.github.io/tools/build-v7-real-images.mjs:183
-  throw new Error(`${task.kind}/${task.key}: kein Foto gefunden (${lastError?.message || 'ohne Treffer'})`);
-        ^
-
-Error: species/Bachsaibling: kein Foto gefunden (429 Your bot is making too many requests. Please reduce your request rate or contact bot-traffic@wikimedia.org (f263c81))
-    at resolvePhoto (file:///home/runner/work/mrplaymeon-png.github.io/mrplaymeon-png.github.io/tools/build-v7-real-images.mjs:183:9)
-    at async file:///home/runner/work/mrplaymeon-png.github.io/mrplaymeon-png.github.io/tools/build-v7-real-images.mjs:254:17
-    at async run (file:///home/runner/work/mrplaymeon-png.github.io/mrplaymeon-png.github.io/tools/build-v7-real-images.mjs:244:24)
-    at async Promise.all (index 1)
-    at async mapLimit (file:///home/runner/work/mrplaymeon-png.github.io/mrplaymeon-png.github.io/tools/build-v7-real-images.mjs:248:3)
-    at async file:///home/runner/work/mrplaymeon-png.github.io/mrplaymeon-png.github.io/tools/build-v7-real-images.mjs:253:18
-
-Node.js v20.20.2
+6/113 Stilts fishermen Sri Lanka 02.jpg (196 KB)
+7/113 BARBEL (PSF).png (76 KB)
+8/113 Magpie goose.jpg (147 KB)
+10/113 Balantiocheilos melanopterus - Karlsruhe Zoo 02 (cropped).jpg (95 KB)
+9/113 Rhodeus amarus 2008 G1.jpg (91 KB)
+11/113 Trüsche Walchensee.jpg (445 KB)
+12/113 Argulus foliaceus 2.jpg (25 KB)
+14/113 Fish hooks.jpg (31 KB)
+13/113 Cyprinus carpio 2008 G1 (cropped).jpg (95 KB)
+16/113 Angler at devizes england arp.jpg (278 KB)
+15/113 Hydropisie.jpg (46 KB)
+17/113 Cornjum, Martenastate 010.jpg (296 KB)
+18/113 Wiki ostrich.jpg (69 KB)
+19/113 Anguilla anguilla.jpg (43 KB)
+20/113 Barsche im See (Jungfische).jpg (137 KB)
+21/113 Shrimp hatchery.jpg (221 KB)
+22/113 Jensens Crossing fish survey Dec07 012.jpg (323 KB)
+23/113 Wildlife at Maasai Mara (Lion).jpg (415 KB)
+24/113 River algae Sichuan.jpg (411 KB)
+25/113 Astronotus ocellatus - closeup (aka).jpg (156 KB)
+26/113 Horton Creek, Arizona fishing regulations.jpg (293 KB)
+27/113 Paraná River Floodplain.jpg (179 KB)
+28/113 Flyfishing.jpg (263 KB)
+29/113 Lake Idro Italy 2005-08-16.jpg (53 KB)
+30/113 Gills (esox).jpg (148 KB)
+31/113 Tullingeåsen 2012.jpg (158 KB)
+32/113 Brown Trout (Salmo trutta) (53678765394).jpg (55 KB)
+34/113 Herringjuvenilekils.jpg (142 KB)
+33/113 Zebrafish embryos.png (366 KB)
+35/113 Ice fisher catching a fish NB.jpg (134 KB)
+36/113 Alcedo atthis -England-8 (cropped).jpg (195 KB)
+37/113 Angeln zubehoer haken.jpg (126 KB)
+38/113 Sorgenti del Pescara 21 (RaBoe).jpg (114 KB)
+40/113 Vissersboten bij volle maan, RP-P-1999-541, Detail.jpg (199 KB)
+39/113 Lateral line 01.JPG (474 KB)
+41/113 Great Barrier Reef snorkeling 18.jpg (254 KB)
+43/113 Barbatula barbatula.jpg (143 KB)
+42/113 Bait (5716733900).jpg (200 KB)
+44/113 Paranephrops.jpg (238 KB)
+45/113 Fish kill pollution.jpg (164 KB)
+47/113 Taking Water Samples from the Fish Farm.jpg (199 KB)
+46/113 Estatua Pepe el Lobero 01.jpg (628 KB)
+48/113 VHS.png (171 KB)
+49/113 Fishing Rods.jpg (274 KB)
+50/113 Rafajigging.jpg (119 KB)
+51/113 Garbage floating around in Circular Quay.jpg (265 KB)
+52/113 Le braconnier par Frédéric Rouge.jpg (259 KB)
+53/113 Red grasshawk (Neurothemis fluctuans) male Phuket 2.jpg (92 KB)
+54/113 Phragmites australis1.jpg (193 KB)
+55/113 Grass snake (Natrix natrix) Pieniny.jpg (172 KB)
+56/113 Язовир Кърджали Нулата.jpg (178 KB)
+57/113 Цврцка 2 PPRP001.jpg (271 KB)
+59/113 Littoral Zones.jpg (35 KB)
+58/113 Fish scales.jpg (277 KB)
+61/113 Spinner lure no feather ora.png (16 KB)
+60/113 Caviar spoons.jpg (104 KB)
+62/113 Dreistachliger Stichling unterwasser.jpg (132 KB)
+63/113 BTC Stocking Site in California off Moabi Park exit about one mile from the border on I40 (2).JPG (154 KB)
+64/113 PSM V20 D769 Longitudonal section of a bleak.jpg (100 KB)
+65/113 Angeln zubehoer wirbel 01.jpg (371 KB)
+66/113 Tinca tinca Natural History Museum University of Pisa.jpg (120 KB)
+67/113 2016 Kwiat grzybieni białych 2.jpg (169 KB)
+68/113 Silurus glanis 02.jpg (120 KB)
+69/113 Sander lucioperca 1.jpg (122 KB)
+70/113 Wst meerforelle stoer 001.jpg (297 KB)
+71/113 Wst atlantischer lachs stoer 001.jpg (306 KB)
+72/113 Close up of rainbow trout fish underwater oncorhynchus mykiss.jpg (128 KB)
+73/113 Brook trout in water.jpg (158 KB)
+74/113 Thymallus thymallus Pénzes pér.jpg (23 KB)
+75/113 Esox lucius ZOO 1.jpg (250 KB)
+76/113 Vimba vimba.jpg (301 KB)
+77/113 Rutilus rutilus by Algirdas cropped.jpg (209 KB)
+78/113 LeucaspiusDelineatusMale.JPG (164 KB)
+79/113 Leuciscus leuciscus.jpg (223 KB)
+80/113 Squalius cephalus Prague Vltava 2.jpg (196 KB)
+81/113 LeuciscusIdusWindeIde56cm 21-4-2009 16-46-58.JPG (128 KB)
+82/113 Alburnoides bipunctatus sujtásos küsz.jpg (36 KB)
+83/113 Vairon WIKI800px (cropped).JPG (360 KB)
+84/113 Scardinius erythropthalmus 2009 G1.jpg (90 KB)
+85/113 Chondrostoma nasus (aka).jpg (78 KB)
+86/113 Ophieleotris aporos 2.jpg (157 KB)
+87/113 Barbel.jpg (128 KB)
+88/113 AlburnusAlburnus1.JPG (116 KB)
+90/113 Carp bream1.jpg (125 KB)
+91/113 Alosa alosa.jpg (191 KB)
+92/113 CarassiusCarassius8.JPG (200 KB)
+93/113 Carassius gibelio 2008 G1.jpg (92 KB)
+89/113 Blicca bjoerkna underwater.jpg (142 KB)
+94/113 Misgurnus fossilis Hungary.jpg (35 KB)
+96/113 NeogobiusKessleriSide 7-9-2009 10-13-45 AM.JPG (144 KB)
+95/113 Steinbeisser 001.jpg (103 KB)
+97/113 Gymnocephalus cernuus Pärnu River Estonia 2010-01-06.jpg (139 KB)
+98/113 Cottus Pesh.JPG (277 KB)
+99/113 Pungitius pungitius.jpg (95 KB)
+100/113 Aspius aspius.jpg (181 KB)
+101/113 Scomber scombrus 217326414.jpg (312 KB)
+102/113 Platichthys flesus 1.jpg (109 KB)
+103/113 Atlantic Cod, Atlantischer Kabeljau (Gadus morhua).jpg (113 KB)
+104/113 Sik, Iduns kokbok.jpg (72 KB)
+105/113 Astacus astacus male.jpg (220 KB)
+106/113 Kamberkrebs spiny-cheek crayfish Orconectes limosus male.jpg (149 KB)
+108/113 Carpe miroir de 17kg.jpg (47 KB)
+107/113 Villa of the Nile Mosaic fishermen.jpg (230 KB)
+110/113 Wikisurf.jpg (19 KB)
+109/113 Spinnerbait.jpg (102 KB)
+111/113 Freshwater fishing floats.jpg (124 KB)
+112/113 Angeln zubehoer grundblei 01.jpg (504 KB)
+113/113 FraserRiverSalmonFishing.jpg (185 KB)
+{
+  "status": "built",
+  "version": "7.1.0",
+  "questions": 180,
+  "species": 49,
+  "practice": 10,
+  "components": 12,
+  "assignments": 196,
+  "uniquePhotos": 113,
+  "photoMB": "19.8",
+  "fallbacks": 22
+}
 --- server_log_tail ---
-Kein Server-Log vorhanden.
+127.0.0.1 - - [26/Jul/2026 15:48:41] "GET /v7/ HTTP/1.1" 200 -
+127.0.0.1 - - [26/Jul/2026 15:48:42] "GET /v7/ HTTP/1.1" 200 -
+127.0.0.1 - - [26/Jul/2026 15:48:42] "GET /v7/real-images.css?v=7.1.0 HTTP/1.1" 200 -
+127.0.0.1 - - [26/Jul/2026 15:48:42] "GET /v7/real-images.js?v=7.1.0 HTTP/1.1" 200 -
 --- local_test ---
-Kein lokaler Testbericht vorhanden.
---- live_test ---
+{
+  "status": "failed",
+  "url": "http://127.0.0.1:4173/v7/",
+  "viewport": "390x844",
+  "title": "PetriCoach NRW – Bebilderter Intensivtrainer",
+  "homeVersion": "Offline · Version 7.1 · 180 Fragen · echte Fotos",
+  "error": "Error: Version-7-Kennzeichnung fehlt\n    at check (file:///home/runner/work/mrplaymeon-png.github.io/mrplaymeon-png.github.io/tools/test-v7.mjs:30:25)\n    at file:///home/runner/work/mrplaymeon-png.github.io/mrplaymeon-png.github.io/tools/test-v7.mjs:50:3\n    at runNextTicks (node:internal/process/task_queues:60:5)\n    at process.processImmediate (node:internal/timers:454:9)\n    at process.callbackTrampoline (node:internal/async_hooks:130:17)",
+  "dialogs": [],
+  "pageErrors": [],
+  "failedRequests": []
+}--- live_test ---
 Kein Live-Testbericht vorhanden.
