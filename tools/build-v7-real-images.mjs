@@ -360,12 +360,12 @@ const css = `
 .bottom{z-index:2147483647!important;isolation:isolate;pointer-events:auto!important;transform:translateX(-50%) translateZ(0)!important}
 .bottom button{position:relative;z-index:2;pointer-events:auto!important;touch-action:manipulation}
 main{position:relative;z-index:0}
-.real-photo-card{position:relative;z-index:0;margin:12px 0 14px;background:#071c21;border:1px solid #2a5963;border-radius:16px;overflow:hidden;box-shadow:0 10px 25px rgba(0,0,0,.18)}
+.real-photo-card{position:relative;z-index:0;pointer-events:none;margin:12px 0 14px;background:#071c21;border:1px solid #2a5963;border-radius:16px;overflow:hidden;box-shadow:0 10px 25px rgba(0,0,0,.18)}
 .real-photo-card img{display:block;pointer-events:none;width:100%;height:auto;max-height:360px;object-fit:cover;background:#09252c}
 .real-photo-card.compact img{height:150px;object-fit:cover}
-.real-photo-caption{display:flex;gap:8px;justify-content:space-between;align-items:flex-start;padding:9px 11px;color:#9cb9bf;font-size:.68rem;line-height:1.35}
+.real-photo-caption{pointer-events:auto;display:flex;gap:8px;justify-content:space-between;align-items:flex-start;padding:9px 11px;color:#9cb9bf;font-size:.68rem;line-height:1.35}
 .real-photo-caption strong{display:block;color:#d8f7f9;font-size:.72rem;margin-bottom:2px}
-.real-photo-caption a{color:#74dce5;text-decoration:none;white-space:nowrap}
+.real-photo-caption a{pointer-events:auto;color:#74dce5;text-decoration:none;white-space:nowrap}
 .real-photo-badge{display:inline-flex;align-items:center;gap:5px;background:#12414a;color:#aef4f7;border-radius:999px;padding:5px 9px;font-size:.67rem;font-weight:800;margin-bottom:8px}
 .photo-cache-status{position:fixed;left:50%;bottom:96px;transform:translateX(-50%);z-index:60;max-width:calc(100vw - 30px);background:#10333b;border:1px solid #2d6974;color:#e9feff;padding:10px 14px;border-radius:999px;font-size:.76rem;font-weight:750;box-shadow:0 10px 30px rgba(0,0,0,.3)}
 .species-card .real-photo-card{margin-top:0}.species-card .real-photo-card img{height:135px;object-fit:cover}.species-card>.real-photo-card+svg{display:none}
