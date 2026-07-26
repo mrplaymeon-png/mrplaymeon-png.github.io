@@ -88,6 +88,7 @@ try {
   report.firstSpeciesPhoto = await loadedPhoto(page.locator('.species-card .real-photo-card img').first(), 'Erstes Artenfoto wurde nicht geladen');
 
   await page.waitForFunction(() => document.querySelector('.bottom')?.parentElement === document.body, null, { timeout: 10000 });
+  await page.waitForTimeout(700);
   const practiceNav = page.locator('body > .bottom [data-nav="practice"]');
   const navigationHitTest = await practiceNav.evaluate(element => {
     const rect = element.getBoundingClientRect();
@@ -96,7 +97,13 @@ try {
   });
   report.navigationHitTest = navigationHitTest;
   check(navigationHitTest, 'Untere Navigation wird von Seiteninhalt überdeckt');
-  await practiceNav.click();
+  const navBox = await practiceNav.boundingBox();
+  check(navBox && navBox.width > 20 && navBox.height > 20, 'Praxis-Schaltfläche besitzt keine gültige Touchfläche');
+  report.practiceTouchPoint = {
+    x: Math.round(navBox.x + navBox.width / 2),
+    y: Math.round(navBox.y + navBox.height / 2)
+  };
+  await page.touchscreen.tap(navBox.x + navBox.width / 2, navBox.y + navBox.height / 2);
   await page.waitForSelector('#practiceView.active .practice-card', { timeout: 10000 });
   await page.waitForFunction(() => document.querySelectorAll('.practice-card .real-photo-card').length === 10, null, { timeout: 20000 });
   report.practiceCards = await page.locator('.practice-card').count();
@@ -139,7 +146,4 @@ fs.writeFileSync(output, JSON.stringify(report, null, 2));
 await browser.close();
 console.log(JSON.stringify(report, null, 2));
 
-// Startet nach der finalen Fotozuordnungs-Reparatur den vollständigen V7-Build.
-// Neuaufbau nach der Reparatur der Fotoebene über der unteren Navigation.
-// Neuaufbau nach vollständig klickdurchlässigen Fotokarten.
-// Neuaufbau mit der unteren Navigation direkt auf der obersten body-Ebene.
+// Mobiltest nutzt eine echte Touchscreen-Berührung auf dem fixierten unteren Navigationsbutton.
