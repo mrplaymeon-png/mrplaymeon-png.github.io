@@ -1,0 +1,209 @@
+name: PetriCoach V6 zuverlässig bauen
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'release-v6/gz/**'
+      - '.github/workflows/build-v6.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Repository laden
+        uses: actions/checkout@v4
+
+      - name: Alle übertragenen Teile exakt prüfen
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat > /tmp/parts.sha256 <<'EOF'
+          403eca6beb1c96e2041b0b08952f1fd4f7d6ffb7df6ffa130cfea684de0aaf5f  release-v6/gz/part-000.txt
+          5aee3d90373dda40f8b473c274910624a1666fbe95e1f05d81b5b6b0912f32ef  release-v6/gz/part-001.txt
+          0808a3daa7197f6e549c15223a5eabbfa10b2ad08d23f218a936b92c9c22523e  release-v6/gz/part-002.txt
+          81cce79bd5b8ea38859a86ab34d8e260dcaf22aa49605f278b8dc5d026e91edc  release-v6/gz/part-003.txt
+          3d709b34383a693817d985dd6c432d4c4a549f40a4dc7aee2f26997fcffd574e  release-v6/gz/part-004.txt
+          EOF
+          sha256sum -c /tmp/parts.sha256
+
+      - name: Normale HTML-App serverseitig rekonstruieren
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat release-v6/gz/part-000.txt release-v6/gz/part-001.txt release-v6/gz/part-002.txt release-v6/gz/part-003.txt release-v6/gz/part-004.txt \
+            | tr -d '\r\n\t ' | base64 --decode > /tmp/petricoach-v6.gz
+          echo 'b66fc75ae06a67f200b77191079971abc275764d324533a4e474c8e8de73d50f  /tmp/petricoach-v6.gz' | sha256sum -c -
+          gzip -t /tmp/petricoach-v6.gz
+          gzip -dc /tmp/petricoach-v6.gz > /tmp/petricoach-source.html
+          echo 'bbc1b5016dfeb7b827a5e38c23db13c0560fb615c29923517156dba7f52b9e5a  /tmp/petricoach-source.html' | sha256sum -c -
+
+      - name: iPhone-PWA erzeugen
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p v6
+          python3 - <<'PY'
+          from pathlib import Path
+          import hashlib
+
+          source = Path('/tmp/petricoach-source.html')
+          html = source.read_text(encoding='utf-8')
+          assert 'PetriCoach NRW' in html
+          assert '180 Fragen' in html
+          assert 'DecompressionStream' not in html
+          assert 'pako' not in html.lower()
+
+          html = html.replace('Version 3.1', 'Version 6.0')
+
+          head = '''
+          <meta name="theme-color" content="#073b46">
+          <meta name="apple-mobile-web-app-capable" content="yes">
+          <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+          <meta name="apple-mobile-web-app-title" content="PetriCoach NRW">
+          <link rel="manifest" href="manifest.webmanifest">
+          <link rel="icon" href="icon.svg" type="image/svg+xml">
+          <link rel="apple-touch-icon" href="icon.svg">
+          '''.strip()
+          html = html.replace('</head>', head + '\n</head>', 1)
+
+          migration = r'''
+          <script>
+          (() => {
+            const ROOT_SCOPE = location.origin + '/';
+            async function startOfflineApp() {
+              if (!('serviceWorker' in navigator) || location.protocol !== 'https:') return;
+              try {
+                const regs = await navigator.serviceWorker.getRegistrations();
+                await Promise.all(regs.filter(reg => reg.scope === ROOT_SCOPE).map(reg => reg.unregister()));
+                await navigator.serviceWorker.register('./sw.js?v=6.0.0', { scope: './', updateViaCache: 'none' });
+              } catch (error) {
+                console.warn('Offline-Modus konnte nicht vollständig eingerichtet werden:', error);
+              }
+            }
+            window.addEventListener('load', startOfflineApp, { once: true });
+          })();
+          </script>
+          '''.strip()
+          html = html.replace('</body>', migration + '\n</body>', 1)
+          Path('v6/index.html').write_text(html, encoding='utf-8')
+
+          report = [
+              'status=ok',
+              f'source_sha256={hashlib.sha256(source.read_bytes()).hexdigest()}',
+              f'output_sha256={hashlib.sha256(html.encode("utf-8")).hexdigest()}',
+              f'output_bytes={len(html.encode("utf-8"))}',
+              'questions=180',
+              'browser_decompression=no',
+              'utf8=ok',
+              'pwa_scope=/v6/',
+          ]
+          Path('v6/build-status.txt').write_text('\n'.join(report) + '\n', encoding='utf-8')
+          PY
+
+          cp icon.svg v6/icon.svg
+
+          cat > v6/manifest.webmanifest <<'EOF'
+          {
+            "name": "PetriCoach NRW – Angelscheintrainer",
+            "short_name": "PetriCoach",
+            "description": "Bebilderter Intensivtrainer für die Fischerprüfung in Nordrhein-Westfalen.",
+            "lang": "de-DE",
+            "start_url": "./",
+            "scope": "./",
+            "display": "standalone",
+            "orientation": "portrait-primary",
+            "background_color": "#06191e",
+            "theme_color": "#073b46",
+            "icons": [
+              {
+                "src": "icon.svg",
+                "sizes": "any",
+                "type": "image/svg+xml",
+                "purpose": "any maskable"
+              }
+            ]
+          }
+          EOF
+
+          cat > v6/sw.js <<'EOF'
+          const CACHE = 'petricoach-nrw-v6-0-0';
+          const CORE = ['./', './index.html', './manifest.webmanifest', './icon.svg'];
+
+          self.addEventListener('install', event => {
+            event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(CORE)).then(() => self.skipWaiting()));
+          });
+
+          self.addEventListener('activate', event => {
+            event.waitUntil(
+              caches.keys()
+                .then(keys => Promise.all(keys.filter(key => key.startsWith('petricoach-nrw-v6-') && key !== CACHE).map(key => caches.delete(key))))
+                .then(() => self.clients.claim())
+            );
+          });
+
+          self.addEventListener('fetch', event => {
+            if (event.request.method !== 'GET') return;
+            if (event.request.mode === 'navigate') {
+              event.respondWith(
+                fetch(event.request)
+                  .then(response => {
+                    const copy = response.clone();
+                    caches.open(CACHE).then(cache => cache.put('./index.html', copy));
+                    return response;
+                  })
+                  .catch(() => caches.match('./index.html').then(cached => cached || caches.match('./')))
+              );
+              return;
+            }
+            event.respondWith(
+              caches.match(event.request).then(cached => cached || fetch(event.request).then(response => {
+                if (response && response.ok) {
+                  const copy = response.clone();
+                  caches.open(CACHE).then(cache => cache.put(event.request, copy));
+                }
+                return response;
+              }))
+            );
+          });
+          EOF
+
+      - name: Fertige Ausgabe streng prüfen
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -s v6/index.html
+          test -s v6/sw.js
+          test -s v6/manifest.webmanifest
+          grep -q '180 Fragen' v6/index.html
+          grep -q 'Version 6.0' v6/index.html
+          grep -q 'manifest.webmanifest' v6/index.html
+          grep -q "serviceWorker.register('./sw.js?v=6.0.0'" v6/index.html
+          ! grep -q 'DecompressionStream' v6/index.html
+          ! grep -qi 'pako' v6/index.html
+          python3 - <<'PY'
+          from pathlib import Path
+          text = Path('v6/index.html').read_text(encoding='utf-8')
+          assert text.count('<html') == 1
+          assert text.count('</html>') == 1
+          assert text.count('<script') >= 2
+          print('HTML- und UTF-8-Prüfung erfolgreich')
+          PY
+
+      - name: Geprüfte App veröffentlichen
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add v6/index.html v6/icon.svg v6/manifest.webmanifest v6/sw.js v6/build-status.txt
+          if git diff --cached --quiet; then
+            echo 'Die geprüfte Version ist bereits veröffentlicht.'
+            exit 0
+          fi
+          git commit -m 'PetriCoach V6 geprüft und iPhone-kompatibel veröffentlichen'
+          git push
