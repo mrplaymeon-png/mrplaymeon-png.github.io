@@ -1,0 +1,101 @@
+import fs from 'node:fs';
+import { chromium } from 'playwright';
+
+const url = process.env.TEST_URL || 'http://127.0.0.1:4173/v7/';
+const output = process.env.TEST_REPORT || 'v7/test-report.json';
+const screenshot = process.env.TEST_SCREENSHOT || 'v7/mobile-test.png';
+const browser = await chromium.launch({ headless: true });
+const context = await browser.newContext({
+  viewport: { width: 390, height: 844 },
+  deviceScaleFactor: 2,
+  isMobile: true,
+  hasTouch: true,
+  locale: 'de-DE'
+});
+const page = await context.newPage();
+const pageErrors = [];
+const failedRequests = [];
+page.on('pageerror', error => pageErrors.push(String(error)));
+page.on('requestfailed', request => {
+  const target = request.url();
+  if (target.includes('/v7/')) failedRequests.push(`${target}: ${request.failure()?.errorText || 'fehlgeschlagen'}`);
+});
+
+function check(condition, message) {
+  if (!condition) throw new Error(message);
+}
+
+const report = { status: 'running', url, viewport: '390x844' };
+try {
+  await page.goto(url, { waitUntil: 'networkidle', timeout: 120000 });
+  await page.waitForSelector('#homeView.active', { timeout: 20000 });
+  report.title = await page.title();
+  report.homeVersion = await page.locator('#homeView .pill').innerText();
+  check(report.homeVersion.includes('Version 7.0'), 'Version-7-Kennzeichnung fehlt');
+  check(report.homeVersion.includes('echte Fotos'), 'Hinweis auf echte Fotos fehlt');
+
+  await page.locator('[data-start="guided"]').click();
+  await page.waitForSelector('#quizView.active .answer', { timeout: 10000 });
+  report.question = await page.locator('#questionText').innerText();
+  const answerCount = await page.locator('.answer').count();
+  check(answerCount === 3, `Erwartet wurden 3 Antworten, gefunden: ${answerCount}`);
+  for (let i = 0; i < answerCount; i++) {
+    if (await page.locator('.learning-visual').count()) break;
+    const button = page.locator('.answer').nth(i);
+    if (await button.isEnabled()) {
+      await button.click();
+      await page.waitForTimeout(250);
+    }
+  }
+  await page.waitForSelector('.learning-visual .real-photo-card img', { timeout: 15000 });
+  report.questionPhoto = await page.locator('.learning-visual .real-photo-card img').evaluate(img => ({ src: img.src, width: img.naturalWidth, height: img.naturalHeight, alt: img.alt }));
+  check(report.questionPhoto.width > 100, 'Echtes Foto zur richtigen Lösung wurde nicht geladen');
+  check(await page.locator('.learning-visual svg').count() > 0, 'Erklärende Lernskizze wurde versehentlich entfernt');
+
+  await page.locator('#quitQuiz').click();
+  await page.waitForSelector('#homeView.active', { timeout: 10000 });
+  await page.locator('[data-nav="species"]').first().click();
+  await page.waitForSelector('#speciesView.active .species-card', { timeout: 10000 });
+  await page.waitForTimeout(500);
+  report.speciesCards = await page.locator('.species-card').count();
+  report.speciesPhotos = await page.locator('.species-card .real-photo-card').count();
+  check(report.speciesCards === 49, `Es wurden nicht 49 Artenkarten gefunden: ${report.speciesCards}`);
+  check(report.speciesPhotos === 49, `Nicht jede Art hat ein echtes Foto: ${report.speciesPhotos}/49`);
+  report.firstSpeciesPhoto = await page.locator('.species-card .real-photo-card img').first().evaluate(img => ({ src: img.src, width: img.naturalWidth, alt: img.alt }));
+  check(report.firstSpeciesPhoto.width > 100, 'Erstes Artenfoto wurde nicht geladen');
+
+  await page.locator('[data-nav="practice"]').first().click();
+  await page.waitForSelector('#practiceView.active .practice-card', { timeout: 10000 });
+  await page.waitForTimeout(500);
+  report.practiceCards = await page.locator('.practice-card').count();
+  report.practicePhotos = await page.locator('.practice-card .real-photo-card').count();
+  check(report.practiceCards === 10, `Es wurden nicht 10 Geräteaufgaben gefunden: ${report.practiceCards}`);
+  check(report.practicePhotos === 10, `Nicht jede Geräteaufgabe hat ein echtes Foto: ${report.practicePhotos}/10`);
+
+  await page.locator('[data-practice-tab="components"]').click();
+  await page.waitForSelector('#componentList:not(.hidden) .component-card', { timeout: 10000 });
+  await page.waitForTimeout(500);
+  report.componentCards = await page.locator('.component-card').count();
+  report.componentPhotos = await page.locator('.component-card .real-photo-card').count();
+  check(report.componentCards === 12, `Es wurden nicht 12 Bauteile gefunden: ${report.componentCards}`);
+  check(report.componentPhotos === 12, `Nicht jedes Bauteil hat ein echtes Foto: ${report.componentPhotos}/12`);
+
+  report.pageErrors = pageErrors;
+  report.failedRequests = failedRequests;
+  check(pageErrors.length === 0, `JavaScript-Fehler: ${pageErrors.join(' | ')}`);
+  check(failedRequests.length === 0, `Lokale App-Dateien konnten nicht geladen werden: ${failedRequests.join(' | ')}`);
+  report.status = 'ok';
+  await page.screenshot({ path: screenshot, fullPage: true });
+} catch (error) {
+  report.status = 'failed';
+  report.error = error.stack || String(error);
+  report.pageErrors = pageErrors;
+  report.failedRequests = failedRequests;
+  try { await page.screenshot({ path: screenshot, fullPage: true }); } catch {}
+  fs.writeFileSync(output, JSON.stringify(report, null, 2));
+  await browser.close();
+  throw error;
+}
+fs.writeFileSync(output, JSON.stringify(report, null, 2));
+await browser.close();
+console.log(JSON.stringify(report, null, 2));
