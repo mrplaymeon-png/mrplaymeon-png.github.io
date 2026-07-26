@@ -1,0 +1,45 @@
+name: PetriCoach V7 Metadaten extrahieren
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/extract-v7-metadata.yml'
+      - 'v6/index.html'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  extract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Metadaten ermitteln
+        run: |
+          mkdir -p v7
+          node <<'NODE'
+          const fs = require('fs');
+          const html = fs.readFileSync('v6/index.html','utf8');
+          const names = [...html.matchAll(/\bconst\s+([A-Z][A-Z0-9_]*)\s*=/g)].map(m=>m[1]);
+          const visuals = [...new Set([...html.matchAll(/"visual":"([^"]+)"/g)].map(m=>m[1]))].sort();
+          const cats = [...new Set([...html.matchAll(/"category":"([^"]+)"/g)].map(m=>m[1]))].sort();
+          const report = [
+            `bytes=${Buffer.byteLength(html)}`,
+            `const_names=${names.join(',')}`,
+            `visual_count=${visuals.length}`,
+            ...visuals.map(v=>`visual=${v}`),
+            `category_count=${cats.length}`,
+            ...cats.map(v=>`category=${v}`)
+          ].join('\n')+'\n';
+          fs.writeFileSync('v7/meta.txt', report);
+          NODE
+      - name: Speichern
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add v7/meta.txt
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m 'V7 Metadaten extrahieren'
+          git push
