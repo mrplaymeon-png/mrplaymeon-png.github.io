@@ -30,6 +30,7 @@ jobs:
             if (count !== 1) throw new Error(`${label}: erwartet 1 Treffer, gefunden ${count}`);
             source = source.replace(before, after);
           }
+          const lines = (...items) => items.join('\n');
 
           replaceOnce(
             "addGroup(VISUAL_TITLE, 'Barbel (anatomy)', ['barbels']);",
@@ -49,82 +50,72 @@ jobs:
             'Artenfotos nach wissenschaftlichem Namen'
           );
 
-          const oldBlock = `  const image = {
-    downloadUrl:imageUrl,
-    source:filePage,
-    title:String(metadata?.page?.title || entry.wiki.imageName).replace(/^File:/i,''),
-    author:short(ext.Artist?.value || ext.Credit?.value || 'Urheber siehe Quelldatei'),
-    license:short(ext.LicenseShortName?.value || ext.UsageTerms?.value || 'Lizenz siehe Quelldatei', 90),
-    licenseUrl:ext.LicenseUrl?.value || filePage,
-    description:short(ext.ImageDescription?.value || ext.ObjectName?.value || entry.wiki.resolvedTitle, 180),
-    wikiPage:entry.wiki.wikiPage,
-    fallback:entry.wiki.fallback,
-    selectedTitle:entry.wiki.selectedTitle
-  };
-  entry.image = image;
-  selectedByUrl.set(image.downloadUrl, image);`;
-
-          const newBlock = `  let image = selectedByUrl.get(imageUrl);
-  if (!image) {
-    image = {
-      downloadUrl:imageUrl,
-      source:filePage,
-      title:String(metadata?.page?.title || entry.wiki.imageName).replace(/^File:/i,''),
-      author:short(ext.Artist?.value || ext.Credit?.value || 'Urheber siehe Quelldatei'),
-      license:short(ext.LicenseShortName?.value || ext.UsageTerms?.value || 'Lizenz siehe Quelldatei', 90),
-      licenseUrl:ext.LicenseUrl?.value || filePage,
-      description:short(ext.ImageDescription?.value || ext.ObjectName?.value || entry.wiki.resolvedTitle, 180),
-      wikiPage:entry.wiki.wikiPage,
-      fallback:entry.wiki.fallback,
-      selectedTitle:entry.wiki.selectedTitle
-    };
-    selectedByUrl.set(image.downloadUrl, image);
-  }
-  entry.image = image;`;
+          const oldBlock = lines(
+            '  const image = {',
+            '    downloadUrl:imageUrl,',
+            '    source:filePage,',
+            "    title:String(metadata?.page?.title || entry.wiki.imageName).replace(/^File:/i,''),",
+            "    author:short(ext.Artist?.value || ext.Credit?.value || 'Urheber siehe Quelldatei'),",
+            "    license:short(ext.LicenseShortName?.value || ext.UsageTerms?.value || 'Lizenz siehe Quelldatei', 90),",
+            '    licenseUrl:ext.LicenseUrl?.value || filePage,',
+            '    description:short(ext.ImageDescription?.value || ext.ObjectName?.value || entry.wiki.resolvedTitle, 180),',
+            '    wikiPage:entry.wiki.wikiPage,',
+            '    fallback:entry.wiki.fallback,',
+            '    selectedTitle:entry.wiki.selectedTitle',
+            '  };',
+            '  entry.image = image;',
+            '  selectedByUrl.set(image.downloadUrl, image);'
+          );
+          const newBlock = lines(
+            '  let image = selectedByUrl.get(imageUrl);',
+            '  if (!image) {',
+            '    image = {',
+            '      downloadUrl:imageUrl,',
+            '      source:filePage,',
+            "      title:String(metadata?.page?.title || entry.wiki.imageName).replace(/^File:/i,''),",
+            "      author:short(ext.Artist?.value || ext.Credit?.value || 'Urheber siehe Quelldatei'),",
+            "      license:short(ext.LicenseShortName?.value || ext.UsageTerms?.value || 'Lizenz siehe Quelldatei', 90),",
+            '      licenseUrl:ext.LicenseUrl?.value || filePage,',
+            '      description:short(ext.ImageDescription?.value || ext.ObjectName?.value || entry.wiki.resolvedTitle, 180),',
+            '      wikiPage:entry.wiki.wikiPage,',
+            '      fallback:entry.wiki.fallback,',
+            '      selectedTitle:entry.wiki.selectedTitle',
+            '    };',
+            '    selectedByUrl.set(image.downloadUrl, image);',
+            '  }',
+            '  entry.image = image;'
+          );
           replaceOnce(oldBlock, newBlock, 'Geteilte Fotoobjekte');
 
           replaceOnce(
-            `});
-
-const byKind = { visual:{}, species:{}, practice:{}, component:{} };`,
-            `});
-
-const missingAssignmentFiles = chosen.filter(entry => !entry.image?.file);
-if (missingAssignmentFiles.length) {
-  throw new Error('Foto-Dateireferenz fehlt bei: ' + missingAssignmentFiles.map(entry => entry.task.kind + '/' + entry.task.key).join(', '));
-}
-
-const byKind = { visual:{}, species:{}, practice:{}, component:{} };`,
+            lines('});', '', 'const byKind = { visual:{}, species:{}, practice:{}, component:{} };'),
+            lines(
+              '});',
+              '',
+              'const missingAssignmentFiles = chosen.filter(entry => !entry.image?.file);',
+              'if (missingAssignmentFiles.length) {',
+              "  throw new Error('Foto-Dateireferenz fehlt bei: ' + missingAssignmentFiles.map(entry => entry.task.kind + '/' + entry.task.key).join(', '));",
+              '}',
+              '',
+              'const byKind = { visual:{}, species:{}, practice:{}, component:{} };'
+            ),
             'Foto-Dateireferenz validieren'
           );
 
           replaceOnce(
-            "const allFiles = [...new Set(uniqueImages.map(image => image.file))];",
-            "const allFiles = [...new Set(uniqueImages.map(image => image.file).filter(Boolean))];",
+            'const allFiles = [...new Set(uniqueImages.map(image => image.file))];',
+            'const allFiles = [...new Set(uniqueImages.map(image => image.file).filter(Boolean))];',
             'Offline-Dateiliste'
           );
-
-          replaceOnce(
-            "if(!meta)return null;",
-            "if(!meta||!meta.file)return null;",
-            'Browser-Fotoschutz'
-          );
-
-          replaceOnce(
-            "files:DATA.allFiles},[channel.port2])",
-            "files:DATA.allFiles.filter(Boolean)},[channel.port2])",
-            'Browser-Offlinecache'
-          );
-
-          replaceOnce(
-            "for(const file of msg.files){const request=",
-            "for(const file of msg.files.filter(Boolean)){const request=",
-            'Service-Worker-Offlinecache'
-          );
-
+          replaceOnce('if(!meta)return null;', 'if(!meta||!meta.file)return null;', 'Browser-Fotoschutz');
+          replaceOnce('files:DATA.allFiles},[channel.port2])', 'files:DATA.allFiles.filter(Boolean)},[channel.port2])', 'Browser-Offlinecache');
+          replaceOnce('for(const file of msg.files){const request=', 'for(const file of msg.files.filter(Boolean)){const request=', 'Service-Worker-Offlinecache');
           replaceOnce(
             "if (Object.keys(speciesMap).length !== SPECIES.length) throw new Error('Nicht jede Art hat eine Fotozuordnung');",
-            "if (Object.keys(speciesMap).length !== SPECIES.length) throw new Error('Nicht jede Art hat eine Fotozuordnung');\nif ([...Object.values(questionMap), ...Object.values(speciesMap), ...Object.values(practiceMap), ...Object.values(componentMap)].some(photo => !photo?.file)) throw new Error('Mindestens eine sichtbare Fotozuordnung besitzt keine Datei');",
+            lines(
+              "if (Object.keys(speciesMap).length !== SPECIES.length) throw new Error('Nicht jede Art hat eine Fotozuordnung');",
+              "if ([...Object.values(questionMap), ...Object.values(speciesMap), ...Object.values(practiceMap), ...Object.values(componentMap)].some(photo => !photo?.file)) throw new Error('Mindestens eine sichtbare Fotozuordnung besitzt keine Datei');"
+            ),
             'Endvalidierung'
           );
 
