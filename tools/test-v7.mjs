@@ -15,7 +15,12 @@ const context = await browser.newContext({
 const page = await context.newPage();
 const pageErrors = [];
 const failedRequests = [];
+const dialogs = [];
 page.on('pageerror', error => pageErrors.push(String(error)));
+page.on('dialog', async dialog => {
+  dialogs.push({ type: dialog.type(), message: dialog.message() });
+  await dialog.accept();
+});
 page.on('requestfailed', request => {
   const target = request.url();
   if (target.includes('/v7/')) failedRequests.push(`${target}: ${request.failure()?.errorText || 'fehlgeschlagen'}`);
@@ -23,6 +28,17 @@ page.on('requestfailed', request => {
 
 function check(condition, message) {
   if (!condition) throw new Error(message);
+}
+
+async function loadedPhoto(locator, message) {
+  await locator.waitFor({ state: 'visible', timeout: 20000 });
+  await locator.evaluate(img => img.complete || new Promise((resolve, reject) => {
+    img.addEventListener('load', resolve, { once: true });
+    img.addEventListener('error', reject, { once: true });
+  }));
+  const data = await locator.evaluate(img => ({ src: img.src, width: img.naturalWidth, height: img.naturalHeight, alt: img.alt }));
+  check(data.width > 100 && data.height > 60, message);
+  return data;
 }
 
 const report = { status: 'running', url, viewport: '390x844' };
@@ -44,42 +60,44 @@ try {
     const button = page.locator('.answer').nth(i);
     if (await button.isEnabled()) {
       await button.click();
-      await page.waitForTimeout(250);
+      await page.waitForTimeout(300);
     }
   }
-  await page.waitForSelector('.learning-visual .real-photo-card img', { timeout: 15000 });
-  report.questionPhoto = await page.locator('.learning-visual .real-photo-card img').evaluate(img => ({ src: img.src, width: img.naturalWidth, height: img.naturalHeight, alt: img.alt }));
-  check(report.questionPhoto.width > 100, 'Echtes Foto zur richtigen Lösung wurde nicht geladen');
+  await page.waitForSelector('.learning-visual .real-photo-card img', { timeout: 20000 });
+  report.questionPhoto = await loadedPhoto(page.locator('.learning-visual .real-photo-card img').first(), 'Echtes Foto zur richtigen Lösung wurde nicht geladen');
   check(await page.locator('.learning-visual svg').count() > 0, 'Erklärende Lernskizze wurde versehentlich entfernt');
+  check(await page.locator('.learning-visual .real-photo-caption a').count() === 1, 'Quellen- und Lizenzlink am Lernfoto fehlt');
 
   await page.locator('#quitQuiz').click();
   await page.waitForSelector('#homeView.active', { timeout: 10000 });
   await page.locator('[data-nav="species"]').first().click();
   await page.waitForSelector('#speciesView.active .species-card', { timeout: 10000 });
-  await page.waitForTimeout(500);
+  await page.waitForFunction(() => document.querySelectorAll('.species-card .real-photo-card').length === 49, null, { timeout: 20000 });
   report.speciesCards = await page.locator('.species-card').count();
   report.speciesPhotos = await page.locator('.species-card .real-photo-card').count();
   check(report.speciesCards === 49, `Es wurden nicht 49 Artenkarten gefunden: ${report.speciesCards}`);
   check(report.speciesPhotos === 49, `Nicht jede Art hat ein echtes Foto: ${report.speciesPhotos}/49`);
-  report.firstSpeciesPhoto = await page.locator('.species-card .real-photo-card img').first().evaluate(img => ({ src: img.src, width: img.naturalWidth, alt: img.alt }));
-  check(report.firstSpeciesPhoto.width > 100, 'Erstes Artenfoto wurde nicht geladen');
+  report.firstSpeciesPhoto = await loadedPhoto(page.locator('.species-card .real-photo-card img').first(), 'Erstes Artenfoto wurde nicht geladen');
 
   await page.locator('[data-nav="practice"]').first().click();
   await page.waitForSelector('#practiceView.active .practice-card', { timeout: 10000 });
-  await page.waitForTimeout(500);
+  await page.waitForFunction(() => document.querySelectorAll('.practice-card .real-photo-card').length === 10, null, { timeout: 20000 });
   report.practiceCards = await page.locator('.practice-card').count();
   report.practicePhotos = await page.locator('.practice-card .real-photo-card').count();
   check(report.practiceCards === 10, `Es wurden nicht 10 Geräteaufgaben gefunden: ${report.practiceCards}`);
   check(report.practicePhotos === 10, `Nicht jede Geräteaufgabe hat ein echtes Foto: ${report.practicePhotos}/10`);
+  report.firstPracticePhoto = await loadedPhoto(page.locator('.practice-card .real-photo-card img').first(), 'Erstes Rutenfoto wurde nicht geladen');
 
   await page.locator('[data-practice-tab="components"]').click();
   await page.waitForSelector('#componentList:not(.hidden) .component-card', { timeout: 10000 });
-  await page.waitForTimeout(500);
+  await page.waitForFunction(() => document.querySelectorAll('.component-card .real-photo-card').length === 12, null, { timeout: 20000 });
   report.componentCards = await page.locator('.component-card').count();
   report.componentPhotos = await page.locator('.component-card .real-photo-card').count();
   check(report.componentCards === 12, `Es wurden nicht 12 Bauteile gefunden: ${report.componentCards}`);
   check(report.componentPhotos === 12, `Nicht jedes Bauteil hat ein echtes Foto: ${report.componentPhotos}/12`);
+  report.firstComponentPhoto = await loadedPhoto(page.locator('.component-card .real-photo-card img').first(), 'Erstes Bauteilfoto wurde nicht geladen');
 
+  report.dialogs = dialogs;
   report.pageErrors = pageErrors;
   report.failedRequests = failedRequests;
   check(pageErrors.length === 0, `JavaScript-Fehler: ${pageErrors.join(' | ')}`);
@@ -89,6 +107,7 @@ try {
 } catch (error) {
   report.status = 'failed';
   report.error = error.stack || String(error);
+  report.dialogs = dialogs;
   report.pageErrors = pageErrors;
   report.failedRequests = failedRequests;
   try { await page.screenshot({ path: screenshot, fullPage: true }); } catch {}
