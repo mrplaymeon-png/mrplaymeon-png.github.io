@@ -45,7 +45,7 @@ jobs:
       - name: Echte Website durchklicken
         shell: bash
         run: |
-          cat > /tmp/test-petricoach.cjs <<'NODE'
+          cat > test-petricoach.cjs <<'NODE'
           const { chromium } = require('playwright');
           const fs = require('fs');
 
@@ -107,7 +107,7 @@ jobs:
             if (!ok) process.exit(1);
           })();
           NODE
-          node /tmp/test-petricoach.cjs
+          node test-petricoach.cjs
 
       - name: Prüfergebnis speichern
         if: always()
