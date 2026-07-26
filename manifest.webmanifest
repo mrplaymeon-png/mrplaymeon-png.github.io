@@ -1,20 +1,13 @@
 {
-  "name": "PetriCoach NRW – Angelscheintrainer",
+  "name": "PetriCoach NRW – Angelscheintrainer mit echten Lernfotos",
   "short_name": "PetriCoach",
-  "description": "Bebilderter Intensivtrainer für die Fischerprüfung in Nordrhein-Westfalen.",
+  "description": "Bebilderter Intensivtrainer fuer die Fischerpruefung in Nordrhein-Westfalen.",
   "lang": "de-DE",
-  "start_url": "/v6/",
-  "scope": "/v6/",
+  "start_url": "/v7/",
+  "scope": "/v7/",
   "display": "standalone",
   "orientation": "portrait-primary",
   "background_color": "#06191e",
   "theme_color": "#073b46",
-  "icons": [
-    {
-      "src": "/v6/icon.svg",
-      "sizes": "any",
-      "type": "image/svg+xml",
-      "purpose": "any maskable"
-    }
-  ]
+  "icons": [{"src":"/v7/icon.svg","sizes":"any","type":"image/svg+xml","purpose":"any maskable"}]
 }
