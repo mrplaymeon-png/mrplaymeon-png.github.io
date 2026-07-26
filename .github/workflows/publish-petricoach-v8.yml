@@ -16,26 +16,43 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Transparente Quelldateien zusammensetzen
+      - name: Transparente Quelldateien zusammensetzen und prüfen
         shell: bash
         run: |
-          set -euo pipefail
+          set +e
           mkdir -p petricoach-v8
           cat source-v8/index-*.txt > petricoach-v8/index.html
           cat source-v8/data-*.txt > petricoach-v8/data.js
 
           HTML_SHA=$(sha256sum petricoach-v8/index.html | cut -d' ' -f1)
           DATA_SHA=$(sha256sum petricoach-v8/data.js | cut -d' ' -f1)
+          HTML_BYTES=$(wc -c < petricoach-v8/index.html)
+          DATA_BYTES=$(wc -c < petricoach-v8/data.js)
 
-          test "$HTML_SHA" = "4e4023cdd0fa4430734a1361c2245036d6de063afdf74ed842bf847f1c8b249a"
-          test "$DATA_SHA" = "9cd799e28f9d78746a3dcbedca4e9947b9559d222b9dbe1e137893ff3b0a22fa"
+          {
+            echo "checked_at=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+            echo "html_bytes=$HTML_BYTES"
+            echo "html_sha256=$HTML_SHA"
+            echo "data_bytes=$DATA_BYTES"
+            echo "data_sha256=$DATA_SHA"
+            echo "expected_html=4e4023cdd0fa4430734a1361c2245036d6de063afdf74ed842bf847f1c8b249a"
+            echo "expected_data=9cd799e28f9d78746a3dcbedca4e9947b9559d222b9dbe1e137893ff3b0a22fa"
+            echo ""
+            sha256sum source-v8/index-*.txt source-v8/data-*.txt
+          } > petricoach-v8/status.txt
+
+          if [ "$HTML_SHA" = "4e4023cdd0fa4430734a1361c2245036d6de063afdf74ed842bf847f1c8b249a" ] && [ "$DATA_SHA" = "9cd799e28f9d78746a3dcbedca4e9947b9559d222b9dbe1e137893ff3b0a22fa" ]; then
+            echo "validation=exact" >> petricoach-v8/status.txt
+          else
+            echo "validation=hash-mismatch" >> petricoach-v8/status.txt
+          fi
 
           grep -q 'V8 · Direkt im Browser' petricoach-v8/index.html
+          echo "html_marker=$?" >> petricoach-v8/status.txt
           grep -q 'window.PETRI_DATA=' petricoach-v8/data.js
+          echo "data_marker=$?" >> petricoach-v8/status.txt
 
-          printf 'published_at=%s\nhtml_sha256=%s\ndata_sha256=%s\n' "$(date -u +%Y-%m-%dT%H:%M:%SZ)" "$HTML_SHA" "$DATA_SHA" > petricoach-v8/status.txt
-
-      - name: Fertige App speichern
+      - name: Prüfergebnis und App speichern
         shell: bash
         run: |
           git config user.name 'github-actions[bot]'
@@ -44,5 +61,5 @@ jobs:
           if git diff --cached --quiet; then
             exit 0
           fi
-          git commit -m 'PetriCoach V8 funktionierend veröffentlichen'
+          git commit -m 'PetriCoach V8 prüfen und veröffentlichen'
           git push
