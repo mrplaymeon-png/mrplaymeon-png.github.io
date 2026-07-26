@@ -1,0 +1,66 @@
+name: Beschädigte App-Daten analysieren
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/analyze-gzip.yml'
+      - 'analyze-gzip-trigger.txt'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Daten rekonstruieren und Blockprüfsummen erzeugen
+        shell: bash
+        run: |
+          set +e
+          cat gz-00.txt gz-01.txt gz-02.txt gz-03.txt | tr -d '\r\n\t ' | base64 --decode > /tmp/app.gz
+          gzip -dc /tmp/app.gz > /tmp/corrupt.html 2> /tmp/gzip-error.txt
+          python3 - <<'PY'
+          from pathlib import Path
+          import hashlib
+
+          data = Path('/tmp/corrupt.html').read_bytes()
+          block_size = 512
+          rows = []
+          for i in range(0, len(data), block_size):
+              block = data[i:i+block_size]
+              rows.append(f'{i//block_size:04d} {i:08d} {len(block):04d} {hashlib.sha256(block).hexdigest()}')
+          Path('corrupt-blocks.sha256').write_text('\n'.join(rows)+'\n', encoding='ascii')
+
+          report = [
+              f'bytes={len(data)}',
+              f'sha256={hashlib.sha256(data).hexdigest()}',
+          ]
+          try:
+              data.decode('utf-8')
+              report.append('utf8=ok')
+          except UnicodeDecodeError as exc:
+              report += [
+                  'utf8=invalid',
+                  f'utf8_start={exc.start}',
+                  f'utf8_end={exc.end}',
+                  f'utf8_reason={exc.reason}',
+                  'around_hex='+data[max(0,exc.start-64):exc.start+96].hex(),
+              ]
+          report.append('gzip_error:')
+          report.append(Path('/tmp/gzip-error.txt').read_text(errors='replace'))
+          Path('corruption-report.txt').write_text('\n'.join(report)+'\n', encoding='utf-8')
+          PY
+
+      - name: Analyse speichern
+        shell: bash
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add corrupt-blocks.sha256 corruption-report.txt
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m 'Beschädigte App-Daten analysieren'
+          git push
