@@ -23,7 +23,7 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           REPO: ${{ github.repository }}
-          JOB_ID: '89823502585'
+          JOB_ID: '89824282120'
         run: |
           mkdir -p /tmp/v7-log status
           curl -fsSL \
