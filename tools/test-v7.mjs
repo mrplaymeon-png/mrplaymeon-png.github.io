@@ -79,7 +79,7 @@ try {
   check(report.speciesPhotos === 49, `Nicht jede Art hat ein echtes Foto: ${report.speciesPhotos}/49`);
   report.firstSpeciesPhoto = await loadedPhoto(page.locator('.species-card .real-photo-card img').first(), 'Erstes Artenfoto wurde nicht geladen');
 
-  await page.locator('[data-nav="practice"]').first().click();
+  await page.locator('.bottom [data-nav="practice"]').click();
   await page.waitForSelector('#practiceView.active .practice-card', { timeout: 10000 });
   await page.waitForFunction(() => document.querySelectorAll('.practice-card .real-photo-card').length === 10, null, { timeout: 20000 });
   report.practiceCards = await page.locator('.practice-card').count();
