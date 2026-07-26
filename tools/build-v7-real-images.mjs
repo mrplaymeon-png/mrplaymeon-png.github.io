@@ -357,8 +357,11 @@ const allFiles = [...new Set(uniqueImages.map(image => image.file).filter(Boolea
 const data = { version:'7.1.0', questions:questionMap, species:speciesMap, practice:practiceMap, components:componentMap, allFiles };
 
 const css = `
-.real-photo-card{margin:12px 0 14px;background:#071c21;border:1px solid #2a5963;border-radius:16px;overflow:hidden;box-shadow:0 10px 25px rgba(0,0,0,.18)}
-.real-photo-card img{display:block;width:100%;height:auto;max-height:360px;object-fit:cover;background:#09252c}
+.bottom{z-index:2147483647!important;isolation:isolate;pointer-events:auto!important;transform:translateX(-50%) translateZ(0)!important}
+.bottom button{position:relative;z-index:2;pointer-events:auto!important;touch-action:manipulation}
+main{position:relative;z-index:0}
+.real-photo-card{position:relative;z-index:0;margin:12px 0 14px;background:#071c21;border:1px solid #2a5963;border-radius:16px;overflow:hidden;box-shadow:0 10px 25px rgba(0,0,0,.18)}
+.real-photo-card img{display:block;pointer-events:none;width:100%;height:auto;max-height:360px;object-fit:cover;background:#09252c}
 .real-photo-card.compact img{height:150px;object-fit:cover}
 .real-photo-caption{display:flex;gap:8px;justify-content:space-between;align-items:flex-start;padding:9px 11px;color:#9cb9bf;font-size:.68rem;line-height:1.35}
 .real-photo-caption strong{display:block;color:#d8f7f9;font-size:.72rem;margin-bottom:2px}
