@@ -108,7 +108,7 @@ jobs:
           FOUND=0
           for i in $(seq 1 72); do
             BODY=$(curl -fsSL "${PUBLIC_URL}?build=${BUILD_SHA}&attempt=${i}" 2>/dev/null || true)
-            if printf '%s' "$BODY" | grep -q 'real-images.js?v=7.0.0'; then
+            if printf '%s' "$BODY" | grep -q 'real-images.js?v=7.1.0'; then
               FOUND=1
               echo 'Öffentliche V7 ist verfügbar.'
               break
