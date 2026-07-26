@@ -1,0 +1,141 @@
+name: V7-Fotozuordnungen einmalig reparieren
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/patch-v7-photo-references.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Doppelte Fotos und falsche Artenzuordnung reparieren
+        run: |
+          node <<'NODE'
+          const fs = require('fs');
+          const file = 'tools/build-v7-real-images.mjs';
+          let source = fs.readFileSync(file, 'utf8');
+
+          function replaceOnce(before, after, label) {
+            const count = source.split(before).length - 1;
+            if (count !== 1) throw new Error(`${label}: erwartet 1 Treffer, gefunden ${count}`);
+            source = source.replace(before, after);
+          }
+
+          replaceOnce(
+            "addGroup(VISUAL_TITLE, 'Barbel (anatomy)', ['barbels']);",
+            "addGroup(VISUAL_TITLE, 'Common barbel', ['barbels']);",
+            'Barteln-Foto'
+          );
+
+          replaceOnce(
+            "A1:'Float fishing', A2:'Feeder fishing', A3:'Carp fishing', A4:'European eel', A5:'Northern pike', A6:'Spin fishing', A7:'Fly fishing', A8:'Fly fishing', A9:'Jigging', A10:'Surf fishing'",
+            "A1:'Float fishing', A2:'Feeder fishing', A3:'Carp fishing', A4:'Bottom fishing', A5:'Spin fishing', A6:'Spin fishing', A7:'Fly fishing', A8:'Fly fishing', A9:'Jigging', A10:'Surf fishing'",
+            'Praxis-Fotos'
+          );
+
+          replaceOnce(
+            "titles:[SPECIES_TITLE[name], latin, 'Freshwater fish', 'Fish'].filter(Boolean)",
+            "titles:[latin, SPECIES_TITLE[name], 'Freshwater fish', 'Fish'].filter(Boolean)",
+            'Artenfotos nach wissenschaftlichem Namen'
+          );
+
+          const oldBlock = `  const image = {
+    downloadUrl:imageUrl,
+    source:filePage,
+    title:String(metadata?.page?.title || entry.wiki.imageName).replace(/^File:/i,''),
+    author:short(ext.Artist?.value || ext.Credit?.value || 'Urheber siehe Quelldatei'),
+    license:short(ext.LicenseShortName?.value || ext.UsageTerms?.value || 'Lizenz siehe Quelldatei', 90),
+    licenseUrl:ext.LicenseUrl?.value || filePage,
+    description:short(ext.ImageDescription?.value || ext.ObjectName?.value || entry.wiki.resolvedTitle, 180),
+    wikiPage:entry.wiki.wikiPage,
+    fallback:entry.wiki.fallback,
+    selectedTitle:entry.wiki.selectedTitle
+  };
+  entry.image = image;
+  selectedByUrl.set(image.downloadUrl, image);`;
+
+          const newBlock = `  let image = selectedByUrl.get(imageUrl);
+  if (!image) {
+    image = {
+      downloadUrl:imageUrl,
+      source:filePage,
+      title:String(metadata?.page?.title || entry.wiki.imageName).replace(/^File:/i,''),
+      author:short(ext.Artist?.value || ext.Credit?.value || 'Urheber siehe Quelldatei'),
+      license:short(ext.LicenseShortName?.value || ext.UsageTerms?.value || 'Lizenz siehe Quelldatei', 90),
+      licenseUrl:ext.LicenseUrl?.value || filePage,
+      description:short(ext.ImageDescription?.value || ext.ObjectName?.value || entry.wiki.resolvedTitle, 180),
+      wikiPage:entry.wiki.wikiPage,
+      fallback:entry.wiki.fallback,
+      selectedTitle:entry.wiki.selectedTitle
+    };
+    selectedByUrl.set(image.downloadUrl, image);
+  }
+  entry.image = image;`;
+          replaceOnce(oldBlock, newBlock, 'Geteilte Fotoobjekte');
+
+          replaceOnce(
+            `});
+
+const byKind = { visual:{}, species:{}, practice:{}, component:{} };`,
+            `});
+
+const missingAssignmentFiles = chosen.filter(entry => !entry.image?.file);
+if (missingAssignmentFiles.length) {
+  throw new Error('Foto-Dateireferenz fehlt bei: ' + missingAssignmentFiles.map(entry => entry.task.kind + '/' + entry.task.key).join(', '));
+}
+
+const byKind = { visual:{}, species:{}, practice:{}, component:{} };`,
+            'Foto-Dateireferenz validieren'
+          );
+
+          replaceOnce(
+            "const allFiles = [...new Set(uniqueImages.map(image => image.file))];",
+            "const allFiles = [...new Set(uniqueImages.map(image => image.file).filter(Boolean))];",
+            'Offline-Dateiliste'
+          );
+
+          replaceOnce(
+            "if(!meta)return null;",
+            "if(!meta||!meta.file)return null;",
+            'Browser-Fotoschutz'
+          );
+
+          replaceOnce(
+            "files:DATA.allFiles},[channel.port2])",
+            "files:DATA.allFiles.filter(Boolean)},[channel.port2])",
+            'Browser-Offlinecache'
+          );
+
+          replaceOnce(
+            "for(const file of msg.files){const request=",
+            "for(const file of msg.files.filter(Boolean)){const request=",
+            'Service-Worker-Offlinecache'
+          );
+
+          replaceOnce(
+            "if (Object.keys(speciesMap).length !== SPECIES.length) throw new Error('Nicht jede Art hat eine Fotozuordnung');",
+            "if (Object.keys(speciesMap).length !== SPECIES.length) throw new Error('Nicht jede Art hat eine Fotozuordnung');\nif ([...Object.values(questionMap), ...Object.values(speciesMap), ...Object.values(practiceMap), ...Object.values(componentMap)].some(photo => !photo?.file)) throw new Error('Mindestens eine sichtbare Fotozuordnung besitzt keine Datei');",
+            'Endvalidierung'
+          );
+
+          fs.writeFileSync(file, source);
+          NODE
+
+      - name: Änderung speichern
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add tools/build-v7-real-images.mjs
+          git commit -m 'V7-Fotozuordnungen und Artenbilder zuverlässig reparieren'
+          git pull --rebase origin main
+          git push origin main
