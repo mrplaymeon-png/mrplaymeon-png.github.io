@@ -15,6 +15,7 @@ const context = await browser.newContext({
 const page = await context.newPage();
 const pageErrors = [];
 const failedRequests = [];
+const httpErrors = [];
 const dialogs = [];
 page.on('pageerror', error => pageErrors.push(String(error)));
 page.on('dialog', async dialog => {
@@ -24,6 +25,12 @@ page.on('dialog', async dialog => {
 page.on('requestfailed', request => {
   const target = request.url();
   if (target.includes('/v7/')) failedRequests.push(`${target}: ${request.failure()?.errorText || 'fehlgeschlagen'}`);
+});
+page.on('response', response => {
+  const target = response.url();
+  if (target.includes('/v7/') && response.status() >= 400) {
+    httpErrors.push(`${response.status()} ${target}`);
+  }
 });
 
 function check(condition, message) {
@@ -65,6 +72,7 @@ try {
   }
   await page.waitForSelector('.learning-visual .real-photo-card img', { timeout: 20000 });
   report.questionPhoto = await loadedPhoto(page.locator('.learning-visual .real-photo-card img').first(), 'Echtes Foto zur richtigen Lösung wurde nicht geladen');
+  report.realPhotoVisible = report.questionPhoto.width > 100 && report.questionPhoto.height > 60;
   check(await page.locator('.learning-visual svg').count() > 0, 'Erklärende Lernskizze wurde versehentlich entfernt');
   check(await page.locator('.learning-visual .real-photo-caption a').count() === 1, 'Quellen- und Lizenzlink am Lernfoto fehlt');
 
@@ -79,7 +87,16 @@ try {
   check(report.speciesPhotos === 49, `Nicht jede Art hat ein echtes Foto: ${report.speciesPhotos}/49`);
   report.firstSpeciesPhoto = await loadedPhoto(page.locator('.species-card .real-photo-card img').first(), 'Erstes Artenfoto wurde nicht geladen');
 
-  await page.locator('.bottom [data-nav="practice"]').click();
+  await page.waitForFunction(() => document.querySelector('.bottom')?.parentElement === document.body, null, { timeout: 10000 });
+  const practiceNav = page.locator('body > .bottom [data-nav="practice"]');
+  const navigationHitTest = await practiceNav.evaluate(element => {
+    const rect = element.getBoundingClientRect();
+    const target = document.elementFromPoint(rect.left + rect.width / 2, rect.top + rect.height / 2);
+    return Boolean(target && (target === element || element.contains(target)));
+  });
+  report.navigationHitTest = navigationHitTest;
+  check(navigationHitTest, 'Untere Navigation wird von Seiteninhalt überdeckt');
+  await practiceNav.click();
   await page.waitForSelector('#practiceView.active .practice-card', { timeout: 10000 });
   await page.waitForFunction(() => document.querySelectorAll('.practice-card .real-photo-card').length === 10, null, { timeout: 20000 });
   report.practiceCards = await page.locator('.practice-card').count();
@@ -100,9 +117,11 @@ try {
   report.dialogs = dialogs;
   report.pageErrors = pageErrors;
   report.failedRequests = failedRequests;
+  report.httpErrors = httpErrors;
   check(pageErrors.length === 0, `JavaScript-Fehler: ${pageErrors.join(' | ')}`);
   check(failedRequests.length === 0, `Lokale App-Dateien konnten nicht geladen werden: ${failedRequests.join(' | ')}`);
-  report.status = 'ok';
+  check(httpErrors.length === 0, `App-Dateien lieferten HTTP-Fehler: ${httpErrors.join(' | ')}`);
+  report.status = 'passed';
   await page.screenshot({ path: screenshot, fullPage: true });
 } catch (error) {
   report.status = 'failed';
@@ -110,6 +129,7 @@ try {
   report.dialogs = dialogs;
   report.pageErrors = pageErrors;
   report.failedRequests = failedRequests;
+  report.httpErrors = httpErrors;
   try { await page.screenshot({ path: screenshot, fullPage: true }); } catch {}
   fs.writeFileSync(output, JSON.stringify(report, null, 2));
   await browser.close();
