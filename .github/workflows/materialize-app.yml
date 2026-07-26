@@ -1,0 +1,80 @@
+name: PetriCoach als kompatible HTML-App bauen
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'gz-*.txt'
+      - '.github/workflows/materialize-app.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Repository laden
+        uses: actions/checkout@v4
+
+      - name: Komprimierte App in normales HTML umwandeln
+        shell: bash
+        run: |
+          node <<'NODE'
+          const fs = require('fs');
+          const zlib = require('zlib');
+
+          const parts = ['gz-00.txt', 'gz-01.txt', 'gz-02.txt', 'gz-03.txt'];
+          const encoded = parts.map(file => fs.readFileSync(file, 'utf8')).join('').replace(/\s+/g, '');
+          let html = zlib.gunzipSync(Buffer.from(encoded, 'base64')).toString('utf8');
+
+          const headExtras = [
+            '<link rel="manifest" href="manifest.webmanifest">',
+            '<link rel="icon" href="icon.svg" type="image/svg+xml">',
+            '<link rel="apple-touch-icon" href="icon.svg">'
+          ].join('\n');
+
+          if (!html.includes('rel="manifest"')) {
+            html = html.replace('</head>', headExtras + '\n</head>');
+          }
+
+          const worker = `<script>
+          if ('serviceWorker' in navigator && location.protocol === 'https:') {
+            window.addEventListener('load', () => {
+              navigator.serviceWorker.register('./sw.js').catch(error => console.warn('Offline-Cache:', error));
+            });
+          }
+          </script>`;
+
+          if (!html.includes("navigator.serviceWorker.register('./sw.js')")) {
+            html = html.replace('</body>', worker + '\n</body>');
+          }
+
+          fs.writeFileSync('index.html', html, 'utf8');
+          console.log(`index.html erstellt: ${Buffer.byteLength(html)} Bytes`);
+          NODE
+
+      - name: Ergebnis pruefen
+        shell: bash
+        run: |
+          grep -q '180 Fragen' index.html
+          grep -q 'serviceWorker.register' index.html
+          grep -q 'manifest.webmanifest' index.html
+          if grep -q 'DecompressionStream' index.html; then
+            echo 'Fehler: Browser-Dekomprimierung ist noch enthalten.'
+            exit 1
+          fi
+
+      - name: Fertige App veroeffentlichen
+        shell: bash
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html
+          if git diff --cached --quiet; then
+            echo 'Keine Aenderung notwendig.'
+            exit 0
+          fi
+          git commit -m 'iPhone-kompatible PetriCoach-App veroeffentlichen'
+          git push
