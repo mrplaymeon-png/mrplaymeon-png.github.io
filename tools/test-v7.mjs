@@ -120,3 +120,4 @@ await browser.close();
 console.log(JSON.stringify(report, null, 2));
 
 // Startet nach der finalen Fotozuordnungs-Reparatur den vollständigen V7-Build.
+// Neuaufbau nach der Reparatur der Fotoebene über der unteren Navigation.
