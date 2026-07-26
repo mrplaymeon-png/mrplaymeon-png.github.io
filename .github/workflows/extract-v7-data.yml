@@ -16,39 +16,71 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Arrays extrahieren
+      - name: Arrays robust extrahieren
         run: |
           mkdir -p v7
           node <<'NODE'
-          const fs=require('fs'), vm=require('vm');
+          const fs=require('fs'),vm=require('vm');
           const html=fs.readFileSync('v6/index.html','utf8');
-          function get(name,next){
-            const start=html.indexOf(`const ${name}=`);
-            if(start<0) throw new Error(name+' fehlt');
-            const eq=html.indexOf('=',start)+1;
-            const end=next ? html.indexOf(`const ${next}=`,eq) : html.indexOf('\nconst ',eq);
-            let expr=html.slice(eq,end>eq?end:undefined).trim();
-            expr=expr.replace(/;\s*$/,'');
-            return vm.runInNewContext('('+expr+')');
+          const status=[];
+          function extract(name){
+            const marker=`const ${name}=`;
+            const start=html.indexOf(marker);
+            if(start<0) throw new Error(`${name}: Marker fehlt`);
+            let i=start+marker.length;
+            while(/\s/.test(html[i])) i++;
+            const opener=html[i];
+            const closer=opener==='['?']':opener==='{'?'}':null;
+            if(!closer) throw new Error(`${name}: kein Array/Objekt an Position ${i}`);
+            let depth=0,quote=null,escape=false,end=-1;
+            for(let p=i;p<html.length;p++){
+              const ch=html[p];
+              if(quote){
+                if(escape){escape=false;continue;}
+                if(ch==='\\'){escape=true;continue;}
+                if(ch===quote) quote=null;
+                continue;
+              }
+              if(ch==='"'||ch==="'"||ch==='`'){quote=ch;continue;}
+              if(ch===opener) depth++;
+              if(ch===closer){depth--;if(depth===0){end=p+1;break;}}
+            }
+            if(end<0) throw new Error(`${name}: Abschluss fehlt`);
+            const expr=html.slice(i,end);
+            const value=vm.runInNewContext(`(${expr})`,Object.create(null),{timeout:2000});
+            status.push(`${name}=${Array.isArray(value)?value.length:'object'}`);
+            return value;
           }
-          const questions=get('QUESTIONS','SPECIES');
-          const species=get('SPECIES','PRACTICE');
-          const practice=get('PRACTICE','COMPONENTS');
-          const components=get('COMPONENTS','DEFAULT_STATS');
-          const out={
-            questionCount:questions.length,
-            visualKeys:[...new Set(questions.map(q=>q.visual))].sort(),
-            species:species.map(x=>({name:x.name,latin:x.latin||'',feature:x.feature||'',group:x.group||''})),
-            practice:practice.map(x=>({id:x.id,title:x.title,subtitle:x.subtitle||'',components:x.components||[]})),
-            components:components.map(x=>({name:x.name,title:x.title||'',description:x.description||x.text||''}))
-          };
-          fs.writeFileSync('v7/data-summary.json',JSON.stringify(out,null,2));
+          try{
+            const questions=extract('QUESTIONS');
+            const species=extract('SPECIES');
+            const practice=extract('PRACTICE');
+            const components=extract('COMPONENTS');
+            const out={
+              questionCount:questions.length,
+              questions:questions.map(q=>({id:q.id||'',question:q.question,answer:q.answers?.[q.correct]||'',visual:q.visual||'',category:q.category||''})),
+              visualKeys:[...new Set(questions.map(q=>q.visual).filter(Boolean))].sort(),
+              species:species.map(x=>({name:x.name,latin:x.latin||'',feature:x.feature||'',group:x.group||'',profile:x.profile||''})),
+              practice:practice.map(x=>({id:x.id,title:x.title,subtitle:x.subtitle||'',components:x.components||[]})),
+              components:components.map(x=>({name:x.name||'',title:x.title||'',description:x.description||x.text||''}))
+            };
+            fs.writeFileSync('v7/data-summary.json',JSON.stringify(out,null,2));
+            status.unshift('status=ok');
+          }catch(error){
+            status.unshift('status=failed');
+            status.push(`error=${error.stack||error}`);
+            process.exitCode=1;
+          }finally{
+            fs.writeFileSync('v7/data-extract-status.txt',status.join('\n')+'\n');
+          }
           NODE
-      - name: Speichern
+      - name: Diagnose immer speichern
+        if: always()
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add v7/data-summary.json
+          git add v7/data-extract-status.txt
+          if [ -f v7/data-summary.json ]; then git add v7/data-summary.json; fi
           if git diff --cached --quiet; then exit 0; fi
           git commit -m 'V7 Lerndaten extrahieren'
           git push
