@@ -1390,413 +1390,562 @@
     "zander-spawn"
   ],
   "species": [
-    {
-      "latin": "",
-      "feature": "",
-      "group": "",
-      "profile": ""
-    },
-    {
-      "latin": "",
-      "feature": "",
-      "group": "",
-      "profile": ""
-    },
-    {
-      "latin": "",
-      "feature": "",
-      "group": "",
-      "profile": ""
-    },
-    {
-      "latin": "",
-      "feature": "",
-      "group": "",
-      "profile": ""
-    },
-    {
-      "latin": "",
-      "feature": "",
-      "group": "",
-      "profile": ""
-    },
-    {
-      "latin": "",
-      "feature": "",
-      "group": "",
-      "profile": ""
-    },
-    {
-      "latin": "",
-      "feature": "",
-      "group": "",
-      "profile": ""
-    },
-    {
-      "latin": "",
-      "feature": "",
-      "group": "",
-      "profile": ""
-    },
-    {
-      "latin": "",
-      "feature": "",
-      "group": "",
-      "profile": ""
-    },
-    {
-      "latin": "",
-      "feature": "",
-      "group": "",
-      "profile": ""
-    },
-    {
-      "latin": "",
-      "feature": "",
-      "group": "",
-      "profile": ""
-    },
-    {
-      "latin": "",
-      "feature": "",
-      "group": "",
-      "profile": ""
-    },
-    {
-      "latin": "",
-      "feature": "",
-      "group": "",
-      "profile": ""
-    },
-    {
-      "latin": "",
-      "feature": "",
-      "group": "",
-      "profile": ""
-    },
-    {
-      "latin": "",
-      "feature": "",
-      "group": "",
-      "profile": ""
-    },
-    {
-      "latin": "",
-      "feature": "",
-      "group": "",
-      "profile": ""
-    },
-    {
-      "latin": "",
-      "feature": "",
-      "group": "",
-      "profile": ""
-    },
-    {
-      "latin": "",
-      "feature": "",
-      "group": "",
-      "profile": ""
-    },
-    {
-      "latin": "",
-      "feature": "",
-      "group": "",
-      "profile": ""
-    },
-    {
-      "latin": "",
-      "feature": "",
-      "group": "",
-      "profile": ""
-    },
-    {
-      "latin": "",
-      "feature": "",
-      "group": "",
-      "profile": ""
-    },
-    {
-      "latin": "",
-      "feature": "",
-      "group": "",
-      "profile": ""
-    },
-    {
-      "latin": "",
-      "feature": "",
-      "group": "",
-      "profile": ""
-    },
-    {
-      "latin": "",
-      "feature": "",
-      "group": "",
-      "profile": ""
-    },
-    {
-      "latin": "",
-      "feature": "",
-      "group": "",
-      "profile": ""
-    },
-    {
-      "latin": "",
-      "feature": "",
-      "group": "",
-      "profile": ""
-    },
-    {
-      "latin": "",
-      "feature": "",
-      "group": "",
-      "profile": ""
-    },
-    {
-      "latin": "",
-      "feature": "",
-      "group": "",
-      "profile": ""
-    },
-    {
-      "latin": "",
-      "feature": "",
-      "group": "",
-      "profile": ""
-    },
-    {
-      "latin": "",
-      "feature": "",
-      "group": "",
-      "profile": ""
-    },
-    {
-      "latin": "",
-      "feature": "",
-      "group": "",
-      "profile": ""
-    },
-    {
-      "latin": "",
-      "feature": "",
-      "group": "",
-      "profile": ""
-    },
-    {
-      "latin": "",
-      "feature": "",
-      "group": "",
-      "profile": ""
-    },
-    {
-      "latin": "",
-      "feature": "",
-      "group": "",
-      "profile": ""
-    },
-    {
-      "latin": "",
-      "feature": "",
-      "group": "",
-      "profile": ""
-    },
-    {
-      "latin": "",
-      "feature": "",
-      "group": "",
-      "profile": ""
-    },
-    {
-      "latin": "",
-      "feature": "",
-      "group": "",
-      "profile": ""
-    },
-    {
-      "latin": "",
-      "feature": "",
-      "group": "",
-      "profile": ""
-    },
-    {
-      "latin": "",
-      "feature": "",
-      "group": "",
-      "profile": ""
-    },
-    {
-      "latin": "",
-      "feature": "",
-      "group": "",
-      "profile": ""
-    },
-    {
-      "latin": "",
-      "feature": "",
-      "group": "",
-      "profile": ""
-    },
-    {
-      "latin": "",
-      "feature": "",
-      "group": "",
-      "profile": ""
-    },
-    {
-      "latin": "",
-      "feature": "",
-      "group": "",
-      "profile": ""
-    },
-    {
-      "latin": "",
-      "feature": "",
-      "group": "",
-      "profile": ""
-    },
-    {
-      "latin": "",
-      "feature": "",
-      "group": "",
-      "profile": ""
-    },
-    {
-      "latin": "",
-      "feature": "",
-      "group": "",
-      "profile": ""
-    },
-    {
-      "latin": "",
-      "feature": "",
-      "group": "",
-      "profile": ""
-    },
-    {
-      "latin": "",
-      "feature": "",
-      "group": "",
-      "profile": ""
-    },
-    {
-      "latin": "",
-      "feature": "",
-      "group": "",
-      "profile": ""
-    }
+    [
+      "Bachforelle",
+      "Salmo trutta fario",
+      "salmonid",
+      "Rote und schwarze Punkte; Fettflosse."
+    ],
+    [
+      "Meerforelle",
+      "Salmo trutta trutta",
+      "salmonid",
+      "Silbriger als die Bachform; Wanderfisch."
+    ],
+    [
+      "Lachs",
+      "Salmo salar",
+      "salmonid",
+      "Schlanker Wanderfisch; Schwanzstiel relativ schmal."
+    ],
+    [
+      "Regenbogenforelle",
+      "Oncorhynchus mykiss",
+      "salmonid",
+      "Rötlicher Seitenstreifen; viele schwarze Punkte."
+    ],
+    [
+      "Bachsaibling",
+      "Salvelinus fontinalis",
+      "salmonid",
+      "Helle Punkte auf dunklem Grund; weiß gesäumte Flossen."
+    ],
+    [
+      "Äsche",
+      "Thymallus thymallus",
+      "grayling",
+      "Sehr große fahnenartige Rückenflosse."
+    ],
+    [
+      "Hecht",
+      "Esox lucius",
+      "pike",
+      "Langgestreckt; entenschnabelförmiges Maul."
+    ],
+    [
+      "Aal",
+      "Anguilla anguilla",
+      "eel",
+      "Schlangenförmiger Körper; keine Bauchflossen."
+    ],
+    [
+      "Zährte",
+      "Vimba vimba",
+      "cyprinid",
+      "Unterständiges Maul; lange Afterflosse."
+    ],
+    [
+      "Rotauge",
+      "Rutilus rutilus",
+      "cyprinid",
+      "Rote Iris; Ansatz der Rückenflosse über Bauchflossen."
+    ],
+    [
+      "Moderlieschen",
+      "Leucaspius delineatus",
+      "small-cyprinid",
+      "Klein; kurze unvollständige Seitenlinie."
+    ],
+    [
+      "Hasel",
+      "Leuciscus leuciscus",
+      "cyprinid",
+      "Schlank; kleines endständiges Maul."
+    ],
+    [
+      "Döbel",
+      "Leuciscus cephalus",
+      "cyprinid",
+      "Breiter Kopf; große dunkel gerandete Schuppen."
+    ],
+    [
+      "Aland",
+      "Leuciscus idus",
+      "cyprinid",
+      "Kräftiger Körper; rötliche Flossen."
+    ],
+    [
+      "Schneider",
+      "Alburnoides bipunctatus",
+      "small-cyprinid",
+      "Deutlich doppelt punktierte Seitenlinie."
+    ],
+    [
+      "Elritze",
+      "Phoxinus phoxinus",
+      "small-cyprinid",
+      "Klein; oft lebhafte Fleckenzeichnung."
+    ],
+    [
+      "Rotfeder",
+      "Scardinius erythrophthalmus",
+      "cyprinid",
+      "Oberständiges Maul; rote Flossen."
+    ],
+    [
+      "Schleie",
+      "Tinca tinca",
+      "tench",
+      "Olivgrün; sehr kleine Schuppen; zwei Barteln."
+    ],
+    [
+      "Nase",
+      "Chondrostoma nasus",
+      "cyprinid",
+      "Unterständiges, querstehendes Maul mit harter Lippe."
+    ],
+    [
+      "Gründling",
+      "Gobio gobio",
+      "cyprinid",
+      "Bodenfisch; zwei Barteln; Fleckenreihe."
+    ],
+    [
+      "Barbe",
+      "Barbus barbus",
+      "barbel",
+      "Unterständiges Maul; vier Barteln."
+    ],
+    [
+      "Ukelei",
+      "Alburnus alburnus",
+      "small-cyprinid",
+      "Schlank und silbrig; oberständiges Maul."
+    ],
+    [
+      "Güster",
+      "Blicca bjoerkna",
+      "bream",
+      "Hochrückig; rötlicher Ansatz paariger Flossen."
+    ],
+    [
+      "Brasse",
+      "Abramis brama",
+      "bream",
+      "Sehr hochrückig; lange Afterflosse."
+    ],
+    [
+      "Maifisch",
+      "Alosa alosa",
+      "herring",
+      "Heringsartig; dunkler Schulterfleck."
+    ],
+    [
+      "Bitterling",
+      "Rhodeus sericeus",
+      "small-cyprinid",
+      "Klein und hochrückig; Fortpflanzung in Muscheln."
+    ],
+    [
+      "Karausche",
+      "Carassius carassius",
+      "carassius",
+      "Hochrückig; keine Barteln; nach außen gewölbte Rückenflosse."
+    ],
+    [
+      "Giebel",
+      "Carassius gibelio",
+      "carassius",
+      "Silbriger; keine Barteln; Rückenflosse eher gerade/konkav."
+    ],
+    [
+      "Wildkarpfen",
+      "Cyprinus carpio",
+      "carp",
+      "Langgestreckter als Zuchtkarpfen; vier Barteln."
+    ],
+    [
+      "Schmerle",
+      "Barbatula barbatula",
+      "loach",
+      "Bodenfisch; sechs Barteln; rundlicher Körper."
+    ],
+    [
+      "Schlammpeitzger",
+      "Misgurnus fossilis",
+      "loach",
+      "Langgestreckt; zehn Barteln; Darmatmung."
+    ],
+    [
+      "Steinbeißer",
+      "Cobitis taenia",
+      "loach",
+      "Schlank; dunkle Fleckenreihen; Dorn unter dem Auge."
+    ],
+    [
+      "Wels",
+      "Silurus glanis",
+      "catfish",
+      "Sehr breiter Kopf; sechs Barteln; lange Afterflosse."
+    ],
+    [
+      "Kessler-Grundel",
+      "Ponticola kessleri",
+      "goby",
+      "Bauchflossen zu Haftscheibe verwachsen."
+    ],
+    [
+      "Quappe",
+      "Lota lota",
+      "burbot",
+      "Ein Bartfaden am Kinn; einzige Süßwasser-Dorschartige."
+    ],
+    [
+      "Flussbarsch",
+      "Perca fluviatilis",
+      "perch",
+      "Dunkle Querbänder; rote Flossen; Stachelrückenflosse."
+    ],
+    [
+      "Zander",
+      "Sander lucioperca",
+      "zander",
+      "Zwei Rückenflossen; große Fangzähne; glasige Augen."
+    ],
+    [
+      "Kaulbarsch",
+      "Gymnocephalus cernuus",
+      "ruff",
+      "Klein; zusammenhängende Rückenflosse; gesprenkelte Flanken."
+    ],
+    [
+      "Groppe (Mühlkoppe)",
+      "Cottus gobio",
+      "goby",
+      "Breiter Kopf; keine Schwimmblase; bodenlebend."
+    ],
+    [
+      "Dreistachliger Stichling",
+      "Gasterosteus aculeatus",
+      "stickleback",
+      "Drei freie Rückenstacheln."
+    ],
+    [
+      "Zwergstichling",
+      "Pungitius pungitius",
+      "stickleback",
+      "Meist neun bis elf kleine Rückenstacheln."
+    ],
+    [
+      "Bach-/Flussneunauge",
+      "Lampetra spec.",
+      "lamprey",
+      "Rundes Saugmaul; sieben Kiemenöffnungen."
+    ],
+    [
+      "Rapfen",
+      "Aspius aspius",
+      "predatory-cyprinid",
+      "Großes oberständiges Maul; räuberischer Karpfenfisch."
+    ],
+    [
+      "Makrele",
+      "Scomber scombrus",
+      "mackerel",
+      "Stromlinienförmig; dunkle Wellenlinien am Rücken."
+    ],
+    [
+      "Flunder",
+      "Platichthys flesus",
+      "flatfish",
+      "Plattfisch; beide Augen meist auf rechter Seite."
+    ],
+    [
+      "Kabeljau (Dorsch)",
+      "Gadus morhua",
+      "cod",
+      "Drei Rückenflossen; Kinnbartel; helle Seitenlinie."
+    ],
+    [
+      "Nordseeschnäpel",
+      "Coregonus oxyrinchus",
+      "whitefish",
+      "Lachsartig mit Fettflosse und kleiner Maulspalte."
+    ],
+    [
+      "Edelkrebs",
+      "Astacus astacus",
+      "crayfish-native",
+      "Breite Scheren; rötliche Unterseite der Scheren."
+    ],
+    [
+      "Amerikanischer Krebs",
+      "Orconectes limosus",
+      "crayfish-invasive",
+      "Rostrote Querbänder am Hinterleib; invasive Art."
+    ]
   ],
   "practice": [
     {
       "id": "A1",
-      "subtitle": "",
-      "components": []
+      "name": "Beringte leichte Rute – Rotauge, Rotfeder, Brasse",
+      "type": "float",
+      "parts": [
+        "Leichte beringte Rute",
+        "Stationärrolle",
+        "Schnur 2–6 kg Tragkraft",
+        "Pose als Bissanzeiger",
+        "Klemmbleie",
+        "Dünneres Vorfach",
+        "Einfachhaken",
+        "Naturköder",
+        "Kescher, Maßband, Hakenlöser, Schlagholz, Messer"
+      ],
+      "tip": "Pose und Blei so abstimmen, dass der Biss gut sichtbar bleibt."
     },
     {
       "id": "A2",
-      "subtitle": "",
-      "components": []
+      "name": "Feederrute – Rotauge, Rotfeder, Brasse",
+      "type": "feeder",
+      "parts": [
+        "Feederrute mit Wechselspitze",
+        "Stationärrolle",
+        "Schnur 2–6 kg",
+        "Feine Spitze als Bissanzeiger",
+        "Futterkorb als Beschwerung",
+        "Vorfach",
+        "Wirbel",
+        "Einfachhaken",
+        "Naturköder",
+        "Kescher und Versorgungszubehör"
+      ],
+      "tip": "Die empfindliche Rutenspitze zeigt den Biss; der Futterkorb liegt am Grund."
     },
     {
       "id": "A3",
-      "subtitle": "",
-      "components": []
+      "name": "Karpfenrute",
+      "type": "ground",
+      "parts": [
+        "Karpfen-/Grundrute",
+        "Kräftige Stationärrolle",
+        "Schnur 9–17 kg",
+        "Geeigneter Bissanzeiger",
+        "Grundblei oder Futterkorb",
+        "Kräftiges Vorfach",
+        "Wirbel",
+        "Einfachhaken",
+        "Karpfenköder",
+        "Großer Kescher und Versorgungszubehör"
+      ],
+      "tip": "Alle Teile müssen zur Kraft eines Karpfens passen – nicht nur die Hauptschnur."
     },
     {
       "id": "A4",
-      "subtitle": "",
-      "components": []
+      "name": "Grundrute – Aal",
+      "type": "ground",
+      "parts": [
+        "Grundrute",
+        "Stationärrolle",
+        "Schnur 9–17 kg",
+        "Glocke oder Spitze als Bissanzeiger",
+        "Grundblei",
+        "Kräftiges Vorfach",
+        "Wirbel",
+        "Einfachhaken",
+        "Wurm oder zulässiger toter Köderfisch",
+        "Kescher, Lösezange und Versorgungszubehör"
+      ],
+      "tip": "Aale flüchten gern in Hindernisse; die Montage muss robust sein."
     },
     {
       "id": "A5",
-      "subtitle": "",
-      "components": []
+      "name": "Spinnrute – Hecht",
+      "type": "spin",
+      "parts": [
+        "Kräftige Spinnrute",
+        "Stationär- oder geeignete Multirolle",
+        "Schnur 9–17 kg",
+        "Kein separater Bissanzeiger nötig",
+        "Kunstköder als Wurfgewicht",
+        "Bissfestes Stahlvorfach, bei Kunstköder mindestens 40 cm",
+        "Wirbel/Karabiner",
+        "Zum Köder passender Haken",
+        "Spinner, Wobbler oder Gummifisch",
+        "Großer Kescher, lange Lösezange, Maßband, Schlagholz, Messer"
+      ],
+      "tip": "Bissfestes Vorfach und lange Lösezange sind beim Hecht unverzichtbar."
     },
     {
       "id": "A6",
-      "subtitle": "",
-      "components": []
+      "name": "Spinnrute – Flussbarsch",
+      "type": "spin-light",
+      "parts": [
+        "Leichte Spinnrute",
+        "Stationärrolle",
+        "Schnur etwa 5–6 kg",
+        "Kein separater Bissanzeiger",
+        "Kunstköder",
+        "Passendes Vorfach",
+        "Kleiner Wirbel/Karabiner",
+        "Zum Köder passender Haken",
+        "Spinner, kleiner Wobbler oder Gummifisch",
+        "Kescher und Hakenlöser"
+      ],
+      "tip": "Feiner als Hechtgerät, aber stark genug für sicheren Drill und Hindernisse."
     },
     {
       "id": "A7",
-      "subtitle": "",
-      "components": []
+      "name": "Fliegenrute – Forelle, Trockenfischen",
+      "type": "fly-dry",
+      "parts": [
+        "Fliegenrute Klasse 5–6",
+        "Fliegenrolle",
+        "Schwimmende Fliegenschnur",
+        "Die schwimmende Fliege ist der Bissanzeiger",
+        "Keine zusätzliche Beschwerung",
+        "Konisch verjüngtes Vorfach",
+        "Kein Wirbel",
+        "Öhrhaken",
+        "Trockenfliege",
+        "Watkescher, Maßband und Versorgungszubehör"
+      ],
+      "tip": "Beim Trockenfischen schwimmt die Fliege sichtbar auf der Oberfläche."
     },
     {
       "id": "A8",
-      "subtitle": "",
-      "components": []
+      "name": "Fliegenrute – Forelle, Nassfischen",
+      "type": "fly-wet",
+      "parts": [
+        "Fliegenrute Klasse 5–6",
+        "Fliegenrolle",
+        "Schwimmende Schnur mit sinkendem Vorfach oder geeignete Sinkschnur",
+        "Schnur/Bewegung als Bissanzeige",
+        "Je nach Muster beschwert",
+        "Vorfach",
+        "Kein klassischer Wirbel",
+        "Öhrhaken",
+        "Nassfliege, Nymphe oder Streamer",
+        "Watkescher und Versorgungszubehör"
+      ],
+      "tip": "Nassfliege und Nymphe werden unter der Oberfläche geführt."
     },
     {
       "id": "A9",
-      "subtitle": "",
-      "components": []
+      "name": "Rute – Dorsch",
+      "type": "pilk",
+      "parts": [
+        "Pilkrute, im Prüfungsstoff etwa 100–250 g Wurfgewicht",
+        "Robuste Stationär- oder Multirolle",
+        "Salzwasserfeste, kräftige Schnur",
+        "Kontakt über Rutenspitze und Schnur",
+        "Pilker",
+        "Abriebfestes Vorfach",
+        "Starker Wirbel",
+        "Zum Pilker passender Haken",
+        "Pilker oder Meeressystem",
+        "Geeignete Landehilfe und Versorgungszubehör"
+      ],
+      "tip": "Salzwassergerät muss robust und korrosionsbeständig sein."
     },
     {
       "id": "A10",
-      "subtitle": "",
-      "components": []
+      "name": "Brandungsrute – Plattfisch",
+      "type": "surf",
+      "parts": [
+        "Lange Brandungsrute",
+        "Große Stationärrolle",
+        "Hauptschnur plus passende Schlagschnur",
+        "Rutenspitze als Bissanzeiger",
+        "Brandungsblei",
+        "Brandungsvorfach mit Seitenarmen",
+        "Wirbel",
+        "Einfachhaken",
+        "Seeringel- oder Wattwurm",
+        "Landehilfe und Versorgungszubehör"
+      ],
+      "tip": "Die Schlagschnur nimmt die hohe Belastung beim Wurf des schweren Bleis auf."
     }
   ],
   "components": [
-    {
-      "name": "",
-      "title": "",
-      "description": ""
-    },
-    {
-      "name": "",
-      "title": "",
-      "description": ""
-    },
-    {
-      "name": "",
-      "title": "",
-      "description": ""
-    },
-    {
-      "name": "",
-      "title": "",
-      "description": ""
-    },
-    {
-      "name": "",
-      "title": "",
-      "description": ""
-    },
-    {
-      "name": "",
-      "title": "",
-      "description": ""
-    },
-    {
-      "name": "",
-      "title": "",
-      "description": ""
-    },
-    {
-      "name": "",
-      "title": "",
-      "description": ""
-    },
-    {
-      "name": "",
-      "title": "",
-      "description": ""
-    },
-    {
-      "name": "",
-      "title": "",
-      "description": ""
-    },
-    {
-      "name": "",
-      "title": "",
-      "description": ""
-    },
-    {
-      "name": "",
-      "title": "",
-      "description": ""
-    }
-  ]
+    [
+      "Rute",
+      "rod",
+      "Hebel zum Werfen, Führen und Abfedern im Drill."
+    ],
+    [
+      "Rolle",
+      "reel",
+      "Speichert Schnur; Bremse gibt bei Überlast kontrolliert Schnur frei."
+    ],
+    [
+      "Hauptschnur",
+      "line",
+      "Verbindung zwischen Rolle und Montage; Tragkraft passend wählen."
+    ],
+    [
+      "Bissanzeiger",
+      "indicator",
+      "Pose, Rutenspitze, Glocke oder elektronischer Melder zeigt den Biss."
+    ],
+    [
+      "Beschwerung",
+      "weight",
+      "Blei, Futterkorb oder Ködergewicht bringt die Montage an den Platz."
+    ],
+    [
+      "Vorfach",
+      "leader",
+      "Letztes Schnurstück vor dem Haken; feiner, abriebfest oder bissfest."
+    ],
+    [
+      "Wirbel",
+      "swivel",
+      "Vermindert Schnurdrall und verbindet Teile der Montage."
+    ],
+    [
+      "Haken",
+      "hook",
+      "Größe und Form müssen zu Fisch, Köder und Fangmethode passen."
+    ],
+    [
+      "Köder",
+      "lure",
+      "Natur- oder Kunstköder löst den Biss aus."
+    ],
+    [
+      "Kescher",
+      "net",
+      "Landet den Fisch kontrolliert und möglichst schonend."
+    ],
+    [
+      "Maßband",
+      "measure",
+      "Prüft Mindestmaß von Kopfspitze bis längstem Schwanzflossenende."
+    ],
+    [
+      "Schlagholz & Messer",
+      "humane",
+      "Zum sofortigen Betäuben und anschließenden Töten entnahmefähiger Fische."
+    ]
+  ],
+  "objectKeys": {
+    "species": [
+      "0",
+      "1",
+      "2",
+      "3"
+    ],
+    "practice": [
+      "id",
+      "name",
+      "type",
+      "parts",
+      "tip"
+    ],
+    "components": [
+      "0",
+      "1",
+      "2"
+    ]
+  }
 }
