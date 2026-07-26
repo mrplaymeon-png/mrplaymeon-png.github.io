@@ -17,13 +17,17 @@ permissions:
   contents: write
   pages: read
 
+concurrency:
+  group: petricoach-v7-real-images
+  cancel-in-progress: true
+
 env:
   PUBLIC_URL: https://mrplaymeon-png.github.io/v7/
 
 jobs:
   build-test-publish:
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    timeout-minutes: 50
     steps:
       - name: Repository laden
         uses: actions/checkout@v4
@@ -36,7 +40,15 @@ jobs:
           node-version: '20'
 
       - name: Echte Fotos laden und V7 bauen
-        run: node tools/build-v7-real-images.mjs
+        id: build
+        shell: bash
+        run: |
+          set +e
+          node tools/build-v7-real-images.mjs > /tmp/petricoach-v7-build.log 2>&1
+          CODE=$?
+          cat /tmp/petricoach-v7-build.log
+          echo "exit_code=$CODE" >> "$GITHUB_OUTPUT"
+          exit "$CODE"
 
       - name: Statischen Build prüfen
         run: |
@@ -98,13 +110,13 @@ jobs:
             BODY=$(curl -fsSL "${PUBLIC_URL}?build=${BUILD_SHA}&attempt=${i}" 2>/dev/null || true)
             if printf '%s' "$BODY" | grep -q 'real-images.js?v=7.0.0'; then
               FOUND=1
-              echo "Öffentliche V7 ist verfügbar."
+              echo 'Öffentliche V7 ist verfügbar.'
               break
             fi
             sleep 10
           done
-          if [ "$FOUND" != "1" ]; then
-            echo "Die öffentliche V7 erschien nicht rechtzeitig."
+          if [ "$FOUND" != '1' ]; then
+            echo 'Die öffentliche V7 erschien nicht rechtzeitig.'
             exit 1
           fi
 
@@ -168,7 +180,7 @@ jobs:
           git pull --rebase origin main
           git push origin main
 
-      - name: Abschlussbericht
+      - name: Abschlussbericht ausgeben
         run: |
           node - <<'NODE'
           const build=require('./v7/build-report.json');
@@ -180,3 +192,45 @@ jobs:
             live
           },null,2));
           NODE
+
+      - name: Laufstatus und Fehlerdiagnose immer speichern
+        if: always()
+        env:
+          JOB_STATUS: ${{ job.status }}
+          RUN_ID: ${{ github.run_id }}
+          RUN_ATTEMPT: ${{ github.run_attempt }}
+          HEAD_SHA: ${{ github.sha }}
+          BUILD_EXIT: ${{ steps.build.outputs.exit_code }}
+        shell: bash
+        run: |
+          set +e
+          mkdir -p /tmp/petricoach-status
+          {
+            echo "status=${JOB_STATUS}"
+            echo "run_id=${RUN_ID}"
+            echo "attempt=${RUN_ATTEMPT}"
+            echo "head_sha=${HEAD_SHA}"
+            echo "build_exit=${BUILD_EXIT:-not-run}"
+            echo "timestamp=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+            echo '--- build_log_tail ---'
+            if [ -f /tmp/petricoach-v7-build.log ]; then tail -n 120 /tmp/petricoach-v7-build.log; else echo 'Kein Build-Log vorhanden.'; fi
+            echo '--- server_log_tail ---'
+            if [ -f /tmp/petricoach-v7-server.log ]; then tail -n 40 /tmp/petricoach-v7-server.log; else echo 'Kein Server-Log vorhanden.'; fi
+            echo '--- local_test ---'
+            if [ -f v7/local-test.json ]; then cat v7/local-test.json; else echo 'Kein lokaler Testbericht vorhanden.'; fi
+            echo '--- live_test ---'
+            if [ -f /tmp/live-test.json ]; then cat /tmp/live-test.json; elif [ -f v7/live-test.json ]; then cat v7/live-test.json; else echo 'Kein Live-Testbericht vorhanden.'; fi
+          } > /tmp/petricoach-status/build-action-status.txt
+
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git reset --hard HEAD
+          git clean -fd v7
+          git fetch origin main
+          git rebase origin/main || { git rebase --abort || true; git reset --hard origin/main; }
+          mkdir -p v7
+          cp /tmp/petricoach-status/build-action-status.txt v7/build-action-status.txt
+          git add v7/build-action-status.txt
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m 'PetriCoach V7 Buildstatus speichern'
+          git push origin main
