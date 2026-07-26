@@ -23,9 +23,9 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           REPO: ${{ github.repository }}
-          JOB_ID: '89816175396'
+          JOB_ID: '89823502585'
         run: |
-          mkdir -p /tmp/v7-log v7
+          mkdir -p /tmp/v7-log status
           curl -fsSL \
             -H "Accept: application/vnd.github+json" \
             -H "Authorization: Bearer ${GH_TOKEN}" \
@@ -34,17 +34,17 @@ jobs:
             -o /tmp/v7-log/job.log
           {
             echo '=== Fehlerzeilen ==='
-            grep -n -E 'Error:|Timeout|failed|intercepts pointer|pageerror|requestfailed|##\[error\]' /tmp/v7-log/job.log | tail -n 100 || true
+            grep -n -E 'Error:|Timeout|failed|intercepts pointer|pageerror|requestfailed|HTTP-Fehler|##\[error\]' /tmp/v7-log/job.log | tail -n 120 || true
             echo
-            echo '=== Letzte 220 Zeilen ==='
-            tail -n 220 /tmp/v7-log/job.log
-          } > v7/final-run-debug.txt
+            echo '=== Letzte 240 Zeilen ==='
+            tail -n 240 /tmp/v7-log/job.log
+          } > status/final-v7-debug.txt
 
       - name: Diagnose speichern
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add v7/final-run-debug.txt
-          git commit -m 'V7-Finalfehlerprotokoll speichern'
+          git add status/final-v7-debug.txt
+          git commit -m 'Aktuellen V7-Finalfehler speichern'
           git pull --rebase origin main
           git push origin main
