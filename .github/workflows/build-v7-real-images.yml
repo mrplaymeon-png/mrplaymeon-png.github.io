@@ -1,0 +1,182 @@
+name: PetriCoach V7 mit echten Lernfotos bauen
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/build-v7-real-images.yml'
+      - 'tools/build-v7-real-images.mjs'
+      - 'tools/test-v7.mjs'
+      - 'tools/v7-image-queries.json'
+      - 'v6/index.html'
+      - 'v6/icon.svg'
+      - 'icon.svg'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: read
+
+env:
+  PUBLIC_URL: https://mrplaymeon-png.github.io/v7/
+
+jobs:
+  build-test-publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Repository laden
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Node einrichten
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Echte Fotos laden und V7 bauen
+        run: node tools/build-v7-real-images.mjs
+
+      - name: Statischen Build prüfen
+        run: |
+          test -f v7/index.html
+          test -f v7/real-images.js
+          test -f v7/real-images.css
+          test -f v7/sw.js
+          test -f v7/build-report.json
+          test "$(node -p "require('./v7/build-report.json').questions")" = "180"
+          test "$(node -p "require('./v7/build-report.json').species")" = "49"
+          test "$(node -p "require('./v7/build-report.json').practice")" = "10"
+          test "$(node -p "require('./v7/build-report.json').components")" = "12"
+          test "$(node -p "require('./v7/build-report.json').logicalPhotoAssignments")" -ge "190"
+          test "$(node -p "require('./v7/build-report.json').uniquePhotoFiles")" -ge "80"
+          ! grep -q 'Failed to Decode Data' v7/index.html
+          ! grep -q 'DecompressionStream' v7/index.html
+
+      - name: Mobilen Browser installieren
+        run: |
+          npm install --no-save playwright@1.55.0
+          npx playwright install --with-deps chromium
+
+      - name: Lokalen Webserver starten
+        run: |
+          python3 -m http.server 4173 > /tmp/petricoach-v7-server.log 2>&1 &
+          echo $! > /tmp/petricoach-v7-server.pid
+          for i in $(seq 1 20); do
+            if curl -fsS http://127.0.0.1:4173/v7/ >/dev/null; then exit 0; fi
+            sleep 1
+          done
+          cat /tmp/petricoach-v7-server.log
+          exit 1
+
+      - name: V7 lokal wie auf einem iPhone bedienen
+        env:
+          TEST_URL: http://127.0.0.1:4173/v7/
+          TEST_REPORT: v7/local-test.json
+          TEST_SCREENSHOT: v7/mobile-test.png
+        run: node tools/test-v7.mjs
+
+      - name: V7 veröffentlichen
+        id: publish
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A v7
+          git commit -m 'PetriCoach V7 mit echten Lernfotos veröffentlichen'
+          BUILD_SHA=$(git rev-parse HEAD)
+          git pull --rebase origin main
+          git push origin main
+          echo "sha=$BUILD_SHA" >> "$GITHUB_OUTPUT"
+
+      - name: Auf GitHub Pages warten
+        env:
+          BUILD_SHA: ${{ steps.publish.outputs.sha }}
+        run: |
+          FOUND=0
+          for i in $(seq 1 72); do
+            BODY=$(curl -fsSL "${PUBLIC_URL}?build=${BUILD_SHA}&attempt=${i}" 2>/dev/null || true)
+            if printf '%s' "$BODY" | grep -q 'real-images.js?v=7.0.0'; then
+              FOUND=1
+              echo "Öffentliche V7 ist verfügbar."
+              break
+            fi
+            sleep 10
+          done
+          if [ "$FOUND" != "1" ]; then
+            echo "Die öffentliche V7 erschien nicht rechtzeitig."
+            exit 1
+          fi
+
+      - name: Öffentliche V7 mobil bedienen
+        env:
+          TEST_URL: ${{ env.PUBLIC_URL }}?build=${{ steps.publish.outputs.sha }}
+          TEST_REPORT: /tmp/live-test.json
+          TEST_SCREENSHOT: /tmp/live-mobile-test.png
+        run: node tools/test-v7.mjs
+
+      - name: Hauptadresse erst nach erfolgreichem Live-Test auf V7 umstellen
+        env:
+          BUILD_SHA: ${{ steps.publish.outputs.sha }}
+        run: |
+          cp /tmp/live-test.json v7/live-test.json
+          cp /tmp/live-mobile-test.png v7/live-mobile-test.png
+          cat > index.html <<'HTML'
+          <!doctype html>
+          <html lang="de">
+          <head>
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+            <meta name="theme-color" content="#073b46">
+            <meta name="apple-mobile-web-app-capable" content="yes">
+            <meta name="apple-mobile-web-app-title" content="PetriCoach NRW">
+            <meta http-equiv="refresh" content="0;url=/v7/">
+            <title>PetriCoach NRW</title>
+            <style>html,body{margin:0;min-height:100%;display:grid;place-items:center;background:#06191e;color:#f6fbfc;font:18px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}a{color:#75e1e8}</style>
+          </head>
+          <body><p>PetriCoach mit echten Lernfotos wird geöffnet …<br><a href="/v7/">App direkt öffnen</a></p><script>location.replace('/v7/'+location.search+location.hash)</script></body>
+          </html>
+          HTML
+          cat > manifest.webmanifest <<'JSON'
+          {
+            "name": "PetriCoach NRW – Angelscheintrainer mit echten Lernfotos",
+            "short_name": "PetriCoach",
+            "description": "Bebilderter Intensivtrainer für die Fischerprüfung in Nordrhein-Westfalen.",
+            "lang": "de-DE",
+            "start_url": "/v7/",
+            "scope": "/v7/",
+            "display": "standalone",
+            "orientation": "portrait-primary",
+            "background_color": "#06191e",
+            "theme_color": "#073b46",
+            "icons": [{"src":"/v7/icon.svg","sizes":"any","type":"image/svg+xml","purpose":"any maskable"}]
+          }
+          JSON
+          cat > sw.js <<'JS'
+          const OLD=['petricoach-nrw-v3-1','petricoach-nrw-v3-2-1','petricoach-root-redirect-v6'];
+          self.addEventListener('install',event=>event.waitUntil(self.skipWaiting()));
+          self.addEventListener('activate',event=>event.waitUntil(Promise.all(OLD.map(name=>caches.delete(name))).then(()=>self.clients.claim())));
+          self.addEventListener('fetch',event=>{
+            if(event.request.method!=='GET')return;
+            if(event.request.mode==='navigate')event.respondWith(fetch(event.request,{cache:'no-store'}).catch(()=>Response.redirect('/v7/',302)));
+          });
+          JS
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html manifest.webmanifest sw.js v7/live-test.json v7/live-mobile-test.png
+          git commit -m 'Geprüfte PetriCoach V7 als Hauptversion aktivieren'
+          git pull --rebase origin main
+          git push origin main
+
+      - name: Abschlussbericht
+        run: |
+          node - <<'NODE'
+          const build=require('./v7/build-report.json');
+          const local=require('./v7/local-test.json');
+          const live=require('./v7/live-test.json');
+          console.log(JSON.stringify({
+            build:{questions:build.questions,species:build.species,practice:build.practice,components:build.components,assignments:build.logicalPhotoAssignments,uniquePhotos:build.uniquePhotoFiles,photoBytes:build.totalPhotoBytes,fallbacks:build.fallbackAssignments.length},
+            local,
+            live
+          },null,2));
+          NODE
