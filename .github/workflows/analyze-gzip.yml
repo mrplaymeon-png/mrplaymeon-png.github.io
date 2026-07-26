@@ -25,7 +25,7 @@ jobs:
           gzip -dc /tmp/app.gz > /tmp/corrupt.html 2> /tmp/gzip-error.txt
           python3 - <<'PY'
           from pathlib import Path
-          import hashlib
+          import hashlib, os
 
           data = Path('/tmp/corrupt.html').read_bytes()
           block_size = 512
@@ -36,6 +36,7 @@ jobs:
           Path('corrupt-blocks.sha256').write_text('\n'.join(rows)+'\n', encoding='ascii')
 
           report = [
+              f'run_id={os.environ.get("GITHUB_RUN_ID", "")}',
               f'bytes={len(data)}',
               f'sha256={hashlib.sha256(data).hexdigest()}',
           ]
@@ -54,6 +55,17 @@ jobs:
           report.append(Path('/tmp/gzip-error.txt').read_text(errors='replace'))
           Path('corruption-report.txt').write_text('\n'.join(report)+'\n', encoding='utf-8')
           PY
+
+      - name: Rekonstruierte Dateien als Diagnose-Artefakt sichern
+        uses: actions/upload-artifact@v4
+        with:
+          name: petricoach-corrupt-diagnostic
+          path: |
+            /tmp/corrupt.html
+            /tmp/app.gz
+            /tmp/gzip-error.txt
+          if-no-files-found: error
+          retention-days: 3
 
       - name: Analyse speichern
         shell: bash
