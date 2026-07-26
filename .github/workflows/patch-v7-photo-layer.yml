@@ -1,0 +1,52 @@
+name: V7-Fotoebene einmalig reparieren
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/patch-v7-photo-layer.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Untere Navigation immer über Fotos legen
+        run: |
+          node <<'NODE'
+          const fs = require('fs');
+          const file = 'tools/build-v7-real-images.mjs';
+          let source = fs.readFileSync(file, 'utf8');
+          function replaceOnce(before, after, label) {
+            const count = source.split(before).length - 1;
+            if (count !== 1) throw new Error(`${label}: erwartet 1 Treffer, gefunden ${count}`);
+            source = source.replace(before, after);
+          }
+          replaceOnce(
+            "const css = `\n.real-photo-card{",
+            "const css = `\n.bottom{z-index:2147483647!important;isolation:isolate;pointer-events:auto!important;transform:translateX(-50%) translateZ(0)!important}\n.bottom button{position:relative;z-index:2;pointer-events:auto!important;touch-action:manipulation}\nmain{position:relative;z-index:0}\n.real-photo-card{position:relative;z-index:0;",
+            'Fotoebene unter Navigation'
+          );
+          replaceOnce(
+            ".real-photo-card img{display:block;",
+            ".real-photo-card img{display:block;pointer-events:none;",
+            'Fotos nehmen keine Navigationsklicks ab'
+          );
+          fs.writeFileSync(file, source);
+          NODE
+
+      - name: Änderung speichern
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add tools/build-v7-real-images.mjs
+          git commit -m 'V7-Navigation zuverlässig über echten Fotos halten'
+          git pull --rebase origin main
+          git push origin main
