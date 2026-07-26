@@ -1,31 +1,31 @@
 status=failure
-run_id=30209806551
+run_id=30209981778
 attempt=1
-head_sha=a9ea88c23c94c3cb0a9ac83c13e07ecb35b2c895
+head_sha=7c34dfdd28c812126f07f5eaf4f67487de478e22
 build_exit=0
-timestamp=2026-07-26T16:13:10Z
+timestamp=2026-07-26T16:17:47Z
 --- build_log_tail ---
-8/114 Magpie goose.jpg (147 KB)
 7/114 Barbel.jpg (128 KB)
+8/114 Magpie goose.jpg (147 KB)
 10/114 Balantiocheilos melanopterus - Karlsruhe Zoo 02 (cropped).jpg (95 KB)
 9/114 Rhodeus amarus 2008 G1.jpg (91 KB)
-12/114 Argulus foliaceus 2.jpg (25 KB)
 11/114 Trüsche Walchensee.jpg (445 KB)
+12/114 Argulus foliaceus 2.jpg (25 KB)
 13/114 Cyprinus carpio 2008 G1 (cropped).jpg (95 KB)
 14/114 Fish hooks.jpg (31 KB)
 15/114 Hydropisie.jpg (46 KB)
 16/114 Angler at devizes england arp.jpg (278 KB)
-18/114 Wiki ostrich.jpg (69 KB)
 17/114 Cornjum, Martenastate 010.jpg (296 KB)
+18/114 Wiki ostrich.jpg (69 KB)
 19/114 Anguilla anguilla.jpg (43 KB)
-20/114 Barsche im See (Jungfische).jpg (137 KB)
 21/114 Shrimp hatchery.jpg (221 KB)
+20/114 Barsche im See (Jungfische).jpg (137 KB)
 22/114 Jensens Crossing fish survey Dec07 012.jpg (323 KB)
 23/114 Wildlife at Maasai Mara (Lion).jpg (415 KB)
 24/114 River algae Sichuan.jpg (411 KB)
 25/114 Astronotus ocellatus - closeup (aka).jpg (156 KB)
-26/114 Horton Creek, Arizona fishing regulations.jpg (293 KB)
 27/114 Paraná River Floodplain.jpg (179 KB)
+26/114 Horton Creek, Arizona fishing regulations.jpg (293 KB)
 28/114 Flyfishing.jpg (263 KB)
 29/114 Lake Idro Italy 2005-08-16.jpg (53 KB)
 30/114 Gills (esox).jpg (148 KB)
@@ -44,19 +44,19 @@ timestamp=2026-07-26T16:13:10Z
 43/114 Barbatula barbatula.jpg (143 KB)
 45/114 Fish kill pollution.jpg (164 KB)
 44/114 Paranephrops.jpg (238 KB)
-46/114 Estatua Pepe el Lobero 01.jpg (628 KB)
 47/114 Taking Water Samples from the Fish Farm.jpg (199 KB)
+46/114 Estatua Pepe el Lobero 01.jpg (628 KB)
 48/114 VHS.png (171 KB)
-49/114 Fishing Rods.jpg (274 KB)
 50/114 Rafajigging.jpg (119 KB)
-51/114 Garbage floating around in Circular Quay.jpg (265 KB)
+49/114 Fishing Rods.jpg (274 KB)
 52/114 Le braconnier par Frédéric Rouge.jpg (259 KB)
+51/114 Garbage floating around in Circular Quay.jpg (265 KB)
 53/114 Red grasshawk (Neurothemis fluctuans) male Phuket 2.jpg (92 KB)
+55/114 Grass snake (Natrix natrix) Pieniny.jpg (172 KB)
 54/114 Phragmites australis1.jpg (193 KB)
 56/114 Язовир Кърджали Нулата.jpg (178 KB)
-55/114 Grass snake (Natrix natrix) Pieniny.jpg (172 KB)
 58/114 Fish scales.jpg (277 KB)
-57/114 Цврцка 2 PPRP001.jpg (272 KB)
+57/114 Цврцка 2 PPRP001.jpg (271 KB)
 59/114 Littoral Zones.jpg (35 KB)
 60/114 Caviar spoons.jpg (104 KB)
 61/114 Spinner lure no feather ora.png (16 KB)
@@ -65,48 +65,48 @@ timestamp=2026-07-26T16:13:10Z
 64/114 PSM V20 D769 Longitudonal section of a bleak.jpg (100 KB)
 65/114 Angeln zubehoer wirbel 01.jpg (371 KB)
 66/114 Tinca tinca Natural History Museum University of Pisa.jpg (120 KB)
-68/114 Silurus glanis 02.jpg (120 KB)
 67/114 2016 Kwiat grzybieni białych 2.jpg (169 KB)
+68/114 Silurus glanis 02.jpg (120 KB)
 69/114 Sander lucioperca 1.jpg (122 KB)
 70/114 Bachforelle Zeichnung.jpg (57 KB)
 71/114 Wst meerforelle stoer 001.jpg (297 KB)
 72/114 Wst atlantischer lachs stoer 001.jpg (306 KB)
-74/114 Brook trout in water.jpg (158 KB)
 73/114 Close up of rainbow trout fish underwater oncorhynchus mykiss.jpg (128 KB)
+74/114 Brook trout in water.jpg (158 KB)
 76/114 Esox lucius ZOO 1.jpg (250 KB)
 75/114 Thymallus thymallus Pénzes pér.jpg (23 KB)
-77/114 Vimba vimba.jpg (301 KB)
 78/114 Rutilus rutilus by Algirdas cropped.jpg (209 KB)
+77/114 Vimba vimba.jpg (301 KB)
 79/114 LeucaspiusDelineatusMale.JPG (164 KB)
 80/114 Leuciscus leuciscus.jpg (223 KB)
-81/114 Squalius cephalus Prague Vltava 2.jpg (196 KB)
 82/114 LeuciscusIdusWindeIde56cm 21-4-2009 16-46-58.JPG (128 KB)
+81/114 Squalius cephalus Prague Vltava 2.jpg (196 KB)
 83/114 Alburnoides bipunctatus sujtásos küsz.jpg (36 KB)
 84/114 Vairon WIKI800px (cropped).JPG (360 KB)
+85/114 Scardinius erythropthalmus 2009 G1.jpg (90 KB)
 86/114 Chondrostoma nasus (aka).jpg (78 KB)
 87/114 Riviergrondel.jpg (77 KB)
 88/114 AlburnusAlburnus1.JPG (116 KB)
-85/114 Scardinius erythropthalmus 2009 G1.jpg (90 KB)
 90/114 Carp bream1.jpg (125 KB)
 89/114 Blicca bjoerkna underwater.jpg (142 KB)
+91/114 Alosa alosa.jpg (191 KB)
 92/114 Rhodeus sericeus.jpg (73 KB)
 93/114 CarassiusCarassius8.JPG (200 KB)
 94/114 Carassius gibelio 2008 G1.jpg (92 KB)
 95/114 Misgurnus fossilis Hungary.jpg (35 KB)
 96/114 Steinbeisser 001.jpg (103 KB)
-97/114 NeogobiusKessleriSide 7-9-2009 10-13-45 AM.JPG (144 KB)
 98/114 Gymnocephalus cernuus Pärnu River Estonia 2010-01-06.jpg (139 KB)
+97/114 NeogobiusKessleriSide 7-9-2009 10-13-45 AM.JPG (144 KB)
 99/114 Cottus Pesh.JPG (277 KB)
-91/114 Alosa alosa.jpg (191 KB)
 100/114 Pungitius pungitius.jpg (95 KB)
-102/114 Scomber scombrus 217326414.jpg (312 KB)
 101/114 Aspius aspius.jpg (181 KB)
-103/114 Platichthys flesus 1.jpg (109 KB)
+102/114 Scomber scombrus 217326414.jpg (312 KB)
 104/114 Atlantic Cod, Atlantischer Kabeljau (Gadus morhua).jpg (113 KB)
 105/114 Sik, Iduns kokbok.jpg (72 KB)
-106/114 Astacus astacus male.jpg (220 KB)
+103/114 Platichthys flesus 1.jpg (109 KB)
 107/114 Kamberkrebs spiny-cheek crayfish Orconectes limosus male.jpg (149 KB)
 108/114 Villa of the Nile Mosaic fishermen.jpg (230 KB)
+106/114 Astacus astacus male.jpg (220 KB)
 109/114 Carpe miroir de 17kg.jpg (47 KB)
 110/114 Spinnerbait.jpg (102 KB)
 111/114 Wikisurf.jpg (19 KB)
@@ -126,37 +126,37 @@ timestamp=2026-07-26T16:13:10Z
   "fallbacks": 25
 }
 --- server_log_tail ---
-127.0.0.1 - - [26/Jul/2026 16:12:35] "GET /v7/ HTTP/1.1" 200 -
-127.0.0.1 - - [26/Jul/2026 16:12:37] "GET /v7/ HTTP/1.1" 200 -
-127.0.0.1 - - [26/Jul/2026 16:12:37] "GET /v7/real-images.css?v=7.1.0 HTTP/1.1" 200 -
-127.0.0.1 - - [26/Jul/2026 16:12:37] "GET /v7/real-images.js?v=7.1.0 HTTP/1.1" 200 -
-127.0.0.1 - - [26/Jul/2026 16:12:38] "GET /v7/real/132a87e7c90fbc0ac9.jpg HTTP/1.1" 200 -
-127.0.0.1 - - [26/Jul/2026 16:12:38] "GET /v7/real/de95981764027bd277.jpg HTTP/1.1" 200 -
-127.0.0.1 - - [26/Jul/2026 16:12:39] "GET /v7/real/ae33465b49c6234010.jpg HTTP/1.1" 200 -
-127.0.0.1 - - [26/Jul/2026 16:12:39] "GET /v7/real/27b98a865bdafba314.jpg HTTP/1.1" 200 -
-127.0.0.1 - - [26/Jul/2026 16:12:39] "GET /v7/real/796dd80719500b5deb.jpg HTTP/1.1" 200 -
-127.0.0.1 - - [26/Jul/2026 16:12:39] "GET /v7/real/ab2215b8a55682320b.jpg HTTP/1.1" 200 -
-127.0.0.1 - - [26/Jul/2026 16:12:39] "GET /v7/real/c2bfbbff2ce66b6a1f.jpg HTTP/1.1" 200 -
-127.0.0.1 - - [26/Jul/2026 16:12:39] "GET /v7/real/cc3579da5d9baccb34.jpg HTTP/1.1" 200 -
-127.0.0.1 - - [26/Jul/2026 16:12:39] "GET /v7/real/86f5fa8c9124c17a12.jpg HTTP/1.1" 200 -
-127.0.0.1 - - [26/Jul/2026 16:12:39] "GET /v7/real/5fbb32ff246ae34606.jpg HTTP/1.1" 200 -
-127.0.0.1 - - [26/Jul/2026 16:12:39] "GET /v7/real/5ef35a3117f11da0f3.jpg HTTP/1.1" 200 -
-127.0.0.1 - - [26/Jul/2026 16:12:39] "GET /v7/real/526611b7e814765f0c.jpg HTTP/1.1" 200 -
-127.0.0.1 - - [26/Jul/2026 16:12:39] "GET /v7/real/4124bb1a2bf5b4df5d.jpg HTTP/1.1" 200 -
-127.0.0.1 - - [26/Jul/2026 16:12:39] "GET /v7/real/6503d803d8942b9b3d.jpg HTTP/1.1" 200 -
-127.0.0.1 - - [26/Jul/2026 16:12:39] "GET /v7/real/b2a98faf8d0e1119e7.jpg HTTP/1.1" 200 -
-127.0.0.1 - - [26/Jul/2026 16:12:39] "GET /v7/real/00779978b716f7c419.jpg HTTP/1.1" 200 -
-127.0.0.1 - - [26/Jul/2026 16:12:39] "GET /v7/real/86fdfcc419f92bf33e.jpg HTTP/1.1" 200 -
-127.0.0.1 - - [26/Jul/2026 16:12:39] "GET /v7/real/336f839793271df1e4.jpg HTTP/1.1" 200 -
-127.0.0.1 - - [26/Jul/2026 16:12:39] "GET /v7/real/10bcdfc8dc60525f5c.jpg HTTP/1.1" 200 -
-127.0.0.1 - - [26/Jul/2026 16:13:09] "GET /v7/real/89f9c2e32149ee53f5.jpg HTTP/1.1" 200 -
-127.0.0.1 - - [26/Jul/2026 16:13:09] "GET /v7/real/07cc5d81ea0b938979.jpg HTTP/1.1" 200 -
-127.0.0.1 - - [26/Jul/2026 16:13:09] "GET /v7/real/d70b6ef3cf8a0936a8.jpg HTTP/1.1" 200 -
-127.0.0.1 - - [26/Jul/2026 16:13:09] "GET /v7/real/847d67c8f222928f85.jpg HTTP/1.1" 200 -
-127.0.0.1 - - [26/Jul/2026 16:13:09] "GET /v7/real/99cacb8ce60e5108fe.jpg HTTP/1.1" 200 -
-127.0.0.1 - - [26/Jul/2026 16:13:09] "GET /v7/real/7d1802d282eb809897.jpg HTTP/1.1" 200 -
-127.0.0.1 - - [26/Jul/2026 16:13:09] "GET /v7/real/e57e245101f7acd463.jpg HTTP/1.1" 200 -
-127.0.0.1 - - [26/Jul/2026 16:13:09] "GET /v7/real/2d5782b95885b362f1.jpg HTTP/1.1" 200 -
+127.0.0.1 - - [26/Jul/2026 16:17:13] "GET /v7/ HTTP/1.1" 200 -
+127.0.0.1 - - [26/Jul/2026 16:17:14] "GET /v7/ HTTP/1.1" 200 -
+127.0.0.1 - - [26/Jul/2026 16:17:14] "GET /v7/real-images.css?v=7.1.0 HTTP/1.1" 200 -
+127.0.0.1 - - [26/Jul/2026 16:17:14] "GET /v7/real-images.js?v=7.1.0 HTTP/1.1" 200 -
+127.0.0.1 - - [26/Jul/2026 16:17:15] "GET /v7/real/c146b031213a2055a2.jpg HTTP/1.1" 200 -
+127.0.0.1 - - [26/Jul/2026 16:17:15] "GET /v7/real/796dd80719500b5deb.jpg HTTP/1.1" 200 -
+127.0.0.1 - - [26/Jul/2026 16:17:15] "GET /v7/real/de95981764027bd277.jpg HTTP/1.1" 200 -
+127.0.0.1 - - [26/Jul/2026 16:17:15] "GET /v7/real/27b98a865bdafba314.jpg HTTP/1.1" 200 -
+127.0.0.1 - - [26/Jul/2026 16:17:15] "GET /v7/real/ab2215b8a55682320b.jpg HTTP/1.1" 200 -
+127.0.0.1 - - [26/Jul/2026 16:17:15] "GET /v7/real/c2bfbbff2ce66b6a1f.jpg HTTP/1.1" 200 -
+127.0.0.1 - - [26/Jul/2026 16:17:15] "GET /v7/real/ae33465b49c6234010.jpg HTTP/1.1" 200 -
+127.0.0.1 - - [26/Jul/2026 16:17:15] "GET /v7/real/cc3579da5d9baccb34.jpg HTTP/1.1" 200 -
+127.0.0.1 - - [26/Jul/2026 16:17:15] "GET /v7/real/4124bb1a2bf5b4df5d.jpg HTTP/1.1" 200 -
+127.0.0.1 - - [26/Jul/2026 16:17:15] "GET /v7/real/5ef35a3117f11da0f3.jpg HTTP/1.1" 200 -
+127.0.0.1 - - [26/Jul/2026 16:17:15] "GET /v7/real/5fbb32ff246ae34606.jpg HTTP/1.1" 200 -
+127.0.0.1 - - [26/Jul/2026 16:17:15] "GET /v7/real/86f5fa8c9124c17a12.jpg HTTP/1.1" 200 -
+127.0.0.1 - - [26/Jul/2026 16:17:15] "GET /v7/real/6503d803d8942b9b3d.jpg HTTP/1.1" 200 -
+127.0.0.1 - - [26/Jul/2026 16:17:15] "GET /v7/real/526611b7e814765f0c.jpg HTTP/1.1" 200 -
+127.0.0.1 - - [26/Jul/2026 16:17:15] "GET /v7/real/b2a98faf8d0e1119e7.jpg HTTP/1.1" 200 -
+127.0.0.1 - - [26/Jul/2026 16:17:15] "GET /v7/real/86fdfcc419f92bf33e.jpg HTTP/1.1" 200 -
+127.0.0.1 - - [26/Jul/2026 16:17:15] "GET /v7/real/00779978b716f7c419.jpg HTTP/1.1" 200 -
+127.0.0.1 - - [26/Jul/2026 16:17:15] "GET /v7/real/336f839793271df1e4.jpg HTTP/1.1" 200 -
+127.0.0.1 - - [26/Jul/2026 16:17:15] "GET /v7/real/10bcdfc8dc60525f5c.jpg HTTP/1.1" 200 -
+127.0.0.1 - - [26/Jul/2026 16:17:45] "GET /v7/real/89f9c2e32149ee53f5.jpg HTTP/1.1" 200 -
+127.0.0.1 - - [26/Jul/2026 16:17:45] "GET /v7/real/99cacb8ce60e5108fe.jpg HTTP/1.1" 200 -
+127.0.0.1 - - [26/Jul/2026 16:17:45] "GET /v7/real/7d1802d282eb809897.jpg HTTP/1.1" 200 -
+127.0.0.1 - - [26/Jul/2026 16:17:45] "GET /v7/real/847d67c8f222928f85.jpg HTTP/1.1" 200 -
+127.0.0.1 - - [26/Jul/2026 16:17:45] "GET /v7/real/07cc5d81ea0b938979.jpg HTTP/1.1" 200 -
+127.0.0.1 - - [26/Jul/2026 16:17:45] "GET /v7/real/e57e245101f7acd463.jpg HTTP/1.1" 200 -
+127.0.0.1 - - [26/Jul/2026 16:17:45] "GET /v7/real/d70b6ef3cf8a0936a8.jpg HTTP/1.1" 200 -
+127.0.0.1 - - [26/Jul/2026 16:17:45] "GET /v7/real/2d5782b95885b362f1.jpg HTTP/1.1" 200 -
 --- local_test ---
 {
   "status": "failed",
@@ -164,11 +164,11 @@ timestamp=2026-07-26T16:13:10Z
   "viewport": "390x844",
   "title": "PetriCoach NRW – Bebilderter Intensivtrainer",
   "homeVersion": "Offline · Version 7.1 · 180 Fragen · echte Fotos",
-  "question": "Welche Fischart hat den höchsten Sauerstoffbedarf?",
+  "question": "Was ist ein Drilling?",
   "questionPhoto": {
-    "src": "http://127.0.0.1:4173/v7/real/132a87e7c90fbc0ac9.jpg",
-    "width": 960,
-    "height": 720,
+    "src": "http://127.0.0.1:4173/v7/real/c146b031213a2055a2.jpg",
+    "width": 438,
+    "height": 497,
     "alt": "Echtes Foto: Echtes Beispiel zur richtigen Lösung"
   },
   "speciesCards": 49,
@@ -179,7 +179,7 @@ timestamp=2026-07-26T16:13:10Z
     "height": 336,
     "alt": "Echtes Foto: Bachforelle"
   },
-  "error": "locator.click: Timeout 30000ms exceeded.\nCall log:\n  - waiting for locator('.bottom [data-nav=\"practice\"]')\n    - locator resolved to <button data-nav=\"practice\">…</button>\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <img loading=\"lazy\" decoding=\"async\" alt=\"Echtes Foto: Regenbogenforelle\" src=\"http://127.0.0.1:4173/v7/real/ab2215b8a55682320b.jpg\"/> from <main>…</main> subtree intercepts pointer events\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <img loading=\"lazy\" decoding=\"async\" alt=\"Echtes Foto: Regenbogenforelle\" src=\"http://127.0.0.1:4173/v7/real/ab2215b8a55682320b.jpg\"/> from <main>…</main> subtree intercepts pointer events\n    - retrying click action\n      - waiting 100ms\n    58 × waiting for element to be visible, enabled and stable\n       - element is visible, enabled and stable\n       - scrolling into view if needed\n       - done scrolling\n       - <img loading=\"lazy\" decoding=\"async\" alt=\"Echtes Foto: Regenbogenforelle\" src=\"http://127.0.0.1:4173/v7/real/ab2215b8a55682320b.jpg\"/> from <main>…</main> subtree intercepts pointer events\n     - retrying click action\n       - waiting 500ms\n\n    at /home/runner/work/mrplaymeon-png.github.io/mrplaymeon-png.github.io/tools/test-v7.mjs:82:55",
+  "error": "locator.click: Timeout 30000ms exceeded.\nCall log:\n  - waiting for locator('.bottom [data-nav=\"practice\"]')\n    - locator resolved to <button data-nav=\"practice\">…</button>\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <figure data-real-photo=\"1\" class=\"real-photo-card compact\">…</figure> from <main>…</main> subtree intercepts pointer events\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <figure data-real-photo=\"1\" class=\"real-photo-card compact\">…</figure> from <main>…</main> subtree intercepts pointer events\n    - retrying click action\n      - waiting 100ms\n    58 × waiting for element to be visible, enabled and stable\n       - element is visible, enabled and stable\n       - scrolling into view if needed\n       - done scrolling\n       - <figure data-real-photo=\"1\" class=\"real-photo-card compact\">…</figure> from <main>…</main> subtree intercepts pointer events\n     - retrying click action\n       - waiting 500ms\n\n    at /home/runner/work/mrplaymeon-png.github.io/mrplaymeon-png.github.io/tools/test-v7.mjs:82:55",
   "dialogs": [],
   "pageErrors": [],
   "failedRequests": []
