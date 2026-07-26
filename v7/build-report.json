@@ -8,7 +8,7 @@
   "visualTopics": 125,
   "logicalPhotoAssignments": 196,
   "uniquePhotoFiles": 114,
-  "totalPhotoBytes": 20694721,
+  "totalPhotoBytes": 20694029,
   "fallbackAssignments": [
     {
       "kind": "visual",
@@ -1583,7 +1583,7 @@
       "license": "CC BY-SA 4.0",
       "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
       "description": "Kanjon Cvrcke",
-      "bytes": 278153,
+      "bytes": 277461,
       "selectedTitle": "Stream",
       "fallback": false
     },
@@ -1838,7 +1838,7 @@
       "license": "CC BY-SA 4.0",
       "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
       "description": "Kanjon Cvrcke",
-      "bytes": 278153,
+      "bytes": 277461,
       "selectedTitle": "Stream",
       "fallback": false
     },

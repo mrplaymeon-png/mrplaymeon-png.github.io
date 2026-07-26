@@ -1,5 +1,5 @@
-const CORE='petricoach-v7-core-2';
-const PHOTOS='petricoach-v7-real-2';
+const CORE='petricoach-v7-core-711';
+const PHOTOS='petricoach-v7-real-711';
 const CORE_FILES=['./','./index.html','./real-images.css','./real-images.js','./manifest.webmanifest','./icon.svg'];
 self.addEventListener('install',event=>event.waitUntil(caches.open(CORE).then(cache=>cache.addAll(CORE_FILES)).then(()=>self.skipWaiting())));
 self.addEventListener('activate',event=>event.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k.startsWith('petricoach-v7-')&&![CORE,PHOTOS].includes(k)).map(k=>caches.delete(k)))).then(()=>self.clients.claim())));
