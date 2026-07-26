@@ -1,0 +1,44 @@
+name: PetriCoach V6 Funktionen untersuchen
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/inspect-v6-functions.yml'
+      - 'v6/index.html'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Relevante Ausschnitte schreiben
+        run: |
+          mkdir -p v7
+          node <<'NODE'
+          const fs=require('fs');
+          const s=fs.readFileSync('v6/index.html','utf8');
+          const terms=['learning-visual','species-card','practice-diagram','function render','visualSVG','renderSpecies','renderPractice','renderQuestion','answerQuestion'];
+          let out='';
+          for(const term of terms){
+            out+='\n===== '+term+' =====\n';
+            let at=0,n=0;
+            while((at=s.indexOf(term,at))>=0 && n<5){
+              out+=s.slice(Math.max(0,at-700),Math.min(s.length,at+1800))+'\n---\n';
+              at+=term.length;n++;
+            }
+          }
+          fs.writeFileSync('v7/function-snippets.txt',out);
+          NODE
+      - name: Speichern
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add v7/function-snippets.txt
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m 'V6 Funktionsausschnitte extrahieren'
+          git push
