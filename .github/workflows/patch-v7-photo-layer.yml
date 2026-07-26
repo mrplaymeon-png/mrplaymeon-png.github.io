@@ -18,7 +18,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Fotos lassen Navigationsklicks zuverlässig durch
+      - name: Untere Navigation als oberste Körperebene einsetzen
         run: |
           node <<'NODE'
           const fs = require('fs');
@@ -30,19 +30,9 @@ jobs:
             source = source.replace(before, after);
           }
           replaceOnce(
-            '.real-photo-card{position:relative;z-index:0;margin:',
-            '.real-photo-card{position:relative;z-index:0;pointer-events:none;margin:',
-            'Fotokarte klickdurchlässig'
-          );
-          replaceOnce(
-            '.real-photo-caption{display:flex;',
-            '.real-photo-caption{pointer-events:auto;display:flex;',
-            'Quellenzeile anklickbar'
-          );
-          replaceOnce(
-            '.real-photo-caption a{color:',
-            '.real-photo-caption a{pointer-events:auto;color:',
-            'Quellenlink anklickbar'
+            "  let pending=false;function enhance(){pending=false;enhanceHome();enhanceQuestion();enhanceSpecies();enhancePractice();enhanceComponents();}",
+            "  function liftNavigation(){const nav=document.querySelector('.bottom');if(nav&&nav.parentElement!==document.body){document.body.appendChild(nav);}if(nav){nav.style.setProperty('position','fixed','important');nav.style.setProperty('z-index','2147483647','important');nav.style.setProperty('pointer-events','auto','important');}}\n  let pending=false;function enhance(){pending=false;liftNavigation();enhanceHome();enhanceQuestion();enhanceSpecies();enhancePractice();enhanceComponents();}",
+            'Navigation an body verschieben'
           );
           fs.writeFileSync(file, source);
           NODE
@@ -52,6 +42,6 @@ jobs:
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add tools/build-v7-real-images.mjs
-          git commit -m 'V7-Fotokarten blockieren die Navigation nicht mehr'
+          git commit -m 'V7-Navigation als oberste Ebene dauerhaft fixieren'
           git pull --rebase origin main
           git push origin main
