@@ -1,0 +1,9 @@
+started=2026-07-26T13:13:12Z
+base64_exit=0
+
+gzip: app-v4.gz: invalid compressed data--crc error
+
+gzip: app-v4.gz: invalid compressed data--length error
+gzip_exit=1
+html_bytes=158325
+validation=ok
